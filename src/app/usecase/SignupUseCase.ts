@@ -6,7 +6,9 @@ import OutputSignupDto from '../dto/signup/output';
 import AccountDAO from '../../domain/dao/AccountDAO';
 
 export default class SignupUseCase {
-	constructor(readonly accountDao: AccountDAO) {}
+	constructor(
+		private readonly accountDao: AccountDAO
+	) {}
 
 	async execute (input: InputSignupDto): Promise<OutputSignupDto | Error> {
 		const { name, email, cpf, isDriver, isPassenger, carPlate } = input;

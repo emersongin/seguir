@@ -4,7 +4,7 @@ import OutputGetAccountDto from '../dto/get-account/output';
 import AccountDAO from '../../domain/dao/AccountDAO';
 
 export default class GetAccountUserCase {
-	constructor(readonly accountDao: AccountDAO) {}
+	constructor(private readonly accountDao: AccountDAO) {}
 
 	async execute (input: InputGetAccountDto): Promise<OutputGetAccountDto | Error> {
     const { accountId } = input;
