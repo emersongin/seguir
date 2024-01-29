@@ -1,8 +1,4 @@
-drop schema app cascade;
-
-create schema app;
-
-create table app.account (
+create table account (
 	account_id uuid primary key,
 	name text not null,
 	email text not null,
