@@ -28,4 +28,10 @@ describe('testes para caso de uso de buscar conta', () => {
     expect(output).toHaveProperty('accountIsPassenger');
     expect(output).toHaveProperty('accountCarPlate');
   });
+
+  it('deve retornar um erro ao tentar buscar uma conta inexistente', async () => {
+    accountData.accountId = 'invalid_id';
+    const input = accountData;
+    await expect(useCase.execute(input)).rejects.toThrow('Account not found.');
+  });
 });
