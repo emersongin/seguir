@@ -13,6 +13,26 @@ export default class MemoryAccountRepository implements AccountRepository {
       true,
       false,
       'ABC1234'
+    ),
+    Account.createAccountWithId(
+      '79a3baf5-7ad5-41e4-9088-e52a1caba2f1',
+      'Maria Silva',
+      'maria@hotmail.com',
+      '12@345@6',
+      '649.731.080-06',
+      false,
+      true,
+      null
+    ),
+    Account.createAccountWithId(
+      '046ba3b6-9425-4a42-8f24-e793462e936a',
+      'Usuario com corrida ativa',
+      'usuario_com_corrida_ativa@hotmail.com',
+      '12@345@6',
+      '649.731.080-06',
+      false,
+      true,
+      null
     )
   ];
 
