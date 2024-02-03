@@ -6,7 +6,7 @@ import { nowToISOString } from '../helpers/dates';
 export default class MemoryRideRepository implements RideRepository {
   private rides: Ride[] = [
     new Ride(
-      '1',
+      '51b08801-abd1-4a11-99a6-33d23c43aa93',
       '382d8d91-34b8-4118-a294-3c22847f48f5',
       '046ba3b6-9425-4a42-8f24-e793462e936a',
       'requested',
@@ -39,8 +39,11 @@ export default class MemoryRideRepository implements RideRepository {
     return ride;
   }
 
-  async findActiveRideByPassengerId(passengerId: string): Promise<Ride | null> {
-    const ride = this.rides.find(ride => ride.passengerId === passengerId && ride.status !== 'completed');
-    return ride || null;
+  async findActiveRideByPassengerId(passengerId: string): Promise<Ride | undefined> {
+    return this.rides.find(ride => ride.passengerId === passengerId && ride.status !== 'completed');
+  }
+
+  async findById(rideId: string): Promise<Ride | undefined> {
+    return this.rides.find(ride => ride.id === rideId);
   }
 }

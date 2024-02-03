@@ -36,13 +36,6 @@ export default class MemoryAccountRepository implements AccountRepository {
     )
   ];
 
-  async findAccountByEmail(email: string): Promise<Account | undefined> {
-    return this.accounts.find(account => account.email === email);
-  }
-  async findAccountById(accountId: string): Promise<Account | undefined> {
-    return this.accounts.find(account => account.id === accountId);
-  }
-
   async save(account: Account): Promise<Account> {
     const id = crypto.randomUUID();
     const newAccount = Account.createAccountWithId(
@@ -57,5 +50,13 @@ export default class MemoryAccountRepository implements AccountRepository {
     );
     this.accounts.push(newAccount);
     return newAccount;
+  }
+
+  async findAccountByEmail(email: string): Promise<Account | undefined> {
+    return this.accounts.find(account => account.email === email);
+  }
+
+  async findAccountById(accountId: string): Promise<Account | undefined> {
+    return this.accounts.find(account => account.id === accountId);
   }
 }
