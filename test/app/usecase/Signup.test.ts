@@ -48,7 +48,7 @@ describe('testes para o caso de uso de se inscrever', () => {
   it('não efetuar inscrição de conta existente!', async () => {
     accountData.email = 'joao@hotmail.com';
     const input = accountData;
-    await expect(useCase.execute(input)).rejects.toThrow('account already exists.');
+    await expect(useCase.execute(input)).rejects.toThrow('Account already exists.');
   });
 
   it('não efetuar inscrição com nome inválido!', async () => {
