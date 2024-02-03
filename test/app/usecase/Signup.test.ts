@@ -2,10 +2,10 @@ import AccountRepository from '../../../src/infra/repository/AccountRepository';
 import MemoryAccountRepository from '../../../src/infra/repository/MemoryAccountRepository';
 import Signup from '../../../src/app/usecase/Signup';
 
-describe('testes para função de inscrever-se', () => {
+describe('testes para o caso de uso de se inscrever', () => {
   let accountRepository: AccountRepository;
   let useCase: Signup;
-  let accoutData: {
+  let accountData: {
     name: string;
     email: string;
     password: string;
@@ -18,7 +18,7 @@ describe('testes para função de inscrever-se', () => {
   beforeEach(() => {
     accountRepository = new MemoryAccountRepository();
     useCase = new Signup(accountRepository);
-    accoutData = {
+    accountData = {
       name: 'Nome de Usuário Valido',
       email: 'email_de_usuario_valido@hotmail.com',
       password: 'senha_valida',
@@ -30,55 +30,55 @@ describe('testes para função de inscrever-se', () => {
   });
 
   it('efetuar inscrição como motorista!', async () => {
-    accoutData.isDriver = true;
-    accoutData.carPlate = 'ABC1234';
-    const input = accoutData;
+    accountData.isDriver = true;
+    accountData.carPlate = 'ABC1234';
+    const input = accountData;
     const output = await useCase.execute(input);
     expect(output).toHaveProperty('accountId');
   });
 
   it('efetuar inscrição como passageiro!', async () => {
-    accoutData.isPassenger = true;
-    accoutData.carPlate = null;
-    const input = accoutData;
+    accountData.isPassenger = true;
+    accountData.carPlate = null;
+    const input = accountData;
     const output = await useCase.execute(input);
     expect(output).toHaveProperty('accountId');
   });
 
   it('não efetuar inscrição de conta existente!', async () => {
-    accoutData.email = 'joao@hotmail.com';
-    const input = accoutData;
+    accountData.email = 'joao@hotmail.com';
+    const input = accountData;
     await expect(useCase.execute(input)).rejects.toThrow('account already exists.');
   });
 
   it('não efetuar inscrição com nome inválido!', async () => {
-    accoutData.name = '';
-    const input = accoutData;
+    accountData.name = '';
+    const input = accountData;
     await expect(useCase.execute(input)).rejects.toThrow('Invalid user name.');
   });
 
   it('não efetuar inscrição com email inválido!', async () => {
-    accoutData.email = '';
-    const input = accoutData;
+    accountData.email = '';
+    const input = accountData;
     await expect(useCase.execute(input)).rejects.toThrow('Invalid email.');
   });
 
   it('não efetuar inscrição com cpf inválido!', async () => {
-    accoutData.cpf = '';
-    const input = accoutData;
+    accountData.cpf = '';
+    const input = accountData;
     await expect(useCase.execute(input)).rejects.toThrow('Invalid cpf.');
   });
 
   it('não efetuar inscrição de motorista com placa inválida!', async () => {
-    accoutData.isDriver = true;
-    accoutData.carPlate = 'ABC_1234';
-    const input = accoutData;
+    accountData.isDriver = true;
+    accountData.carPlate = 'ABC_1234';
+    const input = accountData;
     await expect(useCase.execute(input)).rejects.toThrow('Invalid car plate.');
   });
 
   it('não efetuar inscrição de conta sem password!', async () => {
-    accoutData.password = '';
-    const input = accoutData;
+    accountData.password = '';
+    const input = accountData;
     await expect(useCase.execute(input)).rejects.toThrow('Invalid password.');
   });
 });
