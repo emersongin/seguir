@@ -15,7 +15,7 @@ export default class Ride {
     readonly date: string
   ) {}
 
-  static createRideRequest(
+  static createRide(
     passengerId: string,
     fromLat: number,
     fromLong: number,
@@ -37,7 +37,8 @@ export default class Ride {
     );
   }
 
-  static createRide(
+  static restoreRide(
+    id: string,
     driverId: string | null,
     passengerId: string,
     status: string,
@@ -47,11 +48,10 @@ export default class Ride {
     fromLong: number,
     toLat: number,
     toLong: number,
-    date: string,
-    rideId: string | null = null,
+    date: string
   ): Ride {
     return new Ride(
-      rideId,
+      id,
       driverId,
       passengerId,
       status,
@@ -64,10 +64,14 @@ export default class Ride {
       date
     );
   }
-
+  
   acceptDriver(driverId: string): void {
     this.driverId = driverId;
     this.status = 'accepted';
+  }
+
+  startRide(): void {
+    this.status = 'in_progress';
   }
 
   getDriverId(): string | null {
