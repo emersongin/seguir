@@ -12,14 +12,14 @@ export default class Signup {
 		const accountFinded = await this.accountRepository.findAccountByEmail(email);
 		if (accountFinded) throw new Error('Account already exists.');
 		const newAccount = Account.createAccount(name, email, password, cpf, isDriver, isPassenger, carPlate);
-		const accountCreated = await this.accountRepository.save(newAccount);
+		const accountCreated = await this.accountRepository.saveAccount(newAccount);
 		return {
 			accountId: accountCreated.id
 		};
 	}
 }
 
-export interface InputDto {
+type InputDto = {
   name: string;
   email: string;
 	password: string;
@@ -29,6 +29,6 @@ export interface InputDto {
   carPlate: string | null;
 };
 
-export interface OutputDto {
+type OutputDto = {
   accountId: string;
 };

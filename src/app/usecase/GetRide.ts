@@ -7,7 +7,7 @@ export default class GetRide {
 
   async execute(input: InputDto): Promise<OutputDto | Error> {
     const { rideId } = input;
-    const rideFinded = await this.rideRepository.findById(rideId);
+    const rideFinded = await this.rideRepository.findRideById(rideId);
     if (!rideFinded) throw new Error("Ride not found.");
     return {
       rideId: rideFinded.id,
@@ -25,11 +25,11 @@ export default class GetRide {
   }
 }
 
-export interface InputDto {
+type InputDto = {
   rideId: string;
 };
 
-export interface OutputDto {
+type OutputDto = {
   rideId: string;
   ridePassengerId: string;
   rideDriverId: string;

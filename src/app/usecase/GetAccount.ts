@@ -19,11 +19,11 @@ export default class GetAccount {
   }
 }
 
-export interface InputDto {
+type InputDto = {
   accountId: string;
 };
 
-export interface OutputDto {
+type OutputDto = {
   accountId: string;
   accountName: string;
   accountEmail: string;

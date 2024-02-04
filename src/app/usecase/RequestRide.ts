@@ -12,24 +12,24 @@ export default class RequestRide {
     const { passengerId, fromLat, fromLong, toLat, toLong } = input;
     const account = await this.accountRepository.findAccountById(passengerId);
     if (!account) throw new Error('Account not found.'); 
-    if (account && !account.isPassenger) throw new Error('Account is not a passenger\'s.');
+    if (!account.isPassenger) throw new Error('Account is not a passenger\'s.');
     const activeRide = await this.rideRepository.findActiveRideByPassengerId(passengerId);
     if (activeRide) throw new Error('Passenger with active ride.');
-    const newRideRequested = Ride.createRequest(
+    const newRideRequested = Ride.createRideRequest(
       passengerId,
       fromLat,
       fromLong,
       toLat,
       toLong
     );
-    const ride = await this.rideRepository.save(newRideRequested);
+    const ride = await this.rideRepository.saveRide(newRideRequested);
     return {
       rideId: ride.id
     };
   }
 }
 
-export interface InputDto {
+type InputDto = {
   passengerId: string;
   fromLat: number;
   fromLong: number;
@@ -37,6 +37,6 @@ export interface InputDto {
   toLong: number;
 };
 
-export interface OutputDto {
+type OutputDto = {
   rideId: string;
 };
