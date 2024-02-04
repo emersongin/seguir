@@ -4,37 +4,25 @@ import crypto from 'crypto';
 import { nowToISOString } from '../helpers/dates';
 
 export default class MemoryRideRepository implements RideRepository {
-  rides: {
-    id: string;
-    driverId: string | null;
-    passengerId: string;
-    status: string;
-    fare: number | null;
-    distance: number | null;
-    fromLat: number;
-    fromLong: number;
-    toLat: number;
-    toLong: number;
-    date: string;
-  }[] = [
-    {
-      id: '51b08801-abd1-4a11-99a6-33d23c43aa93',
-      driverId: '382d8d91-34b8-4118-a294-3c22847f48f5',
-      passengerId: '046ba3b6-9425-4a42-8f24-e793462e936a',
-      status: 'requested',
-      fare: 10,
-      distance: 10,
-      fromLat: -23.56168,
-      fromLong: -46.62543,
-      toLat: -23.56168,
-      toLong: -46.62543,
-      date: nowToISOString()
-    }
-  ];
+  private rides: RideData[] = [];
 
   async saveRide(ride: Ride): Promise<Ride> {
     const id = crypto.randomUUID();
-    const newRide = Ride.createRide(
+    this.rides.push({
+      id,
+      driverId: ride.getDriverId(),
+      passengerId: ride.passengerId,
+      status: ride.getStatus(),
+      fare: ride.fare,
+      distance: ride.distance,
+      fromLat: ride.fromLat,
+      fromLong: ride.fromLong,
+      toLat: ride.toLat,
+      toLong: ride.toLong,
+      date: ride.date
+    });
+    const newRide = Ride.restoreRide(
+      id,
       ride.getDriverId(),
       ride.passengerId,
       ride.getStatus(),
@@ -44,22 +32,8 @@ export default class MemoryRideRepository implements RideRepository {
       ride.fromLong,
       ride.toLat,
       ride.toLong,
-      nowToISOString(),
-      id
+      ride.date
     );
-    this.rides.push({
-      id,
-      driverId: newRide.getDriverId(),
-      passengerId: newRide.passengerId,
-      status: newRide.getStatus(),
-      fare: newRide.fare,
-      distance: newRide.distance,
-      fromLat: newRide.fromLat,
-      fromLong: newRide.fromLong,
-      toLat: newRide.toLat,
-      toLong: newRide.toLong,
-      date: newRide.date
-    });
     return newRide;
   }
 
@@ -76,7 +50,8 @@ export default class MemoryRideRepository implements RideRepository {
     rideData.toLat = ride.toLat;
     rideData.toLong = ride.toLong;
     rideData.date = ride.date;
-    return Ride.createRide(
+    return Ride.restoreRide(
+      rideData.id,
       rideData.driverId,
       rideData.passengerId,
       rideData.status,
@@ -86,15 +61,15 @@ export default class MemoryRideRepository implements RideRepository {
       rideData.fromLong,
       rideData.toLat,
       rideData.toLong,
-      rideData.date,
-      rideData.id
+      rideData.date
     );
   }
 
   async findActiveRideByPassengerId(passengerId: string): Promise<Ride | undefined> {
     const rideData = this.rides.find(ride => ride.passengerId === passengerId && ride.status !== 'completed');
     if (!rideData) return undefined;
-    return Ride.createRide(
+    return Ride.restoreRide(
+      rideData.id,
       rideData.driverId,
       rideData.passengerId,
       rideData.status,
@@ -104,15 +79,15 @@ export default class MemoryRideRepository implements RideRepository {
       rideData.fromLong,
       rideData.toLat,
       rideData.toLong,
-      rideData.date,
-      rideData.id
+      rideData.date
     );
   }
 
   async findRideById(rideId: string): Promise<Ride | undefined> {
     const rideData = this.rides.find(ride => ride.id === rideId);
     if (!rideData) return undefined;
-    return Ride.createRide(
+    return Ride.restoreRide(
+      rideData.id,
       rideData.driverId,
       rideData.passengerId,
       rideData.status,
@@ -122,8 +97,7 @@ export default class MemoryRideRepository implements RideRepository {
       rideData.fromLong,
       rideData.toLat,
       rideData.toLong,
-      rideData.date,
-      rideData.id
+      rideData.date
     );
   }
 
@@ -133,7 +107,8 @@ export default class MemoryRideRepository implements RideRepository {
       (ride.status === 'accepted' || ride.status === 'in_progress')
     );
     if (!rideData) return undefined;
-    return Ride.createRide(
+    return Ride.restoreRide(
+      rideData.id,
       rideData.driverId,
       rideData.passengerId,
       rideData.status,
@@ -143,8 +118,21 @@ export default class MemoryRideRepository implements RideRepository {
       rideData.fromLong,
       rideData.toLat,
       rideData.toLong,
-      rideData.date,
-      rideData.id
-      );
+      rideData.date
+    );
   }
 }
+
+type RideData = {
+  id: string;
+  driverId: string | null;
+  passengerId: string;
+  status: string;
+  fare: number | null;
+  distance: number | null;
+  fromLat: number;
+  fromLong: number;
+  toLat: number;
+  toLong: number;
+  date: string;
+};
