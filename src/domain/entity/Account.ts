@@ -47,29 +47,8 @@ export default class Account {
     cpf: string,
     isDriver: boolean,
     isPassenger: boolean,
-    carPlate: string | null
-  ): Account {
-    return new Account(
-      null, 
-      name, 
-      email, 
-      password,
-      cpf, 
-      isDriver, 
-      isPassenger, 
-      carPlate
-    );
-  }
-
-  static createAccountWithId(
-    id: string,
-    name: string,
-    email: string,
-    password: string,
-    cpf: string,
-    isDriver: boolean,
-    isPassenger: boolean,
-    carPlate: string | null
+    carPlate: string | null,
+    id: string | null = null
   ): Account {
     return new Account(
       id, 

@@ -3,9 +3,9 @@ import { nowToISOString } from '../../infra/helpers/dates';
 export default class Ride {
   constructor(
     readonly id: string | null,
-    readonly driverId: string | null,
+    private driverId: string | null,
     readonly passengerId: string,
-    readonly status: string,
+    private status: string,
     readonly fare: number | null,
     readonly distance: number | null,
     readonly fromLat: number,
@@ -15,7 +15,7 @@ export default class Ride {
     readonly date: string
   ) {}
 
-  static createRequest(
+  static createRideRequest(
     passengerId: string,
     fromLat: number,
     fromLong: number,
@@ -37,8 +37,7 @@ export default class Ride {
     );
   }
 
-  static createRideWithId(
-    rideId: string,
+  static createRide(
     driverId: string | null,
     passengerId: string,
     status: string,
@@ -48,7 +47,8 @@ export default class Ride {
     fromLong: number,
     toLat: number,
     toLong: number,
-    date: string
+    date: string,
+    rideId: string | null = null,
   ): Ride {
     return new Ride(
       rideId,
@@ -65,4 +65,16 @@ export default class Ride {
     );
   }
 
+  acceptDriver(driverId: string): void {
+    this.driverId = driverId;
+    this.status = 'accepted';
+  }
+
+  getDriverId(): string | null {
+    return this.driverId;
+  }
+
+  getStatus(): string {
+    return this.status;
+  }
 }
