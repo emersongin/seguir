@@ -1,3 +1,5 @@
+import Ride from '../../domain/entity/Ride';
+
 export default interface RideRepository {
   saveRide(ride: Ride): Promise<Ride>;
   updateRide(ride: Ride): Promise<Ride>;
