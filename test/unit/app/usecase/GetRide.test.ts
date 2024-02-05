@@ -1,6 +1,6 @@
 import RideRepository from '../../../../src/infra/repository/RideRepository';
 import GetRide from '../../../../src/app/usecase/GetRide';
-import MemoryRideRepository from '../../../../src/infra/repository/MemoryRideRepository';
+import RideRepositoryMemory from '../../../../src/infra/repository/RideRepositoryMemory';
 import Ride from '../../../../src/domain/entity/Ride';
 
 describe('teste para caso de uso de obter corrida', () => {
@@ -11,7 +11,7 @@ describe('teste para caso de uso de obter corrida', () => {
   };
 
   beforeEach(async () => {
-    rideRepository = new MemoryRideRepository();
+    rideRepository = new RideRepositoryMemory();
     const rideRequested = await rideRepository.saveRide(Ride.createRide(
       'passengerAccountId',
       -23.56168,

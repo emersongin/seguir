@@ -2,7 +2,7 @@ import Account from '../../domain/entity/Account';
 import AccountRepository from './AccountRepository';
 import crypto from 'crypto';
 
-export default class MemoryAccountRepository implements AccountRepository {
+export default class AccountRepositoryMemory implements AccountRepository {
   private accounts: AccountData[] = [
     {
       id: '046ba3b6-9425-4a42-8f24-e793462e936a',

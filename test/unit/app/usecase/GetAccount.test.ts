@@ -1,4 +1,4 @@
-import MemoryAccountRepository from '../../../../src/infra/repository/MemoryAccountRepository';
+import AccountRepositoryMemory from '../../../../src/infra/repository/AccountRepositoryMemory';
 import AccountRepository from '../../../../src/infra/repository/AccountRepository';
 import GetAccount from '../../../../src/app/usecase/GetAccount';
 import Account from '../../../../src/domain/entity/Account';
@@ -11,7 +11,7 @@ describe('testes para caso de uso de buscar conta', () => {
   };
 
   beforeEach(async () => {
-    accountRepository = new MemoryAccountRepository();
+    accountRepository = new AccountRepositoryMemory();
     const driverAccount = await accountRepository.saveAccount(Account.createAccount(
       'João Silva',
       'joao@hotmail.com',

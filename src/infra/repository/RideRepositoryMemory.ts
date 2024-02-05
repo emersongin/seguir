@@ -3,7 +3,7 @@ import Ride from '../../domain/entity/Ride';
 import crypto from 'crypto';
 import { nowToISOString } from '../helpers/dates';
 
-export default class MemoryRideRepository implements RideRepository {
+export default class RideRepositoryMemory implements RideRepository {
   private rides: RideData[] = [];
 
   async saveRide(ride: Ride): Promise<Ride> {

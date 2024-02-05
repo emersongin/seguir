@@ -1,7 +1,7 @@
 import RideRepository from '../../../../src/infra/repository/RideRepository';
-import MemoryRideRepository from '../../../../src/infra/repository/MemoryRideRepository';
+import RideRepositoryMemory from '../../../../src/infra/repository/RideRepositoryMemory';
 import AcceptRide from '../../../../src/app/usecase/AcceptRide';
-import MemoryAccountRepository from '../../../../src/infra/repository/MemoryAccountRepository';
+import AccountRepositoryMemory from '../../../../src/infra/repository/AccountRepositoryMemory';
 import AccountRepository from '../../../../src/infra/repository/AccountRepository';
 import { nowToISOString } from '../../../../src/infra/helpers/dates';
 import Ride from '../../../../src/domain/entity/Ride';
@@ -18,7 +18,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
   };
 
   beforeEach(async () => {
-    accountRepository = new MemoryAccountRepository();
+    accountRepository = new AccountRepositoryMemory();
     const driverAccount = await accountRepository.saveAccount(Account.createAccount(
       'João Silva',
       'joao@hotmail.com',
@@ -37,7 +37,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
       true,
       null
     ));
-    rideRepository = new MemoryRideRepository();
+    rideRepository = new RideRepositoryMemory();
     const rideRequested = await rideRepository.saveRide(Ride.createRide(
       passengerAccount.id || '',
       -23.56168,

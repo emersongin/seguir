@@ -1,5 +1,5 @@
 export default interface SQLDataBaseGateway {
+  query(sql: string, params: any[]): Promise<any>;
   connect(): Promise<boolean>;
-  query(sql: string, values: any[]): Promise<any>;
   disconnect(): Promise<boolean>;
 }

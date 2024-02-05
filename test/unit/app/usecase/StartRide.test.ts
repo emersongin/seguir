@@ -1,7 +1,7 @@
 import RideRepository from '../../../../src/infra/repository/RideRepository';
 import AccountRepository from '../../../../src/infra/repository/AccountRepository';
-import MemoryRideRepository from '../../../../src/infra/repository/MemoryRideRepository';
-import MemoryAccountRepository from '../../../../src/infra/repository/MemoryAccountRepository';
+import RideRepositoryMemory from '../../../../src/infra/repository/RideRepositoryMemory';
+import AccountRepositoryMemory from '../../../../src/infra/repository/AccountRepositoryMemory';
 import StartRide from '../../../../src/app/usecase/StartRide';
 import { nowToISOString } from '../../../../src/infra/helpers/dates';
 import Ride from '../../../../src/domain/entity/Ride';
@@ -15,7 +15,7 @@ describe('testes para caso de uso de iniciar corrida', () => {
   };
 
   beforeEach(async () => {
-    rideRepository = new MemoryRideRepository();
+    rideRepository = new RideRepositoryMemory();
     const ride = await rideRepository.saveRide(Ride.createRide(
       'passengerAccountId',
       -23.56168,
@@ -23,7 +23,7 @@ describe('testes para caso de uso de iniciar corrida', () => {
       -23.56168,
       -46.62543
     ));
-    accountRepository = new MemoryAccountRepository();
+    accountRepository = new AccountRepositoryMemory();
     useCase = new StartRide(rideRepository, accountRepository);
     rideData = {
       rideId: ride.id || '',

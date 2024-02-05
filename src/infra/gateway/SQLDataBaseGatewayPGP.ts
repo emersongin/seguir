@@ -1,7 +1,7 @@
 import pgp from 'pg-promise';
 import SQLDataBaseGateway from './SQLDataBaseGateway';
 
-export default class PGPSQLDataBaseGateway implements SQLDataBaseGateway {
+export default class SQLDataBaseGatewayPGP implements SQLDataBaseGateway {
   _connection: any;
 
   async connect(): Promise<boolean> {
@@ -18,9 +18,9 @@ export default class PGPSQLDataBaseGateway implements SQLDataBaseGateway {
     });
   }
 
-  async query(sql: string, values: any[]): Promise<any> {
+  async query(sql: string, params: any[]): Promise<any> {
     return new Promise((resolve, reject) => {
-      this._connection.query(sql, values).then((result: any) => {
+      this._connection.query(sql, params).then((result: any) => {
         resolve(result);
       });
     });

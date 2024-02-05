@@ -1,12 +1,14 @@
 import ExpressAdapter from './infra/http/ExpressAdapter';
 import MainController from './infra/controller/mainController';
 import Signup from './app/usecase/Signup';
-import MemoryAccountRepository from './infra/repository/MemoryAccountRepository';
 import GetAccount from './app/usecase/GetAccount';
+import SQLDataBaseGatewayPGP from './infra/gateway/SQLDataBaseGatewayPGP';
+import AccountRepositoryPGP from './infra/repository/AccountRepositoryPGP';
 
 const server = new ExpressAdapter();
-
-const accountRepository = new MemoryAccountRepository();
+const pgpDatabase = new SQLDataBaseGatewayPGP();
+pgpDatabase.connect();
+const accountRepository = new AccountRepositoryPGP(pgpDatabase);
 const singup = new Signup(accountRepository);
 const getAccount = new GetAccount(accountRepository);
 const controller = new MainController(server, singup, getAccount);

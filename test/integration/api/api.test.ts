@@ -1,6 +1,19 @@
 import axios from 'axios';
+import SQLDataBaseGatewayPGP from '../../../src/infra/gateway/SQLDataBaseGatewayPGP';
+
+axios.defaults.validateStatus = function () {
+	return true;
+}
 
 describe('testes para API', () => {
+  const database = new SQLDataBaseGatewayPGP();
+
+  beforeEach(async () => {
+    await database.connect();
+    await database.query('DELETE FROM account', []);
+    await database.disconnect();
+  });
+
   it('efetuar inscrição como motorista!', async () => {
     const newAccount = {
       name: 'João Silva',
