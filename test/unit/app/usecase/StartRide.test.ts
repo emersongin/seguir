@@ -26,15 +26,17 @@ describe('testes para caso de uso de iniciar corrida', () => {
     accountRepository = new MemoryAccountRepository();
     useCase = new StartRide(rideRepository, accountRepository);
     rideData = {
-      rideId: ride.id,
+      rideId: ride.id || '',
     };
   });
 
   it('deve iniciar corrida', async () => {
     const { rideId } = rideData;
     const ride = await rideRepository.findRideById(rideId);
-    ride.acceptDriver('driverAccountId');
-    await rideRepository.updateRide(ride);
+    if (ride) {
+      ride.acceptDriver('driverAccountId');
+      await rideRepository.updateRide(ride);
+    }
     const input = rideData;
     const output = await useCase.execute(input);
     expect(output).toBeUndefined();

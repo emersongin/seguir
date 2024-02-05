@@ -39,7 +39,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
     ));
     rideRepository = new MemoryRideRepository();
     const rideRequested = await rideRepository.saveRide(Ride.createRide(
-      passengerAccount.id,
+      passengerAccount.id || '',
       -23.56168,
       -46.62543,
       -23.56168,
@@ -47,9 +47,9 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
     ));
     useCase = new AcceptRide(rideRepository, accountRepository);
     rideData = {
-      rideId: rideRequested.id,
-      driverId: driverAccount.id,
-      passengerId: passengerAccount.id
+      rideId: rideRequested.id || '',
+      driverId: driverAccount.id || '',
+      passengerId: passengerAccount.id || ''
     };
   });
 
@@ -74,8 +74,10 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
   it('deve aceitar a corrida apenas se o status estiver como requested', async () => {
     const { rideId, driverId } = rideData;
     const ride = await rideRepository.findRideById(rideId);
-    ride.startRide();
-    await rideRepository.updateRide(ride);
+    if (ride) {
+      ride.startRide();
+      await rideRepository.updateRide(ride);
+    }
     const input = {
       rideId,
       driverId

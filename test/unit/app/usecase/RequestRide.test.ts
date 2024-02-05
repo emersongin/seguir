@@ -32,7 +32,7 @@ describe('testes para caos de uso de solicitar corrida', () => {
     rideRepository = new MemoryRideRepository();
     useCase = new RequestRide(rideRepository, accountRepository);
     requestData = {
-      passengerId: passengerAccount.id,
+      passengerId: passengerAccount.id || '',
       fromLat: -23.56168,
       fromLong: -46.62543,
       toLat: -23.56168,
@@ -62,7 +62,7 @@ describe('testes para caos de uso de solicitar corrida', () => {
       false,
       'ABC1234'
     ));
-    requestData.passengerId = driverAccount.id;
+    requestData.passengerId = driverAccount.id || '';
     const input = requestData;
     await expect(useCase.execute(input)).rejects.toThrow('Account is not a passenger\'s.');
   });

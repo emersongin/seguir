@@ -23,7 +23,7 @@ describe('testes para caso de uso de buscar conta', () => {
     ));
     useCase = new GetAccount(accountRepository);
     accountData = {
-      accountId: driverAccount.id
+      accountId: driverAccount.id || ''
     };
   });
 

@@ -21,7 +21,7 @@ describe('teste para caso de uso de obter corrida', () => {
     ));
     useCase = new GetRide(rideRepository);
     rideData = {
-      rideId: rideRequested.id,
+      rideId: rideRequested.id || '',
     };
   });
 

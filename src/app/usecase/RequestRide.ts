@@ -23,6 +23,8 @@ export default class RequestRide {
       toLong
     );
     const ride = await this.rideRepository.saveRide(newRideRequested);
+    // fazer teste de erro
+    if (!ride.id) throw new Error('Ride not created.');
     return {
       rideId: ride.id
     };

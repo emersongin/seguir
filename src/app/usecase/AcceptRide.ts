@@ -3,8 +3,8 @@ import AccountRepository from '../../infra/repository/AccountRepository';
 
 export default class AcceptRide {
   constructor(
-    readonly rideRepository: RideRepository,
-    readonly accountRepository: AccountRepository
+    private readonly rideRepository: RideRepository,
+    private readonly accountRepository: AccountRepository
   ) {}
 
   async execute(input: InputDto): Promise<void | Error> {
@@ -14,7 +14,7 @@ export default class AcceptRide {
     if (!driverAccount.isDriver) throw new Error('Account is not a driver\'s.');
     const rideToAccept = await this.rideRepository.findRideById(rideId);
     if (!rideToAccept) throw new Error('Ride not found');
-    if (rideToAccept.status !== 'requested') throw new Error('Invalid ride to accept.');
+    if (rideToAccept.getStatus() !== 'requested') throw new Error('Invalid ride to accept.');
     const hasActiveRide = await this.rideRepository.findActiveRideByDriverId(driverId);
     if (hasActiveRide) throw new Error('Ride already accepted or in progress.');
     rideToAccept.acceptDriver(driverId);

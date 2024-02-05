@@ -2,25 +2,25 @@ import RideRepository from '../../infra/repository/RideRepository';
 
 export default class GetRide {
   constructor(
-    readonly rideRepository: RideRepository
+    private readonly rideRepository: RideRepository
   ) {}
 
   async execute(input: InputDto): Promise<OutputDto | Error> {
     const { rideId } = input;
     const rideFinded = await this.rideRepository.findRideById(rideId);
-    if (!rideFinded) throw new Error("Ride not found.");
+    if (!rideFinded || !rideFinded.id || !rideFinded.passengerId) throw new Error("Ride not found.");
     return {
       rideId: rideFinded.id,
-      ridePassengerId: rideFinded.ridePassengerId,
-      rideDriverId: rideFinded.rideDriverId,
-      rideStatus: rideFinded.rideStatus,
-      rideFare: rideFinded.rideFare,
-      rideDistance: rideFinded.rideDistance,
-      rideFromLat: rideFinded.rideFromLat,
-      rideFromLong: rideFinded.rideFromLong,
-      rideToLat: rideFinded.rideToLat,
-      rideToLong: rideFinded.rideToLong,
-      rideDate: rideFinded.rideDate,
+      ridePassengerId: rideFinded.passengerId,
+      rideDriverId: rideFinded.getDriverId(),
+      rideStatus: rideFinded.getStatus(),
+      rideFare: rideFinded.fare,
+      rideDistance: rideFinded.distance,
+      rideFromLat: rideFinded.fromLat,
+      rideFromLong: rideFinded.fromLong,
+      rideToLat: rideFinded.toLat,
+      rideToLong: rideFinded.toLong,
+      rideDate: rideFinded.date,
     };
   }
 }
@@ -32,13 +32,13 @@ type InputDto = {
 type OutputDto = {
   rideId: string;
   ridePassengerId: string;
-  rideDriverId: string;
+  rideDriverId: string | null;
   rideStatus: string;
-  rideFare: number;
-  rideDistance: number;
+  rideFare: number | null;
+  rideDistance: number | null;
   rideFromLat: number;
   rideFromLong: number;
   rideToLat: number;
   rideToLong: number;
-  rideDate: Date;
+  rideDate: string | null;
 };
