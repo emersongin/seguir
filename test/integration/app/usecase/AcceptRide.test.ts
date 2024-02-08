@@ -6,6 +6,10 @@ import AccountRepository from '../../../../src/infra/repository/AccountRepositor
 import { nowToISOString } from '../../../../src/infra/helpers/dates';
 import Ride from '../../../../src/domain/entity/Ride';
 import Account from '../../../../src/domain/entity/Account';
+import RideRepositoryPGP from '../../../../src/infra/repository/RideRepositoryPGP';
+import AccountRepositoryPGP from '../../../../src/infra/repository/AccountRepositoryPGP';
+import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
+import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
 
 describe('testes para caso de uso de aceitar uma corrida', () => {
   let accountRepository: AccountRepository;
@@ -16,9 +20,19 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
     driverId: string;
     passengerId: string;
   };
+  let database: SQLDataBaseGateway;
+
+  beforeAll(async () => {
+    database = new SQLDataBaseGatewayPGP();
+    await database.connect();
+  });
+
+  afterAll(async () => {
+    await database.disconnect();
+  });
 
   beforeEach(async () => {
-    accountRepository = new AccountRepositoryMemory();
+    accountRepository = new AccountRepositoryPGP(database);
     const driverAccount = await accountRepository.saveAccount(Account.createAccount(
       'João Silva',
       'joao@hotmail.com',
@@ -37,7 +51,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
       true,
       null
     ));
-    rideRepository = new RideRepositoryMemory();
+    rideRepository = new RideRepositoryPGP(database);
     const rideRequested = await rideRepository.saveRide(Ride.createRide(
       passengerAccount.id || '',
       -23.56168,
@@ -57,7 +71,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
     const { rideId } = rideData;
     const input = {
       rideId,
-      driverId: 'invalid_driver_id',
+      driverId: '550e8400-e29b-41d4-a716-446655440000',
     };
     await expect(useCase.execute(input)).rejects.toThrow('Account not found.');
   });

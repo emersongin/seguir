@@ -5,6 +5,10 @@ import AccountRepositoryMemory from '../../../../src/infra/repository/AccountRep
 import StartRide from '../../../../src/app/usecase/StartRide';
 import { nowToISOString } from '../../../../src/infra/helpers/dates';
 import Ride from '../../../../src/domain/entity/Ride';
+import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
+import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
+import RideRepositoryPGP from '../../../../src/infra/repository/RideRepositoryPGP';
+import AccountRepositoryPGP from '../../../../src/infra/repository/AccountRepositoryPGP';
 
 describe('testes para caso de uso de iniciar corrida', () => {
   let rideRepository: RideRepository;
@@ -13,17 +17,27 @@ describe('testes para caso de uso de iniciar corrida', () => {
   let rideData: {
     rideId: string;
   };
+  let database: SQLDataBaseGateway;
+
+  beforeAll(async () => {
+    database = new SQLDataBaseGatewayPGP();
+    await database.connect();
+  });
+
+  afterAll(async () => {
+    await database.disconnect();
+  });
 
   beforeEach(async () => {
-    rideRepository = new RideRepositoryMemory();
+    rideRepository = new RideRepositoryPGP(database);
     const ride = await rideRepository.saveRide(Ride.createRide(
-      'passengerAccountId',
+      '550e8400-e29b-41d4-a716-446655440000',
       -23.56168,
       -46.62543,
       -23.56168,
       -46.62543
     ));
-    accountRepository = new AccountRepositoryMemory();
+    accountRepository = new AccountRepositoryPGP(database);
     useCase = new StartRide(rideRepository, accountRepository);
     rideData = {
       rideId: ride.id || '',
@@ -34,7 +48,7 @@ describe('testes para caso de uso de iniciar corrida', () => {
     const { rideId } = rideData;
     const ride = await rideRepository.findRideById(rideId);
     if (ride) {
-      ride.acceptDriver('driverAccountId');
+      ride.acceptDriver('550e8400-e29b-41d4-a716-446655440000');
       await rideRepository.updateRide(ride);
     }
     const input = rideData;
@@ -44,7 +58,7 @@ describe('testes para caso de uso de iniciar corrida', () => {
 
   it('deve lançar erro se a corrida não existir', async () => {
     const input = {
-      rideId: 'invalid_id',
+      rideId: '550e8400-e29b-41d4-a716-446655440000',
     };
     await expect(useCase.execute(input)).rejects.toThrow('Ride not found.');
   });

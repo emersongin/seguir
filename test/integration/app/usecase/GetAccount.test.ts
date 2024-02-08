@@ -2,6 +2,9 @@ import AccountRepositoryMemory from '../../../../src/infra/repository/AccountRep
 import AccountRepository from '../../../../src/infra/repository/AccountRepository';
 import GetAccount from '../../../../src/app/usecase/GetAccount';
 import Account from '../../../../src/domain/entity/Account';
+import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
+import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
+import AccountRepositoryPGP from '../../../../src/infra/repository/AccountRepositoryPGP';
 
 describe('testes para caso de uso de buscar conta', () => {
   let accountRepository: AccountRepository;
@@ -9,9 +12,19 @@ describe('testes para caso de uso de buscar conta', () => {
   let accountData: {
     accountId: string
   };
+  let database: SQLDataBaseGateway;
+
+  beforeAll(async () => {
+    database = new SQLDataBaseGatewayPGP();
+    await database.connect();
+  });
+
+  afterAll(async () => {
+    await database.disconnect();
+  });
 
   beforeEach(async () => {
-    accountRepository = new AccountRepositoryMemory();
+    accountRepository = new AccountRepositoryPGP(database);
     const driverAccount = await accountRepository.saveAccount(Account.createAccount(
       'João Silva',
       'joao@hotmail.com',
@@ -40,7 +53,7 @@ describe('testes para caso de uso de buscar conta', () => {
   });
 
   it('deve lançar erro se conta não existir', async () => {
-    accountData.accountId = 'invalid_id';
+    accountData.accountId = '550e8400-e29b-41d4-a716-446655440000';
     const input = accountData;
     await expect(useCase.execute(input)).rejects.toThrow('Account not found.');
   });

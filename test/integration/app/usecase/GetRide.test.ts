@@ -2,6 +2,9 @@ import RideRepository from '../../../../src/infra/repository/RideRepository';
 import GetRide from '../../../../src/app/usecase/GetRide';
 import RideRepositoryMemory from '../../../../src/infra/repository/RideRepositoryMemory';
 import Ride from '../../../../src/domain/entity/Ride';
+import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
+import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
+import RideRepositoryPGP from '../../../../src/infra/repository/RideRepositoryPGP';
 
 describe('teste para caso de uso de obter corrida', () => {
   let rideRepository: RideRepository;
@@ -9,11 +12,21 @@ describe('teste para caso de uso de obter corrida', () => {
   let rideData: {
     rideId: string;
   };
+  let database: SQLDataBaseGateway;
+
+  beforeAll(async () => {
+    database = new SQLDataBaseGatewayPGP();
+    await database.connect();
+  });
+
+  afterAll(async () => {
+    await database.disconnect();
+  });
 
   beforeEach(async () => {
-    rideRepository = new RideRepositoryMemory();
+    rideRepository = new RideRepositoryPGP(database);
     const rideRequested = await rideRepository.saveRide(Ride.createRide(
-      'passengerAccountId',
+      '550e8400-e29b-41d4-a716-446655440000',
       -23.56168,
       -46.62543,
       -23.56168,
@@ -42,7 +55,7 @@ describe('teste para caso de uso de obter corrida', () => {
   });
 
   it('deve lançar um erro ao tentar obter uma corrida inexistente', async () => {
-    rideData.rideId = 'invalid_id';
+    rideData.rideId = '550e8400-e29b-41d4-a716-446655440000';
     const input = rideData;
     await expect(useCase.execute(input)).rejects.toThrow('Ride not found.');
   });

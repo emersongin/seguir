@@ -2,6 +2,10 @@ import AccountRepository from '../../../../src/infra/repository/AccountRepositor
 import AccountRepositoryMemory from '../../../../src/infra/repository/AccountRepositoryMemory';
 import Signup from '../../../../src/app/usecase/Signup';
 import Account from '../../../../src/domain/entity/Account';
+import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
+import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
+import AccountRepositoryPGP from '../../../../src/infra/repository/AccountRepositoryPGP';
+import crypto from 'crypto';
 
 describe('testes para o caso de uso de se inscrever', () => {
   let accountRepository: AccountRepository;
@@ -15,9 +19,19 @@ describe('testes para o caso de uso de se inscrever', () => {
     isPassenger: boolean;
     carPlate: string | null;
   };
+  let database: SQLDataBaseGateway;
+
+  beforeAll(async () => {
+    database = new SQLDataBaseGatewayPGP();
+    await database.connect();
+  });
+
+  afterAll(async () => {
+    await database.disconnect();
+  });
 
   beforeEach(async () => {
-    accountRepository = new AccountRepositoryMemory();
+    accountRepository = new AccountRepositoryPGP(database);
     const driverAccount = await accountRepository.saveAccount(Account.createAccount(
       'João Silva',
       'joao@hotmail.com',
@@ -28,9 +42,10 @@ describe('testes para o caso de uso de se inscrever', () => {
       'ABC1234'
     ));
     useCase = new Signup(accountRepository);
+    const uuid = crypto.randomUUID();
     accountData = {
       name: 'Nome de novo usuário',
-      email: 'email_de_novo_usuario@hotmail.com',
+      email: `test_${uuid}@hotmail.com`,
       password: 'senha_valida',
       cpf: '649.731.080-06',
       isDriver: false,
