@@ -21,7 +21,7 @@ export default class AccountRepositoryMemory implements AccountRepository {
     this.accounts.push({
       id,
       name: account.getName(),
-      email: account.email,
+      email: account.getEmail(),
       password: account.password,
       cpf: account.getCpf(),
       isDriver: account.isDriver,
@@ -31,7 +31,7 @@ export default class AccountRepositoryMemory implements AccountRepository {
     const newAccount = Account.restoreAccount(
       id,
       account.name,
-      account.email,
+      account.getEmail(),
       account.password,
       account.getCpf(),
       account.isDriver,

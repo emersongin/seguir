@@ -10,7 +10,7 @@ export default class GetAccount {
     return {
       accountId: account.id,
       accountName: account.getName(),
-      accountEmail: account.email,
+      accountEmail: account.getEmail(),
       accountCpf: account.getCpf(),
       accountIsDriver: account.isDriver,
       accountIsPassenger: account.isPassenger,

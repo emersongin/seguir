@@ -1,14 +1,16 @@
 import Cpf from '../valueobject/Cpf';
 import Name from '../valueobject/Name';
+import Email from '../valueobject/Email';
 
 export default class Account {
   private name: Name;
+  private email: Email;
   private cpf: Cpf;
 
   private constructor(
     readonly id: string | null,
     name: string,
-    readonly email: string,
+    email: string,
     readonly password: string,
     cpf: string,
     readonly isDriver: boolean,
@@ -16,16 +18,12 @@ export default class Account {
     readonly carPlate: string | null
   ) {
     this.name = new Name(name);
-		if (this.isInvalidEmail(email)) throw new Error('Invalid email.');
+    this.email = new Email(email);
     if (this.isInvalidPassword(password)) throw new Error('Invalid password.');
 		this.cpf = new Cpf(cpf);
     if (isDriver) {
 			if (!carPlate || this.isInvalidCarPlate(carPlate)) throw new Error('Invalid car plate.');
 		}
-  }
-
-  isInvalidEmail(email: string): boolean {
-    return !email.match(/^(.+)@(.+)$/) ? true : false;
   }
 
   isInvalidPassword(password: string): boolean {
@@ -81,6 +79,10 @@ export default class Account {
 
   getName(): string {
     return this.name.getValue();
+  }
+
+  getEmail(): string {
+    return this.email.getValue();
   }
 
   getCpf(): string {

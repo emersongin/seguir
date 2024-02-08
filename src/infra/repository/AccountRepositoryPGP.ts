@@ -14,7 +14,7 @@ export default class AccountRepositoryPGP implements AccountRepository {
       [
         id, 
         account.getName(), 
-        account.email, 
+        account.getEmail(), 
         account.getCpf(), 
         account.carPlate, 
         !!account.isPassenger, 
@@ -24,7 +24,7 @@ export default class AccountRepositoryPGP implements AccountRepository {
     const newAccount = Account.restoreAccount(
       id,
       account.getName(),
-      account.email,
+      account.getEmail(),
       account.password,
       account.getCpf(),
       account.isDriver,
