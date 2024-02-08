@@ -1,8 +1,8 @@
-import { nowToISOString } from '../../infra/helpers/dates';
+import crypto from 'crypto';
 
 export default class Ride {
   constructor(
-    readonly id: string | null,
+    readonly id: string,
     private driverId: string | null,
     readonly passengerId: string,
     private status: string,
@@ -12,7 +12,7 @@ export default class Ride {
     readonly fromLong: number,
     readonly toLat: number,
     readonly toLong: number,
-    readonly date: string
+    readonly date: Date
   ) {}
 
   static createRide(
@@ -23,7 +23,7 @@ export default class Ride {
     toLong: number
   ): Ride {
     return new Ride(
-      null,
+      crypto.randomUUID(),
       null,
       passengerId,
       'requested',
@@ -33,7 +33,7 @@ export default class Ride {
       fromLong,
       toLat,
       toLong,
-      nowToISOString()
+      new Date()
     );
   }
 
@@ -48,7 +48,7 @@ export default class Ride {
     fromLong: number,
     toLat: number,
     toLong: number,
-    date: string
+    date: Date
   ): Ride {
     return new Ride(
       id,
@@ -74,11 +74,19 @@ export default class Ride {
     this.status = 'in_progress';
   }
 
+  getRideId(): string {
+    return this.id;
+  }
+
   getDriverId(): string | null {
     return this.driverId;
   }
 
   getStatus(): string {
     return this.status;
+  }
+
+  getDate(): Date {
+    return this.date;
   }
 }

@@ -1,15 +1,12 @@
 import RideRepository from './RideRepository';
 import Ride from '../../domain/entity/Ride';
-import crypto from 'crypto';
-import { nowToISOString } from '../helpers/dates';
 
 export default class RideRepositoryMemory implements RideRepository {
   private rides: RideData[] = [];
 
   async saveRide(ride: Ride): Promise<Ride> {
-    const id = crypto.randomUUID();
     this.rides.push({
-      id,
+      id: ride.getId(),
       driverId: ride.getDriverId(),
       passengerId: ride.passengerId,
       status: ride.getStatus(),
@@ -19,10 +16,10 @@ export default class RideRepositoryMemory implements RideRepository {
       fromLong: ride.fromLong,
       toLat: ride.toLat,
       toLong: ride.toLong,
-      date: ride.date
+      date: ride.getDate()
     });
     const newRide = Ride.restoreRide(
-      id,
+      ride.getId(),,
       ride.getDriverId(),
       ride.passengerId,
       ride.getStatus(),
@@ -32,7 +29,7 @@ export default class RideRepositoryMemory implements RideRepository {
       ride.fromLong,
       ride.toLat,
       ride.toLong,
-      ride.date
+      ride.getDate()
     );
     return newRide;
   }
@@ -49,7 +46,7 @@ export default class RideRepositoryMemory implements RideRepository {
     rideData.fromLong = ride.fromLong;
     rideData.toLat = ride.toLat;
     rideData.toLong = ride.toLong;
-    rideData.date = ride.date;
+    rideData.date = ride.getDate();
     return Ride.restoreRide(
       rideData.id,
       rideData.driverId,
@@ -134,5 +131,5 @@ type RideData = {
   fromLong: number;
   toLat: number;
   toLong: number;
-  date: string;
+  date: Date;
 };

@@ -20,7 +20,7 @@ export default class GetRide {
       rideFromLong: rideFinded.fromLong,
       rideToLat: rideFinded.toLat,
       rideToLong: rideFinded.toLong,
-      rideDate: rideFinded.date,
+      rideDate: rideFinded.getDate(),
     };
   }
 }
@@ -40,5 +40,5 @@ type OutputDto = {
   rideFromLong: number;
   rideToLat: number;
   rideToLong: number;
-  rideDate: string | null;
+  rideDate: Date;
 };

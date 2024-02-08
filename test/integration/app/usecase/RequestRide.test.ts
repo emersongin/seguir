@@ -32,7 +32,6 @@ describe('testes para caos de uso de solicitar corrida', () => {
     await database.disconnect();
   });
 
-
   beforeEach(async () => {
     accountRepository = new AccountRepositoryPGP(database);
     const passengerAccount = await accountRepository.saveAccount(Account.createAccount(

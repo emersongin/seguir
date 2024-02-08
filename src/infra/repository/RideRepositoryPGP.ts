@@ -23,7 +23,7 @@ export default class RideRepositoryPGP implements RideRepository {
         ride.fromLong,
         ride.toLat,
         ride.toLong,
-        ride.date
+        ride.getDate()
       ]
     );
     const newRide = Ride.restoreRide(
@@ -37,7 +37,7 @@ export default class RideRepositoryPGP implements RideRepository {
       ride.fromLong,
       ride.toLat,
       ride.toLong,
-      ride.date
+      ride.getDate()
     );
     return newRide;
   }
@@ -68,7 +68,7 @@ export default class RideRepositoryPGP implements RideRepository {
         ride.fromLong,
         ride.toLat,
         ride.toLong,
-        ride.date,
+        ride.getDate(),
         ride.id
       ]
     );
@@ -147,5 +147,5 @@ type RideData = {
   fromLong: number;
   toLat: number;
   toLong: number;
-  date: string;
+  date: Date;
 };

@@ -1,6 +1,5 @@
 import Account from '../../domain/entity/Account';
 import AccountRepository from './AccountRepository';
-import crypto from 'crypto';
 
 export default class AccountRepositoryMemory implements AccountRepository {
   private accounts: AccountData[] = [
@@ -17,9 +16,8 @@ export default class AccountRepositoryMemory implements AccountRepository {
   ];
 
   async saveAccount(account: Account): Promise<Account> {
-    const id = crypto.randomUUID();
     this.accounts.push({
-      id,
+      id: account.getId(),
       name: account.getName(),
       email: account.getEmail(),
       password: account.getPassword(),
@@ -29,7 +27,7 @@ export default class AccountRepositoryMemory implements AccountRepository {
       carPlate: account.getCarPlate()
     });
     const newAccount = Account.restoreAccount(
-      id,
+      account.getId(),
       account.getName(),
       account.getEmail(),
       account.getPassword(),

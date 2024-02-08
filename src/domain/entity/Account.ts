@@ -3,6 +3,7 @@ import Name from '../valueobject/Name';
 import Email from '../valueobject/Email';
 import CarPlate from '../valueobject/CarPlate';
 import Password from '../valueobject/Password';
+import crypto from 'crypto';
 
 export default class Account {
   private name: Name;
@@ -12,7 +13,7 @@ export default class Account {
   private password: Password;
 
   private constructor(
-    readonly id: string | null,
+    readonly id: string,
     name: string,
     email: string,
     password: string,
@@ -21,6 +22,7 @@ export default class Account {
     readonly isPassenger: boolean,
     carPlate: string | null
   ) {
+    this.id = id;
     this.name = new Name(name);
     this.email = new Email(email);
     this.password = new Password(password);
@@ -38,7 +40,7 @@ export default class Account {
     carPlate: string | null
   ): Account {
     return new Account(
-      null, 
+      crypto.randomUUID(), 
       name, 
       email, 
       password,
@@ -69,6 +71,10 @@ export default class Account {
       isPassenger, 
       carPlate
     );
+  }
+
+  getId(): string {
+    return this.id;
   }
 
   getName(): string {
