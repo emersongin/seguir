@@ -26,17 +26,17 @@ export default class AccountRepositoryMemory implements AccountRepository {
       cpf: account.getCpf(),
       isDriver: account.isDriver,
       isPassenger: account.isPassenger,
-      carPlate: account.carPlate
+      carPlate: account.getCarPlate()
     });
     const newAccount = Account.restoreAccount(
       id,
-      account.name,
+      account.getName(),
       account.getEmail(),
       account.password,
       account.getCpf(),
       account.isDriver,
       account.isPassenger,
-      account.carPlate,
+      account.getCarPlate(),
     );
     return newAccount;
   }

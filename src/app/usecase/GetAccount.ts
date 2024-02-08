@@ -14,7 +14,7 @@ export default class GetAccount {
       accountCpf: account.getCpf(),
       accountIsDriver: account.isDriver,
       accountIsPassenger: account.isPassenger,
-      accountCarPlate: account.carPlate
+      accountCarPlate: account.getCarPlate()
     };
   }
 }
