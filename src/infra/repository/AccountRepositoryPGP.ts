@@ -25,7 +25,7 @@ export default class AccountRepositoryPGP implements AccountRepository {
       id,
       account.getName(),
       account.getEmail(),
-      account.password,
+      account.getPassword(),
       account.getCpf(),
       account.isDriver,
       account.isPassenger,

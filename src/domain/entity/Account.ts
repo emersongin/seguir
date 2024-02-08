@@ -2,18 +2,20 @@ import Cpf from '../valueobject/Cpf';
 import Name from '../valueobject/Name';
 import Email from '../valueobject/Email';
 import CarPlate from '../valueobject/CarPlate';
+import Password from '../valueobject/Password';
 
 export default class Account {
   private name: Name;
   private email: Email;
   private cpf: Cpf;
   private carPlate: CarPlate | null = null;
+  private password: Password;
 
   private constructor(
     readonly id: string | null,
     name: string,
     email: string,
-    readonly password: string,
+    password: string,
     cpf: string,
     readonly isDriver: boolean,
     readonly isPassenger: boolean,
@@ -21,13 +23,9 @@ export default class Account {
   ) {
     this.name = new Name(name);
     this.email = new Email(email);
-    if (this.isInvalidPassword(password)) throw new Error('Invalid password.');
+    this.password = new Password(password);
 		this.cpf = new Cpf(cpf);
     if (isDriver && carPlate) this.carPlate = new CarPlate(carPlate);
-  }
-
-  isInvalidPassword(password: string): boolean {
-    return !(password || password.length > 0);
   }
 
   static createAccount(
@@ -87,5 +85,9 @@ export default class Account {
 
   getCarPlate(): string | null {
     return this.carPlate?.getValue() || null;
+  }
+
+  getPassword(): string {
+    return this.password.getValue();
   }
 }
