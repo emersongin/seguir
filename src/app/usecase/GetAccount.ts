@@ -11,7 +11,7 @@ export default class GetAccount {
       accountId: account.id,
       accountName: account.name,
       accountEmail: account.email,
-      accountCpf: account.cpf,
+      accountCpf: account.getCpf(),
       accountIsDriver: account.isDriver,
       accountIsPassenger: account.isPassenger,
       accountCarPlate: account.carPlate

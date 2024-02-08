@@ -23,7 +23,7 @@ export default class AccountRepositoryMemory implements AccountRepository {
       name: account.name,
       email: account.email,
       password: account.password,
-      cpf: account.cpf,
+      cpf: account.getCpf(),
       isDriver: account.isDriver,
       isPassenger: account.isPassenger,
       carPlate: account.carPlate
@@ -33,7 +33,7 @@ export default class AccountRepositoryMemory implements AccountRepository {
       account.name,
       account.email,
       account.password,
-      account.cpf,
+      account.getCpf(),
       account.isDriver,
       account.isPassenger,
       account.carPlate,

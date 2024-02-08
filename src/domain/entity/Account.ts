@@ -1,12 +1,14 @@
-import { validateCpf } from '../../infra/helpers/validateCpf';
+import Cpf from '../valueobject/Cpf';
 
 export default class Account {
+  private cpf: Cpf;
+
   private constructor(
     readonly id: string | null,
     readonly name: string,
     readonly email: string,
     readonly password: string,
-    readonly cpf: string,
+    cpf: string,
     readonly isDriver: boolean,
     readonly isPassenger: boolean,
     readonly carPlate: string | null
@@ -14,7 +16,7 @@ export default class Account {
     if (this.isInvalidName(name)) throw new Error('Invalid user name.');
 		if (this.isInvalidEmail(email)) throw new Error('Invalid email.');
     if (this.isInvalidPassword(password)) throw new Error('Invalid password.');
-		if (this.isInvalidCpf(cpf)) throw new Error('Invalid cpf.');
+		this.cpf = new Cpf(cpf);
     if (isDriver) {
 			if (!carPlate || this.isInvalidCarPlate(carPlate)) throw new Error('Invalid car plate.');
 		}
@@ -30,10 +32,6 @@ export default class Account {
 
   isInvalidPassword(password: string): boolean {
     return !(password || password.length > 0);
-  }
-
-  isInvalidCpf(cpf: string): boolean {
-    return !validateCpf(cpf);
   }
 
   isInvalidCarPlate(carPlate: string): boolean {
@@ -81,5 +79,9 @@ export default class Account {
       isPassenger, 
       carPlate
     );
+  }
+
+  getCpf(): string {
+    return this.cpf.getValue();
   }
 }

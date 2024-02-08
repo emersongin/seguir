@@ -15,7 +15,7 @@ export default class AccountRepositoryPGP implements AccountRepository {
         id, 
         account.name, 
         account.email, 
-        account.cpf, 
+        account.getCpf(), 
         account.carPlate, 
         !!account.isPassenger, 
         !!account.isDriver
@@ -26,7 +26,7 @@ export default class AccountRepositoryPGP implements AccountRepository {
       account.name,
       account.email,
       account.password,
-      account.cpf,
+      account.getCpf(),
       account.isDriver,
       account.isPassenger,
       account.carPlate,
