@@ -9,7 +9,7 @@ export default class GetAccount {
     if (!account || !account.id) throw new Error('Account not found.');
     return {
       accountId: account.id,
-      accountName: account.name,
+      accountName: account.getName(),
       accountEmail: account.email,
       accountCpf: account.getCpf(),
       accountIsDriver: account.isDriver,

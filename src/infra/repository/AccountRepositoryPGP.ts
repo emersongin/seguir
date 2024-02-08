@@ -13,7 +13,7 @@ export default class AccountRepositoryPGP implements AccountRepository {
       'INSERT INTO account (account_id, name, email, cpf, car_plate, is_passenger, is_driver) VALUES ($1, $2, $3, $4, $5, $6, $7)',
       [
         id, 
-        account.name, 
+        account.getName(), 
         account.email, 
         account.getCpf(), 
         account.carPlate, 
@@ -23,7 +23,7 @@ export default class AccountRepositoryPGP implements AccountRepository {
     );
     const newAccount = Account.restoreAccount(
       id,
-      account.name,
+      account.getName(),
       account.email,
       account.password,
       account.getCpf(),

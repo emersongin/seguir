@@ -1,11 +1,13 @@
 import Cpf from '../valueobject/Cpf';
+import Name from '../valueobject/Name';
 
 export default class Account {
+  private name: Name;
   private cpf: Cpf;
 
   private constructor(
     readonly id: string | null,
-    readonly name: string,
+    name: string,
     readonly email: string,
     readonly password: string,
     cpf: string,
@@ -13,17 +15,13 @@ export default class Account {
     readonly isPassenger: boolean,
     readonly carPlate: string | null
   ) {
-    if (this.isInvalidName(name)) throw new Error('Invalid user name.');
+    this.name = new Name(name);
 		if (this.isInvalidEmail(email)) throw new Error('Invalid email.');
     if (this.isInvalidPassword(password)) throw new Error('Invalid password.');
 		this.cpf = new Cpf(cpf);
     if (isDriver) {
 			if (!carPlate || this.isInvalidCarPlate(carPlate)) throw new Error('Invalid car plate.');
 		}
-  }
-
-  isInvalidName(name: string): boolean {
-    return !name.match(/[a-zA-Z] [a-zA-Z]+/);
   }
 
   isInvalidEmail(email: string): boolean {
@@ -79,6 +77,10 @@ export default class Account {
       isPassenger, 
       carPlate
     );
+  }
+
+  getName(): string {
+    return this.name.getValue();
   }
 
   getCpf(): string {

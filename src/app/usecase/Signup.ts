@@ -1,4 +1,3 @@
-import { validateCpf } from "../../infra/helpers/validateCpf";
 import AccountRepository from '../../infra/repository/AccountRepository';
 import Account from '../../domain/entity/Account';
 

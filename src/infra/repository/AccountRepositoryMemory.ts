@@ -20,7 +20,7 @@ export default class AccountRepositoryMemory implements AccountRepository {
     const id = crypto.randomUUID();
     this.accounts.push({
       id,
-      name: account.name,
+      name: account.getName(),
       email: account.email,
       password: account.password,
       cpf: account.getCpf(),
