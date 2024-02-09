@@ -8,13 +8,17 @@ import RideRepository from '../../../../src/infra/repository/RideRepository';
 import UpdatePosition from '../../../../src/app/usecase/UpdatePosition';
 import Account from '../../../../src/domain/entity/Account';
 import Ride from '../../../../src/domain/entity/Ride';
+import PositionRepositoryDatabase from '../../../../src/infra/repository/PositionRepositoryDatabase';
+import PositionRepository from '../../../../src/infra/repository/PositionRepository';
 
 describe('teste para caso de uso de atualizar posição', () => {
   let accountRepository: AccountRepository;
   let rideRepository: RideRepository;
+  let positionRepository: PositionRepository;
   let useCase: UpdatePosition;
   let rideData: {
     rideId: string;
+    passengerId: string;
     latPosition: number; 
     longPosition: number; 
   };
@@ -31,7 +35,7 @@ describe('teste para caso de uso de atualizar posição', () => {
 
   beforeEach(async () => {
     accountRepository = new AccountRepositoryDatabase(database);
-    const driverAccount = await accountRepository.save(Account.createAccount(
+    const driverAccount = await accountRepository.save(Account.create(
       'João Silva',
       'joao@hotmail.com',
       '12@345@6',
@@ -40,7 +44,7 @@ describe('teste para caso de uso de atualizar posição', () => {
       false,
       'ABC1234'
     ));
-    const passengerAccount = await accountRepository.save(Account.createAccount(
+    const passengerAccount = await accountRepository.save(Account.create(
       'Maria Silva',
       'maria@hotmail.com',
       '12@345@6',
@@ -50,7 +54,7 @@ describe('teste para caso de uso de atualizar posição', () => {
       null
     ));
     rideRepository = new RideRepositoryDatabase(database);
-    const ride = Ride.createRide(
+    const ride = Ride.create(
       passengerAccount.id,
       -23.56168,
       -46.62543,
@@ -60,21 +64,56 @@ describe('teste para caso de uso de atualizar posição', () => {
     ride.acceptRide(driverAccount.id);
     ride.startRide();
     const rideSaved = await rideRepository.save(ride);
-    useCase = new UpdatePosition(rideRepository);
+    positionRepository = new PositionRepositoryDatabase(database);
+    useCase = new UpdatePosition(rideRepository, positionRepository);
     rideData = {
       rideId: rideSaved.id,
+      passengerId: passengerAccount.id,
       latPosition: rideSaved.getFromLat(),
       longPosition: rideSaved.getFromLong(),
     };
   });
 
   it('deve atualizar a ultima posição da corrida', async () => {
-    const input = rideData;
+    const input = {
+      rideId: rideData.rideId,
+      latPosition: -23.56168,
+      longPosition: -46.62543,
+    };
     const output = await useCase.execute(input);
     expect(output).toBeUndefined();
     const ride = await rideRepository.getById(rideData.rideId);
     if (!ride) return;
     expect(ride.getFromLat()).toBe(rideData.latPosition);
     expect(ride.getFromLong()).toBe(rideData.longPosition);
+  });
+
+  it('deve criar a ultima posição da corrida', async () => {
+    const input = {
+      rideId: rideData.rideId,
+      latPosition: -23.56168,
+      longPosition: -46.62543,
+    };
+    const output = await useCase.execute(input);
+    const postions = await positionRepository.getAllByRideId(rideData.rideId);
+    expect(postions).toHaveLength(1);
+  });
+
+  it('deve lançar erro se corrida não estiver com status in_progress', async () => {
+    const { passengerId } = rideData;
+    const ride = Ride.create(
+      passengerId,
+      -23.56168,
+      -46.62543,
+      -23.56168,
+      -46.62543
+    );
+    const rideSaved = await rideRepository.save(ride);
+    const input = {
+      rideId: rideSaved.id,
+      latPosition: -23.56168,
+      longPosition: -46.62543
+    };
+    await expect(useCase.execute(input)).rejects.toThrow('Ride is not in progress.');
   });
 });
