@@ -3,7 +3,6 @@ import AccountRepository from '../../../../src/infra/repository/AccountRepositor
 import RideRepositoryMemory from '../../../../src/infra/repository/RideRepositoryMemory';
 import AccountRepositoryMemory from '../../../../src/infra/repository/AccountRepositoryMemory';
 import StartRide from '../../../../src/app/usecase/StartRide';
-import { nowToISOString } from '../../../../src/infra/helpers/dates';
 import Ride from '../../../../src/domain/entity/Ride';
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
