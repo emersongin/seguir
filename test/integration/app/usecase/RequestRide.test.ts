@@ -90,7 +90,7 @@ describe('testes para caos de uso de solicitar corrida', () => {
       -23.56168,
       -46.62543
     ));
-    rideRequested.acceptDriver('550e8400-e29b-41d4-a716-446655440000');
+    rideRequested.acceptRide('550e8400-e29b-41d4-a716-446655440000');
     await rideRepository.updateRide(rideRequested);
     const input = requestData;
     await expect(useCase.execute(input)).rejects.toThrow('Passenger with active ride.');

@@ -84,7 +84,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
     await expect(useCase.execute(input)).rejects.toThrow('Account is not a driver\'s.');
   });
 
-  it('deve aceitar a corrida apenas se o status estiver como requested', async () => {
+  it('deve lançar error se ao aceitar a corrida o status não estiver como requested', async () => {
     const { rideId, driverId } = rideData;
     const ride = await rideRepository.findRideById(rideId);
     if (ride) {
@@ -107,7 +107,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
       -23.56168,
       -46.62543
     ));
-    rideRequested.acceptDriver(driverId);
+    rideRequested.acceptRide(driverId);
     rideRequested.startRide();
     await rideRepository.updateRide(rideRequested);
     const input = {
@@ -126,7 +126,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
       -23.56168,
       -46.62543
     ));
-    rideRequested.acceptDriver(driverId);
+    rideRequested.acceptRide(driverId);
     await rideRepository.updateRide(rideRequested);
     const input = {
       rideId,

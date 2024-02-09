@@ -17,7 +17,7 @@ export default class AcceptRide {
     if (rideToAccept.getStatus() !== 'requested') throw new Error('Invalid ride to accept.');
     const hasActiveRide = await this.rideRepository.findActiveRideByDriverId(driverId);
     if (hasActiveRide) throw new Error('Ride already accepted or in progress.');
-    rideToAccept.acceptDriver(driverId);
+    rideToAccept.acceptRide(driverId);
     await this.rideRepository.updateRide(rideToAccept);
   }
 }

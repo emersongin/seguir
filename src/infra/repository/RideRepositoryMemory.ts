@@ -11,24 +11,28 @@ export default class RideRepositoryMemory implements RideRepository {
       passengerId: ride.passengerId,
       status: ride.getStatus(),
       fare: ride.fare,
-      distance: ride.distance,
-      fromLat: ride.fromLat,
-      fromLong: ride.fromLong,
-      toLat: ride.toLat,
-      toLong: ride.toLong,
+      distance: ride.getDistance(),
+      fromLat: ride.getFromLat(),
+      fromLong: ride.getFromLong(),
+      toLat: ride.getToLat(),
+      toLong: ride.getToLong(),
+      lastLat: ride.getLastLat(),
+      lastLong: ride.getLastLong(),
       date: ride.getDate()
     });
     const newRide = Ride.restoreRide(
-      ride.getId(),,
+      ride.getId(),
       ride.getDriverId(),
       ride.passengerId,
       ride.getStatus(),
       ride.fare,
-      ride.distance,
-      ride.fromLat,
-      ride.fromLong,
-      ride.toLat,
-      ride.toLong,
+      ride.getDistance(),
+      ride.getFromLat(),
+      ride.getFromLong(),
+      ride.getToLat(),
+      ride.getToLong(),
+      ride.getLastLat(),
+      ride.getLastLong(),
       ride.getDate()
     );
     return newRide;
@@ -41,11 +45,11 @@ export default class RideRepositoryMemory implements RideRepository {
     rideData.passengerId = ride.passengerId;
     rideData.status = ride.getStatus();
     rideData.fare = ride.fare;
-    rideData.distance = ride.distance;
-    rideData.fromLat = ride.fromLat;
-    rideData.fromLong = ride.fromLong;
-    rideData.toLat = ride.toLat;
-    rideData.toLong = ride.toLong;
+    rideData.distance = ride.getDistance();
+    rideData.fromLat = ride.getFromLat();
+    rideData.fromLong = ride.getFromLong();
+    rideData.toLat = ride.getToLat();
+    rideData.toLong = ride.getToLong();
     rideData.date = ride.getDate();
     return Ride.restoreRide(
       rideData.id,
@@ -58,6 +62,8 @@ export default class RideRepositoryMemory implements RideRepository {
       rideData.fromLong,
       rideData.toLat,
       rideData.toLong,
+      rideData.lastLat,
+      rideData.lastLong,
       rideData.date
     );
   }
@@ -76,6 +82,8 @@ export default class RideRepositoryMemory implements RideRepository {
       rideData.fromLong,
       rideData.toLat,
       rideData.toLong,
+      rideData.lastLat,
+      rideData.lastLong,
       rideData.date
     );
   }
@@ -94,6 +102,8 @@ export default class RideRepositoryMemory implements RideRepository {
       rideData.fromLong,
       rideData.toLat,
       rideData.toLong,
+      rideData.lastLat,
+      rideData.lastLong,
       rideData.date
     );
   }
@@ -115,6 +125,8 @@ export default class RideRepositoryMemory implements RideRepository {
       rideData.fromLong,
       rideData.toLat,
       rideData.toLong,
+      rideData.lastLat,
+      rideData.lastLong,
       rideData.date
     );
   }
@@ -126,10 +138,12 @@ type RideData = {
   passengerId: string;
   status: string;
   fare: number | null;
-  distance: number | null;
+  distance: number;
   fromLat: number;
   fromLong: number;
   toLat: number;
   toLong: number;
+  lastLat: number;
+  lastLong: number;
   date: Date;
 };

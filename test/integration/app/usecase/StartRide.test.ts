@@ -47,7 +47,7 @@ describe('testes para caso de uso de iniciar corrida', () => {
     const { rideId } = rideData;
     const ride = await rideRepository.findRideById(rideId);
     if (ride) {
-      ride.acceptDriver('550e8400-e29b-41d4-a716-446655440000');
+      ride.acceptRide('550e8400-e29b-41d4-a716-446655440000');
       await rideRepository.updateRide(ride);
     }
     const input = rideData;

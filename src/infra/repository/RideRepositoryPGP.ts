@@ -16,11 +16,11 @@ export default class RideRepositoryPGP implements RideRepository {
         ride.passengerId,
         ride.getStatus(),
         ride.fare,
-        ride.distance,
-        ride.fromLat,
-        ride.fromLong,
-        ride.toLat,
-        ride.toLong,
+        ride.getDistance(),
+        ride.getFromLat(),
+        ride.getFromLong(),
+        ride.getToLat(),
+        ride.getToLong(),
         ride.getDate()
       ]
     );
@@ -30,11 +30,13 @@ export default class RideRepositoryPGP implements RideRepository {
       ride.passengerId,
       ride.getStatus(),
       ride.fare,
-      ride.distance,
-      ride.fromLat,
-      ride.fromLong,
-      ride.toLat,
-      ride.toLong,
+      ride.getDistance(),
+      ride.getFromLat(),
+      ride.getFromLong(),
+      ride.getToLat(),
+      ride.getToLong(),
+      ride.getLastLat(),
+      ride.getLastLong(),
       ride.getDate()
     );
     return newRide;
@@ -61,11 +63,11 @@ export default class RideRepositoryPGP implements RideRepository {
         ride.passengerId,
         ride.getStatus(),
         ride.fare,
-        ride.distance,
-        ride.fromLat,
-        ride.fromLong,
-        ride.toLat,
-        ride.toLong,
+        ride.getDistance(),
+        ride.getFromLat(),
+        ride.getFromLong(),
+        ride.getToLat(),
+        ride.getToLong(),
         ride.getDate(),
         ride.getId()
       ]
@@ -90,6 +92,8 @@ export default class RideRepositoryPGP implements RideRepository {
       rideData.from_long,
       rideData.to_lat,
       rideData.to_long,
+      rideData.last_lat,
+      rideData.last_long,
       rideData.date
     );
   }
@@ -108,6 +112,8 @@ export default class RideRepositoryPGP implements RideRepository {
       rideData.from_long,
       rideData.to_lat,
       rideData.to_long,
+      rideData.last_lat,
+      rideData.last_long,
       rideData.date
     );
   }
@@ -129,6 +135,8 @@ export default class RideRepositoryPGP implements RideRepository {
       rideData.from_long,
       rideData.to_lat,
       rideData.to_long,
+      rideData.last_lat,
+      rideData.last_long,
       rideData.date
     );
   }

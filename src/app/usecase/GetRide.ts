@@ -15,11 +15,11 @@ export default class GetRide {
       rideDriverId: rideFinded.getDriverId(),
       rideStatus: rideFinded.getStatus(),
       rideFare: rideFinded.fare,
-      rideDistance: rideFinded.distance,
-      rideFromLat: rideFinded.fromLat,
-      rideFromLong: rideFinded.fromLong,
-      rideToLat: rideFinded.toLat,
-      rideToLong: rideFinded.toLong,
+      rideDistance: rideFinded.getDistance(),
+      rideFromLat: rideFinded.getFromLat(),
+      rideFromLong: rideFinded.getFromLong(),
+      rideToLat: rideFinded.getToLat(),
+      rideToLong: rideFinded.getToLong(),
       rideDate: rideFinded.getDate(),
     };
   }
