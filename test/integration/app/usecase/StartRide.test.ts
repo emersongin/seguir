@@ -29,7 +29,7 @@ describe('testes para caso de uso de iniciar corrida', () => {
 
   beforeEach(async () => {
     rideRepository = new RideRepositoryDatabase(database);
-    const ride = await rideRepository.save(Ride.createRide(
+    const ride = await rideRepository.save(Ride.create(
       '550e8400-e29b-41d4-a716-446655440000',
       -23.56168,
       -46.62543,

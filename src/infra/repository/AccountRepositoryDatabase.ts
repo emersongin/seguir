@@ -1,13 +1,14 @@
 import Account from '../../domain/entity/Account';
 import AccountRepository from './AccountRepository';
+import SQLDataBaseGateway from '../gateway/SQLDataBaseGateway';
 
 export default class AccountRepositoryDatabase implements AccountRepository {
   constructor(
-    private _connection: any
+    private database: SQLDataBaseGateway
   ) {}
 
   async save(account: Account): Promise<Account> {
-    await this._connection.query(
+    await this.database.query(
       'INSERT INTO account (account_id, name, email, cpf, car_plate, is_passenger, is_driver) VALUES ($1, $2, $3, $4, $5, $6, $7)',
       [
         account.getId(), 
@@ -19,7 +20,7 @@ export default class AccountRepositoryDatabase implements AccountRepository {
         !!account.isDriver
       ]
     );
-    const newAccount = Account.restoreAccount(
+    const newAccount = Account.restore(
       account.getId(),
       account.getName(),
       account.getEmail(),
@@ -33,9 +34,9 @@ export default class AccountRepositoryDatabase implements AccountRepository {
   }
 
   async getByEmail(email: string): Promise<Account | undefined> {
-    const [accountData] = await this._connection.query('SELECT * FROM account WHERE email = $1', [email]);
+    const [accountData] = await this.database.query('SELECT * FROM account WHERE email = $1', [email]);
     if (!accountData) return;
-    return Account.restoreAccount(
+    return Account.restore(
       accountData.account_id,
       accountData.name,
       accountData.email,
@@ -48,9 +49,9 @@ export default class AccountRepositoryDatabase implements AccountRepository {
   }
 
   async getById(accountId: string): Promise<Account | undefined> {
-    const [accountData] = await this._connection.query('SELECT * FROM account WHERE account_id = $1', [accountId]);
+    const [accountData] = await this.database.query('SELECT * FROM account WHERE account_id = $1', [accountId]);
     if (!accountData) return;
-    return Account.restoreAccount(
+    return Account.restore(
       accountData.account_id,
       accountData.name,
       accountData.email,

@@ -32,7 +32,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
 
   beforeEach(async () => {
     accountRepository = new AccountRepositoryDatabase(database);
-    const driverAccount = await accountRepository.save(Account.createAccount(
+    const driverAccount = await accountRepository.save(Account.create(
       'João Silva',
       'joao@hotmail.com',
       '12@345@6',
@@ -41,7 +41,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
       false,
       'ABC1234'
     ));
-    const passengerAccount = await accountRepository.save(Account.createAccount(
+    const passengerAccount = await accountRepository.save(Account.create(
       'Maria Silva',
       'maria@hotmail.com',
       '12@345@6',
@@ -51,7 +51,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
       null
     ));
     rideRepository = new RideRepositoryDatabase(database);
-    const rideRequested = await rideRepository.save(Ride.createRide(
+    const rideRequested = await rideRepository.save(Ride.create(
       passengerAccount.id || '',
       -23.56168,
       -46.62543,
@@ -100,7 +100,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
 
   it('deve lançar erro se houver corrida com status in_progresso', async () => {
     const { rideId, driverId, passengerId } = rideData;
-    const rideRequested = await rideRepository.save(Ride.createRide(
+    const rideRequested = await rideRepository.save(Ride.create(
       passengerId,
       -23.56168,
       -46.62543,
@@ -119,7 +119,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
 
   it('deve lançar erro se houver corrida com status accepted', async () => {
     const { rideId, driverId, passengerId } = rideData;
-    const rideRequested = await rideRepository.save(Ride.createRide(
+    const rideRequested = await rideRepository.save(Ride.create(
       passengerId,
       -23.56168,
       -46.62543,

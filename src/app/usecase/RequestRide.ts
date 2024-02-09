@@ -15,7 +15,7 @@ export default class RequestRide {
     if (!account.isPassenger) throw new Error('Account is not a passenger\'s.');
     const activeRide = await this.rideRepository.getActiveByPassengerId(passengerId);
     if (activeRide) throw new Error('Passenger with active ride.');
-    const newRideRequested = Ride.createRide(
+    const newRideRequested = Ride.create(
       passengerId,
       fromLat,
       fromLong,

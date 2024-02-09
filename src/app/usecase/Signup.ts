@@ -10,7 +10,7 @@ export default class Signup {
 		const { name, email, password, cpf, isDriver, isPassenger, carPlate } = input;
 		const accountFinded = await this.accountRepository.getByEmail(email);
 		if (accountFinded) throw new Error('Account already exists.');
-		const newAccount = Account.createAccount(name, email, password, cpf, isDriver, isPassenger, carPlate);
+		const newAccount = Account.create(name, email, password, cpf, isDriver, isPassenger, carPlate);
 		const accountCreated = await this.accountRepository.save(newAccount);
 		// fazer teste de erro
 		if (!accountCreated.id) throw new Error('Account not created.');

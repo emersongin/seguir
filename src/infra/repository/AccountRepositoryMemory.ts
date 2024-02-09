@@ -26,7 +26,7 @@ export default class AccountRepositoryMemory implements AccountRepository {
       isPassenger: account.isPassenger,
       carPlate: account.getCarPlate()
     });
-    const newAccount = Account.restoreAccount(
+    const newAccount = Account.restore(
       account.getId(),
       account.getName(),
       account.getEmail(),
@@ -42,7 +42,7 @@ export default class AccountRepositoryMemory implements AccountRepository {
   async getByEmail(email: string): Promise<Account | undefined> {
     const accountData = this.accounts.find(account => account.email === email);
     if (!accountData) return undefined;
-    return Account.restoreAccount(
+    return Account.restore(
       accountData.id,
       accountData.name,
       accountData.email,
@@ -57,7 +57,7 @@ export default class AccountRepositoryMemory implements AccountRepository {
   async getById(accountId: string): Promise<Account | undefined> {
     const accountData = this.accounts.find(account => account.id === accountId);
     if (!accountData) return undefined;
-    return Account.restoreAccount(
+    return Account.restore(
       accountData.id,
       accountData.name,
       accountData.email,

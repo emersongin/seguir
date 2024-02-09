@@ -27,7 +27,7 @@ export default class Ride {
 		this.lastPosition = new Coord(lastLat, lastLong);
   }
 
-  static createRide(
+  static create(
     passengerId: string,
     fromLat: number,
     fromLong: number,
@@ -55,7 +55,7 @@ export default class Ride {
     );
   }
 
-  static restoreRide(
+  static restore(
     id: string,
     driverId: string | null,
     passengerId: string,
@@ -88,7 +88,7 @@ export default class Ride {
   }
 
   updatePosition(lat: number, long: number): void {
-    if (this.status !== 'in_progress') throw new Error("Ride not in progress");
+    if (this.status !== 'in_progress') throw new Error("Ride is not in progress.");
     const newLastPosition = new Coord(lat, long);
 		this.distance += DistanceCalculator.calculate(this.lastPosition, newLastPosition);
 		this.lastPosition = newLastPosition;

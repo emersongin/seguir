@@ -1,14 +1,15 @@
 import RideRepository from './RideRepository';
 import Ride from '../../domain/entity/Ride';
 import crypto from 'crypto';
+import SQLDataBaseGateway from '../gateway/SQLDataBaseGateway';
 
 export default class RideRepositoryDatabase implements RideRepository {
   constructor(
-    private _connection: any
+    private database: SQLDataBaseGateway
   ) {}
 
   async save(ride: Ride): Promise<Ride> {
-    await this._connection.query(
+    await this.database.query(
       'INSERT INTO ride (ride_id, driver_id, passenger_id, status, fare, distance, from_lat, from_long, to_lat, to_long, last_lat, last_long, date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)',
       [
         ride.getId(),
@@ -26,7 +27,7 @@ export default class RideRepositoryDatabase implements RideRepository {
         ride.getDate()
       ]
     );
-    const newRide = Ride.restoreRide(
+    const newRide = Ride.restore(
       ride.getId(),
       ride.getDriverId(),
       ride.passengerId,
@@ -45,7 +46,7 @@ export default class RideRepositoryDatabase implements RideRepository {
   }
 
   async update(ride: Ride): Promise<Ride> {
-    await this._connection.query(
+    await this.database.query(
       `UPDATE ride 
         SET 
           driver_id = $1, 
@@ -82,12 +83,12 @@ export default class RideRepositoryDatabase implements RideRepository {
   }
 
   async getActiveByPassengerId(passengerId: string): Promise<Ride | undefined> {
-    const [rideData] = await this._connection.query(
+    const [rideData] = await this.database.query(
       'SELECT * FROM ride WHERE passenger_id = $1 AND (status = $2 OR status = $3)',
       [passengerId, 'accepted', 'in_progress']
     );
     if (!rideData) return;
-    return Ride.restoreRide(
+    return Ride.restore(
       rideData.ride_id,
       rideData.driver_id,
       rideData.passenger_id,
@@ -105,9 +106,9 @@ export default class RideRepositoryDatabase implements RideRepository {
   }
 
   async getById(rideId: string): Promise<Ride | undefined> {
-    const [rideData] = await this._connection.query('SELECT * FROM ride WHERE ride_id = $1', [rideId]);
+    const [rideData] = await this.database.query('SELECT * FROM ride WHERE ride_id = $1', [rideId]);
     if (!rideData) return;
-    return Ride.restoreRide(
+    return Ride.restore(
       rideData.ride_id,
       rideData.driver_id,
       rideData.passenger_id,
@@ -125,12 +126,12 @@ export default class RideRepositoryDatabase implements RideRepository {
   }
 
   async getActiveByDriverId(driverId: string): Promise<Ride | undefined> {
-    const [rideData] = await this._connection.query(
+    const [rideData] = await this.database.query(
       'SELECT * FROM ride WHERE driver_id = $1 AND (status = $2 OR status = $3)',
       [driverId, 'accepted', 'in_progress']
     );
     if (!rideData) return;
-    return Ride.restoreRide(
+    return Ride.restore(
       rideData.ride_id,
       rideData.driver_id,
       rideData.passenger_id,

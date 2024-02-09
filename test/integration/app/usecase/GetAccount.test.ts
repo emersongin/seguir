@@ -25,7 +25,7 @@ describe('testes para caso de uso de buscar conta', () => {
 
   beforeEach(async () => {
     accountRepository = new AccountRepositoryDatabase(database);
-    const driverAccount = await accountRepository.save(Account.createAccount(
+    const driverAccount = await accountRepository.save(Account.create(
       'João Silva',
       'joao@hotmail.com',
       '12@345@6',

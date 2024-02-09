@@ -20,7 +20,7 @@ export default class RideRepositoryMemory implements RideRepository {
       lastLong: ride.getLastLong(),
       date: ride.getDate()
     });
-    const newRide = Ride.restoreRide(
+    const newRide = Ride.restore(
       ride.getId(),
       ride.getDriverId(),
       ride.passengerId,
@@ -51,7 +51,7 @@ export default class RideRepositoryMemory implements RideRepository {
     rideData.toLat = ride.getToLat();
     rideData.toLong = ride.getToLong();
     rideData.date = ride.getDate();
-    return Ride.restoreRide(
+    return Ride.restore(
       rideData.id,
       rideData.driverId,
       rideData.passengerId,
@@ -71,7 +71,7 @@ export default class RideRepositoryMemory implements RideRepository {
   async getActiveByPassengerId(passengerId: string): Promise<Ride | undefined> {
     const rideData = this.rides.find(ride => ride.passengerId === passengerId && ride.status !== 'completed');
     if (!rideData) return undefined;
-    return Ride.restoreRide(
+    return Ride.restore(
       rideData.id,
       rideData.driverId,
       rideData.passengerId,
@@ -91,7 +91,7 @@ export default class RideRepositoryMemory implements RideRepository {
   async getById(rideId: string): Promise<Ride | undefined> {
     const rideData = this.rides.find(ride => ride.id === rideId);
     if (!rideData) return undefined;
-    return Ride.restoreRide(
+    return Ride.restore(
       rideData.id,
       rideData.driverId,
       rideData.passengerId,
@@ -114,7 +114,7 @@ export default class RideRepositoryMemory implements RideRepository {
       (ride.status === 'accepted' || ride.status === 'in_progress')
     );
     if (!rideData) return undefined;
-    return Ride.restoreRide(
+    return Ride.restore(
       rideData.id,
       rideData.driverId,
       rideData.passengerId,

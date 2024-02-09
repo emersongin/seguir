@@ -34,7 +34,7 @@ describe('testes para caos de uso de solicitar corrida', () => {
 
   beforeEach(async () => {
     accountRepository = new AccountRepositoryDatabase(database);
-    const passengerAccount = await accountRepository.save(Account.createAccount(
+    const passengerAccount = await accountRepository.save(Account.create(
       'Maria Silva',
       'maria@hotmail.com',
       '12@345@6',
@@ -67,7 +67,7 @@ describe('testes para caos de uso de solicitar corrida', () => {
   });
 
   it('deve lançar erro se conta utilizada não for passageiro', async () => {
-    const driverAccount = await accountRepository.save(Account.createAccount(
+    const driverAccount = await accountRepository.save(Account.create(
       'João Silva',
       'joao@hotmail.com',
       '12@345@6',
@@ -83,7 +83,7 @@ describe('testes para caos de uso de solicitar corrida', () => {
 
   it('deve lançar erro se existir corrida ativa para passageiro', async () => {
     const { passengerId } = requestData;
-    const rideRequested = await rideRepository.save(Ride.createRide(
+    const rideRequested = await rideRepository.save(Ride.create(
       passengerId,
       -23.56168,
       -46.62543,

@@ -30,7 +30,7 @@ export default class Account {
     if (isDriver && carPlate) this.carPlate = new CarPlate(carPlate);
   }
 
-  static createAccount(
+  static create(
     name: string,
     email: string,
     password: string,
@@ -51,7 +51,7 @@ export default class Account {
     );
   }
 
-  static restoreAccount(
+  static restore(
     id: string,
     name: string,
     email: string,

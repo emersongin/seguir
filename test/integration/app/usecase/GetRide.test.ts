@@ -25,7 +25,7 @@ describe('teste para caso de uso de obter corrida', () => {
 
   beforeEach(async () => {
     rideRepository = new RideRepositoryDatabase(database);
-    const rideRequested = await rideRepository.save(Ride.createRide(
+    const rideRequested = await rideRepository.save(Ride.create(
       '550e8400-e29b-41d4-a716-446655440000',
       -23.56168,
       -46.62543,
