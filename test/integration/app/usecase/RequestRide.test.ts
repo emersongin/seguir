@@ -5,8 +5,8 @@ import RequestRide from '../../../../src/app/usecase/RequestRide';
 import RideRepositoryMemory from '../../../../src/infra/repository/RideRepositoryMemory';
 import Account from '../../../../src/domain/entity/Account';
 import Ride from '../../../../src/domain/entity/Ride';
-import RideRepositoryPGP from '../../../../src/infra/repository/RideRepositoryPGP';
-import AccountRepositoryPGP from '../../../../src/infra/repository/AccountRepositoryPGP';
+import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
+import AccountRepositoryDatabase from '../../../../src/infra/repository/AccountRepositoryDatabase';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
 
@@ -33,8 +33,8 @@ describe('testes para caos de uso de solicitar corrida', () => {
   });
 
   beforeEach(async () => {
-    accountRepository = new AccountRepositoryPGP(database);
-    const passengerAccount = await accountRepository.saveAccount(Account.createAccount(
+    accountRepository = new AccountRepositoryDatabase(database);
+    const passengerAccount = await accountRepository.save(Account.createAccount(
       'Maria Silva',
       'maria@hotmail.com',
       '12@345@6',
@@ -43,7 +43,7 @@ describe('testes para caos de uso de solicitar corrida', () => {
       true,
       null
     ));
-    rideRepository = new RideRepositoryPGP(database);
+    rideRepository = new RideRepositoryDatabase(database);
     useCase = new RequestRide(rideRepository, accountRepository);
     requestData = {
       passengerId: passengerAccount.id || '',
@@ -67,7 +67,7 @@ describe('testes para caos de uso de solicitar corrida', () => {
   });
 
   it('deve lançar erro se conta utilizada não for passageiro', async () => {
-    const driverAccount = await accountRepository.saveAccount(Account.createAccount(
+    const driverAccount = await accountRepository.save(Account.createAccount(
       'João Silva',
       'joao@hotmail.com',
       '12@345@6',
@@ -83,7 +83,7 @@ describe('testes para caos de uso de solicitar corrida', () => {
 
   it('deve lançar erro se existir corrida ativa para passageiro', async () => {
     const { passengerId } = requestData;
-    const rideRequested = await rideRepository.saveRide(Ride.createRide(
+    const rideRequested = await rideRepository.save(Ride.createRide(
       passengerId,
       -23.56168,
       -46.62543,
@@ -91,7 +91,7 @@ describe('testes para caos de uso de solicitar corrida', () => {
       -46.62543
     ));
     rideRequested.acceptRide('550e8400-e29b-41d4-a716-446655440000');
-    await rideRepository.updateRide(rideRequested);
+    await rideRepository.update(rideRequested);
     const input = requestData;
     await expect(useCase.execute(input)).rejects.toThrow('Passenger with active ride.');
   });

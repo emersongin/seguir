@@ -4,7 +4,7 @@ import RideRepositoryMemory from '../../../../src/infra/repository/RideRepositor
 import Ride from '../../../../src/domain/entity/Ride';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
-import RideRepositoryPGP from '../../../../src/infra/repository/RideRepositoryPGP';
+import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
 
 describe('teste para caso de uso de obter corrida', () => {
   let rideRepository: RideRepository;
@@ -24,8 +24,8 @@ describe('teste para caso de uso de obter corrida', () => {
   });
 
   beforeEach(async () => {
-    rideRepository = new RideRepositoryPGP(database);
-    const rideRequested = await rideRepository.saveRide(Ride.createRide(
+    rideRepository = new RideRepositoryDatabase(database);
+    const rideRequested = await rideRepository.save(Ride.createRide(
       '550e8400-e29b-41d4-a716-446655440000',
       -23.56168,
       -46.62543,

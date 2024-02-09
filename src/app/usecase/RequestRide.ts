@@ -10,10 +10,10 @@ export default class RequestRide {
   
   async execute(input: InputDto): Promise<OutputDto | Error> {
     const { passengerId, fromLat, fromLong, toLat, toLong } = input;
-    const account = await this.accountRepository.findAccountById(passengerId);
+    const account = await this.accountRepository.getById(passengerId);
     if (!account) throw new Error('Account not found.'); 
     if (!account.isPassenger) throw new Error('Account is not a passenger\'s.');
-    const activeRide = await this.rideRepository.findActiveRideByPassengerId(passengerId);
+    const activeRide = await this.rideRepository.getActiveByPassengerId(passengerId);
     if (activeRide) throw new Error('Passenger with active ride.');
     const newRideRequested = Ride.createRide(
       passengerId,
@@ -22,7 +22,7 @@ export default class RequestRide {
       toLat,
       toLong
     );
-    const ride = await this.rideRepository.saveRide(newRideRequested);
+    const ride = await this.rideRepository.save(newRideRequested);
     // fazer teste de erro
     if (!ride.id) throw new Error('Ride not created.');
     return {

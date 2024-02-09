@@ -4,7 +4,7 @@ import Ride from '../../domain/entity/Ride';
 export default class RideRepositoryMemory implements RideRepository {
   private rides: RideData[] = [];
 
-  async saveRide(ride: Ride): Promise<Ride> {
+  async save(ride: Ride): Promise<Ride> {
     this.rides.push({
       id: ride.getId(),
       driverId: ride.getDriverId(),
@@ -38,7 +38,7 @@ export default class RideRepositoryMemory implements RideRepository {
     return newRide;
   }
 
-  async updateRide(ride: Ride): Promise<Ride> {
+  async update(ride: Ride): Promise<Ride> {
     const rideData = this.rides.find(r => r.id === ride.id);
     if (!rideData) throw new Error('Ride not found.');
     rideData.driverId = ride.getDriverId();
@@ -68,7 +68,7 @@ export default class RideRepositoryMemory implements RideRepository {
     );
   }
 
-  async findActiveRideByPassengerId(passengerId: string): Promise<Ride | undefined> {
+  async getActiveByPassengerId(passengerId: string): Promise<Ride | undefined> {
     const rideData = this.rides.find(ride => ride.passengerId === passengerId && ride.status !== 'completed');
     if (!rideData) return undefined;
     return Ride.restoreRide(
@@ -88,7 +88,7 @@ export default class RideRepositoryMemory implements RideRepository {
     );
   }
 
-  async findRideById(rideId: string): Promise<Ride | undefined> {
+  async getById(rideId: string): Promise<Ride | undefined> {
     const rideData = this.rides.find(ride => ride.id === rideId);
     if (!rideData) return undefined;
     return Ride.restoreRide(
@@ -108,7 +108,7 @@ export default class RideRepositoryMemory implements RideRepository {
     );
   }
 
-  async findActiveRideByDriverId(driverId: string): Promise<Ride | undefined> {
+  async getActiveByDriverId(driverId: string): Promise<Ride | undefined> {
     const rideData = this.rides.find(
       ride => ride.driverId === driverId && 
       (ride.status === 'accepted' || ride.status === 'in_progress')

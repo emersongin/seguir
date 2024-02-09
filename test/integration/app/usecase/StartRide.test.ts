@@ -6,8 +6,8 @@ import StartRide from '../../../../src/app/usecase/StartRide';
 import Ride from '../../../../src/domain/entity/Ride';
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
-import RideRepositoryPGP from '../../../../src/infra/repository/RideRepositoryPGP';
-import AccountRepositoryPGP from '../../../../src/infra/repository/AccountRepositoryPGP';
+import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
+import AccountRepositoryDatabase from '../../../../src/infra/repository/AccountRepositoryDatabase';
 
 describe('testes para caso de uso de iniciar corrida', () => {
   let rideRepository: RideRepository;
@@ -28,15 +28,15 @@ describe('testes para caso de uso de iniciar corrida', () => {
   });
 
   beforeEach(async () => {
-    rideRepository = new RideRepositoryPGP(database);
-    const ride = await rideRepository.saveRide(Ride.createRide(
+    rideRepository = new RideRepositoryDatabase(database);
+    const ride = await rideRepository.save(Ride.createRide(
       '550e8400-e29b-41d4-a716-446655440000',
       -23.56168,
       -46.62543,
       -23.56168,
       -46.62543
     ));
-    accountRepository = new AccountRepositoryPGP(database);
+    accountRepository = new AccountRepositoryDatabase(database);
     useCase = new StartRide(rideRepository, accountRepository);
     rideData = {
       rideId: ride.id || '',
@@ -45,10 +45,10 @@ describe('testes para caso de uso de iniciar corrida', () => {
 
   it('deve iniciar corrida', async () => {
     const { rideId } = rideData;
-    const ride = await rideRepository.findRideById(rideId);
+    const ride = await rideRepository.getById(rideId);
     if (ride) {
       ride.acceptRide('550e8400-e29b-41d4-a716-446655440000');
-      await rideRepository.updateRide(ride);
+      await rideRepository.update(ride);
     }
     const input = rideData;
     const output = await useCase.execute(input);

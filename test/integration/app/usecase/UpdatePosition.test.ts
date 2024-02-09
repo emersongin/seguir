@@ -1,8 +1,8 @@
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
 import AcceptRide from '../../../../src/app/usecase/AcceptRide';
-import AccountRepositoryPGP from '../../../../src/infra/repository/AccountRepositoryPGP';
-import RideRepositoryPGP from '../../../../src/infra/repository/RideRepositoryPGP';
+import AccountRepositoryDatabase from '../../../../src/infra/repository/AccountRepositoryDatabase';
+import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
 import AccountRepository from '../../../../src/infra/repository/AccountRepository';
 import RideRepository from '../../../../src/infra/repository/RideRepository';
 import UpdatePosition from '../../../../src/app/usecase/UpdatePosition';
@@ -30,8 +30,8 @@ describe('teste para caso de uso de atualizar posição', () => {
   });
 
   beforeEach(async () => {
-    accountRepository = new AccountRepositoryPGP(database);
-    const driverAccount = await accountRepository.saveAccount(Account.createAccount(
+    accountRepository = new AccountRepositoryDatabase(database);
+    const driverAccount = await accountRepository.save(Account.createAccount(
       'João Silva',
       'joao@hotmail.com',
       '12@345@6',
@@ -40,7 +40,7 @@ describe('teste para caso de uso de atualizar posição', () => {
       false,
       'ABC1234'
     ));
-    const passengerAccount = await accountRepository.saveAccount(Account.createAccount(
+    const passengerAccount = await accountRepository.save(Account.createAccount(
       'Maria Silva',
       'maria@hotmail.com',
       '12@345@6',
@@ -49,7 +49,7 @@ describe('teste para caso de uso de atualizar posição', () => {
       true,
       null
     ));
-    rideRepository = new RideRepositoryPGP(database);
+    rideRepository = new RideRepositoryDatabase(database);
     const ride = Ride.createRide(
       passengerAccount.id,
       -23.56168,
@@ -59,7 +59,7 @@ describe('teste para caso de uso de atualizar posição', () => {
     );
     ride.acceptRide(driverAccount.id);
     ride.startRide();
-    const rideSaved = await rideRepository.saveRide(ride);
+    const rideSaved = await rideRepository.save(ride);
     useCase = new UpdatePosition(rideRepository);
     rideData = {
       rideId: rideSaved.id,
@@ -72,7 +72,7 @@ describe('teste para caso de uso de atualizar posição', () => {
     const input = rideData;
     const output = await useCase.execute(input);
     expect(output).toBeUndefined();
-    const ride = await rideRepository.findRideById(rideData.rideId);
+    const ride = await rideRepository.getById(rideData.rideId);
     if (!ride) return;
     expect(ride.getFromLat()).toBe(rideData.latPosition);
     expect(ride.getFromLong()).toBe(rideData.longPosition);

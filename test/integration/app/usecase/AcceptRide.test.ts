@@ -5,8 +5,8 @@ import AccountRepositoryMemory from '../../../../src/infra/repository/AccountRep
 import AccountRepository from '../../../../src/infra/repository/AccountRepository';
 import Ride from '../../../../src/domain/entity/Ride';
 import Account from '../../../../src/domain/entity/Account';
-import RideRepositoryPGP from '../../../../src/infra/repository/RideRepositoryPGP';
-import AccountRepositoryPGP from '../../../../src/infra/repository/AccountRepositoryPGP';
+import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
+import AccountRepositoryDatabase from '../../../../src/infra/repository/AccountRepositoryDatabase';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
 
@@ -31,8 +31,8 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
   });
 
   beforeEach(async () => {
-    accountRepository = new AccountRepositoryPGP(database);
-    const driverAccount = await accountRepository.saveAccount(Account.createAccount(
+    accountRepository = new AccountRepositoryDatabase(database);
+    const driverAccount = await accountRepository.save(Account.createAccount(
       'João Silva',
       'joao@hotmail.com',
       '12@345@6',
@@ -41,7 +41,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
       false,
       'ABC1234'
     ));
-    const passengerAccount = await accountRepository.saveAccount(Account.createAccount(
+    const passengerAccount = await accountRepository.save(Account.createAccount(
       'Maria Silva',
       'maria@hotmail.com',
       '12@345@6',
@@ -50,8 +50,8 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
       true,
       null
     ));
-    rideRepository = new RideRepositoryPGP(database);
-    const rideRequested = await rideRepository.saveRide(Ride.createRide(
+    rideRepository = new RideRepositoryDatabase(database);
+    const rideRequested = await rideRepository.save(Ride.createRide(
       passengerAccount.id || '',
       -23.56168,
       -46.62543,
@@ -86,10 +86,10 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
 
   it('deve lançar error se ao aceitar a corrida o status não estiver como requested', async () => {
     const { rideId, driverId } = rideData;
-    const ride = await rideRepository.findRideById(rideId);
+    const ride = await rideRepository.getById(rideId);
     if (ride) {
       ride.startRide();
-      await rideRepository.updateRide(ride);
+      await rideRepository.update(ride);
     }
     const input = {
       rideId,
@@ -100,7 +100,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
 
   it('deve lançar erro se houver corrida com status in_progresso', async () => {
     const { rideId, driverId, passengerId } = rideData;
-    const rideRequested = await rideRepository.saveRide(Ride.createRide(
+    const rideRequested = await rideRepository.save(Ride.createRide(
       passengerId,
       -23.56168,
       -46.62543,
@@ -109,7 +109,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
     ));
     rideRequested.acceptRide(driverId);
     rideRequested.startRide();
-    await rideRepository.updateRide(rideRequested);
+    await rideRepository.update(rideRequested);
     const input = {
       rideId,
       driverId
@@ -119,7 +119,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
 
   it('deve lançar erro se houver corrida com status accepted', async () => {
     const { rideId, driverId, passengerId } = rideData;
-    const rideRequested = await rideRepository.saveRide(Ride.createRide(
+    const rideRequested = await rideRepository.save(Ride.createRide(
       passengerId,
       -23.56168,
       -46.62543,
@@ -127,7 +127,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
       -46.62543
     ));
     rideRequested.acceptRide(driverId);
-    await rideRepository.updateRide(rideRequested);
+    await rideRepository.update(rideRequested);
     const input = {
       rideId,
       driverId

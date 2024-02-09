@@ -7,10 +7,10 @@ export default class UpdatePosition {
   
   async execute(input: InputDto): Promise<void | Error>{
     const { rideId, latPosition, longPosition } = input;
-    const ride = await this.rideRepository.findRideById(rideId);
+    const ride = await this.rideRepository.getById(rideId);
     if (!ride) throw new Error("Ride not found");
     ride.updatePosition(latPosition, longPosition);
-    await this.rideRepository.updateRide(ride);
+    await this.rideRepository.update(ride);
   }
 }
 

@@ -1,7 +1,7 @@
 import Account from '../../domain/entity/Account';
 
 export default interface AccountRepository {
-  saveAccount(account: Account): Promise<Account>;
-  findAccountByEmail(email: string): Promise<Account | undefined>;
-  findAccountById(accountId: string): Promise<Account | undefined>;
+  save(account: Account): Promise<Account>;
+  getByEmail(email: string): Promise<Account | undefined>;
+  getById(accountId: string): Promise<Account | undefined>;
 }

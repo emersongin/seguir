@@ -4,7 +4,7 @@ import GetAccount from '../../../../src/app/usecase/GetAccount';
 import Account from '../../../../src/domain/entity/Account';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
-import AccountRepositoryPGP from '../../../../src/infra/repository/AccountRepositoryPGP';
+import AccountRepositoryDatabase from '../../../../src/infra/repository/AccountRepositoryDatabase';
 
 describe('testes para caso de uso de buscar conta', () => {
   let accountRepository: AccountRepository;
@@ -24,8 +24,8 @@ describe('testes para caso de uso de buscar conta', () => {
   });
 
   beforeEach(async () => {
-    accountRepository = new AccountRepositoryPGP(database);
-    const driverAccount = await accountRepository.saveAccount(Account.createAccount(
+    accountRepository = new AccountRepositoryDatabase(database);
+    const driverAccount = await accountRepository.save(Account.createAccount(
       'João Silva',
       'joao@hotmail.com',
       '12@345@6',

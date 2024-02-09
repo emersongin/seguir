@@ -8,10 +8,10 @@ export default class Signup {
 
 	async execute (input: InputDto): Promise<OutputDto | Error> {
 		const { name, email, password, cpf, isDriver, isPassenger, carPlate } = input;
-		const accountFinded = await this.accountRepository.findAccountByEmail(email);
+		const accountFinded = await this.accountRepository.getByEmail(email);
 		if (accountFinded) throw new Error('Account already exists.');
 		const newAccount = Account.createAccount(name, email, password, cpf, isDriver, isPassenger, carPlate);
-		const accountCreated = await this.accountRepository.saveAccount(newAccount);
+		const accountCreated = await this.accountRepository.save(newAccount);
 		// fazer teste de erro
 		if (!accountCreated.id) throw new Error('Account not created.');
 		return {

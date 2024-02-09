@@ -4,7 +4,7 @@ import Signup from '../../../../src/app/usecase/Signup';
 import Account from '../../../../src/domain/entity/Account';
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
-import AccountRepositoryPGP from '../../../../src/infra/repository/AccountRepositoryPGP';
+import AccountRepositoryDatabase from '../../../../src/infra/repository/AccountRepositoryDatabase';
 import crypto from 'crypto';
 
 describe('testes para o caso de uso de se inscrever', () => {
@@ -31,8 +31,8 @@ describe('testes para o caso de uso de se inscrever', () => {
   });
 
   beforeEach(async () => {
-    accountRepository = new AccountRepositoryPGP(database);
-    const driverAccount = await accountRepository.saveAccount(Account.createAccount(
+    accountRepository = new AccountRepositoryDatabase(database);
+    const driverAccount = await accountRepository.save(Account.createAccount(
       'João Silva',
       'joao@hotmail.com',
       '12@345@6',

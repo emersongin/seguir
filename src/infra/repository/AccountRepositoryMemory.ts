@@ -15,7 +15,7 @@ export default class AccountRepositoryMemory implements AccountRepository {
     }
   ];
 
-  async saveAccount(account: Account): Promise<Account> {
+  async save(account: Account): Promise<Account> {
     this.accounts.push({
       id: account.getId(),
       name: account.getName(),
@@ -39,7 +39,7 @@ export default class AccountRepositoryMemory implements AccountRepository {
     return newAccount;
   }
 
-  async findAccountByEmail(email: string): Promise<Account | undefined> {
+  async getByEmail(email: string): Promise<Account | undefined> {
     const accountData = this.accounts.find(account => account.email === email);
     if (!accountData) return undefined;
     return Account.restoreAccount(
@@ -54,7 +54,7 @@ export default class AccountRepositoryMemory implements AccountRepository {
     );
   }
 
-  async findAccountById(accountId: string): Promise<Account | undefined> {
+  async getById(accountId: string): Promise<Account | undefined> {
     const accountData = this.accounts.find(account => account.id === accountId);
     if (!accountData) return undefined;
     return Account.restoreAccount(

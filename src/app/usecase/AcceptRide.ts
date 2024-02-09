@@ -9,16 +9,16 @@ export default class AcceptRide {
 
   async execute(input: InputDto): Promise<void | Error> {
     const { rideId, driverId } = input;
-    const driverAccount = await this.accountRepository.findAccountById(driverId);
+    const driverAccount = await this.accountRepository.getById(driverId);
     if (!driverAccount) throw new Error('Account not found.'); 
     if (!driverAccount.isDriver) throw new Error('Account is not a driver\'s.');
-    const rideToAccept = await this.rideRepository.findRideById(rideId);
+    const rideToAccept = await this.rideRepository.getById(rideId);
     if (!rideToAccept) throw new Error('Ride not found');
     if (rideToAccept.getStatus() !== 'requested') throw new Error('Invalid ride to accept.');
-    const hasActiveRide = await this.rideRepository.findActiveRideByDriverId(driverId);
+    const hasActiveRide = await this.rideRepository.getActiveByDriverId(driverId);
     if (hasActiveRide) throw new Error('Ride already accepted or in progress.');
     rideToAccept.acceptRide(driverId);
-    await this.rideRepository.updateRide(rideToAccept);
+    await this.rideRepository.update(rideToAccept);
   }
 }
 
