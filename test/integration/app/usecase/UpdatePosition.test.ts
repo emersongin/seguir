@@ -72,5 +72,9 @@ describe('teste para caso de uso de atualizar posição', () => {
     const input = rideData;
     const output = await useCase.execute(input);
     expect(output).toBeUndefined();
+    const ride = await rideRepository.findRideById(rideData.rideId);
+    if (!ride) return;
+    expect(ride.getFromLat()).toBe(rideData.latPosition);
+    expect(ride.getFromLong()).toBe(rideData.longPosition);
   });
 });

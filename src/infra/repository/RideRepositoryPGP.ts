@@ -9,7 +9,7 @@ export default class RideRepositoryPGP implements RideRepository {
 
   async saveRide(ride: Ride): Promise<Ride> {
     await this._connection.query(
-      'INSERT INTO ride (ride_id, driver_id, passenger_id, status, fare, distance, from_lat, from_long, to_lat, to_long, date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
+      'INSERT INTO ride (ride_id, driver_id, passenger_id, status, fare, distance, from_lat, from_long, to_lat, to_long, last_lat, last_long, date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)',
       [
         ride.getId(),
         ride.getDriverId(),
@@ -21,6 +21,8 @@ export default class RideRepositoryPGP implements RideRepository {
         ride.getFromLong(),
         ride.getToLat(),
         ride.getToLong(),
+        ride.getLastLat(),
+        ride.getLastLong(),
         ride.getDate()
       ]
     );
@@ -55,9 +57,11 @@ export default class RideRepositoryPGP implements RideRepository {
           from_long = $7, 
           to_lat = $8, 
           to_long = $9, 
-          date = $10 
+          last_lat = $10,
+          last_long = $11,
+          date = $12 
         WHERE 
-          ride_id = $11`,
+          ride_id = $13`,
       [
         ride.getDriverId(),
         ride.passengerId,
@@ -68,6 +72,8 @@ export default class RideRepositoryPGP implements RideRepository {
         ride.getFromLong(),
         ride.getToLat(),
         ride.getToLong(),
+        ride.getLastLat(),
+        ride.getLastLong(),
         ride.getDate(),
         ride.getId()
       ]
@@ -88,12 +94,12 @@ export default class RideRepositoryPGP implements RideRepository {
       rideData.status,
       rideData.fare,
       rideData.distance,
-      rideData.from_lat,
-      rideData.from_long,
-      rideData.to_lat,
-      rideData.to_long,
-      rideData.last_lat,
-      rideData.last_long,
+      parseFloat(rideData.from_lat),
+      parseFloat(rideData.from_long),
+      parseFloat(rideData.to_lat),
+      parseFloat(rideData.to_long),
+      parseFloat(rideData.last_lat),
+      parseFloat(rideData.last_long),
       rideData.date
     );
   }
@@ -108,12 +114,12 @@ export default class RideRepositoryPGP implements RideRepository {
       rideData.status,
       rideData.fare,
       rideData.distance,
-      rideData.from_lat,
-      rideData.from_long,
-      rideData.to_lat,
-      rideData.to_long,
-      rideData.last_lat,
-      rideData.last_long,
+      parseFloat(rideData.from_lat),
+      parseFloat(rideData.from_long),
+      parseFloat(rideData.to_lat),
+      parseFloat(rideData.to_long),
+      parseFloat(rideData.last_lat),
+      parseFloat(rideData.last_long),
       rideData.date
     );
   }
@@ -131,12 +137,12 @@ export default class RideRepositoryPGP implements RideRepository {
       rideData.status,
       rideData.fare,
       rideData.distance,
-      rideData.from_lat,
-      rideData.from_long,
-      rideData.to_lat,
-      rideData.to_long,
-      rideData.last_lat,
-      rideData.last_long,
+      parseFloat(rideData.from_lat),
+      parseFloat(rideData.from_long),
+      parseFloat(rideData.to_lat),
+      parseFloat(rideData.to_long),
+      parseFloat(rideData.last_lat),
+      parseFloat(rideData.last_long),
       rideData.date
     );
   }
