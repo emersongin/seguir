@@ -2,12 +2,12 @@ import RideRepository from './RideRepository';
 import Ride from '../../domain/entity/Ride';
 import crypto from 'crypto';
 
-export default class RideRepositoryPGP implements RideRepository {
+export default class RideRepositoryDatabase implements RideRepository {
   constructor(
     private _connection: any
   ) {}
 
-  async saveRide(ride: Ride): Promise<Ride> {
+  async save(ride: Ride): Promise<Ride> {
     await this._connection.query(
       'INSERT INTO ride (ride_id, driver_id, passenger_id, status, fare, distance, from_lat, from_long, to_lat, to_long, last_lat, last_long, date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)',
       [
@@ -44,7 +44,7 @@ export default class RideRepositoryPGP implements RideRepository {
     return newRide;
   }
 
-  async updateRide(ride: Ride): Promise<Ride> {
+  async update(ride: Ride): Promise<Ride> {
     await this._connection.query(
       `UPDATE ride 
         SET 
@@ -81,7 +81,7 @@ export default class RideRepositoryPGP implements RideRepository {
     return ride;
   }
 
-  async findActiveRideByPassengerId(passengerId: string): Promise<Ride | undefined> {
+  async getActiveByPassengerId(passengerId: string): Promise<Ride | undefined> {
     const [rideData] = await this._connection.query(
       'SELECT * FROM ride WHERE passenger_id = $1 AND (status = $2 OR status = $3)',
       [passengerId, 'accepted', 'in_progress']
@@ -104,7 +104,7 @@ export default class RideRepositoryPGP implements RideRepository {
     );
   }
 
-  async findRideById(rideId: string): Promise<Ride | undefined> {
+  async getById(rideId: string): Promise<Ride | undefined> {
     const [rideData] = await this._connection.query('SELECT * FROM ride WHERE ride_id = $1', [rideId]);
     if (!rideData) return;
     return Ride.restoreRide(
@@ -124,7 +124,7 @@ export default class RideRepositoryPGP implements RideRepository {
     );
   }
 
-  async findActiveRideByDriverId(driverId: string): Promise<Ride | undefined> {
+  async getActiveByDriverId(driverId: string): Promise<Ride | undefined> {
     const [rideData] = await this._connection.query(
       'SELECT * FROM ride WHERE driver_id = $1 AND (status = $2 OR status = $3)',
       [driverId, 'accepted', 'in_progress']

@@ -1,9 +1,9 @@
 import Ride from '../../domain/entity/Ride';
 
 export default interface RideRepository {
-  saveRide(ride: Ride): Promise<Ride>;
-  updateRide(ride: Ride): Promise<Ride>;
-  findActiveRideByPassengerId(passengerId: string): Promise<Ride | undefined>;
-  findRideById(rideId: string): Promise<Ride | undefined>;
-  findActiveRideByDriverId(driverId: string): Promise<Ride | undefined>;
+  save(ride: Ride): Promise<Ride>;
+  update(ride: Ride): Promise<Ride>;
+  getActiveByPassengerId(passengerId: string): Promise<Ride | undefined>;
+  getById(rideId: string): Promise<Ride | undefined>;
+  getActiveByDriverId(driverId: string): Promise<Ride | undefined>;
 }
