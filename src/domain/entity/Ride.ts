@@ -74,7 +74,7 @@ export default class Ride {
     this.status = 'in_progress';
   }
 
-  getRideId(): string {
+  getId(): string {
     return this.id;
   }
 

@@ -1,7 +1,6 @@
 import RideRepository from './RideRepository';
 import Ride from '../../domain/entity/Ride';
 import crypto from 'crypto';
-import { nowToISOString } from '../helpers/dates';
 
 export default class RideRepositoryPGP implements RideRepository {
   constructor(
@@ -9,11 +8,10 @@ export default class RideRepositoryPGP implements RideRepository {
   ) {}
 
   async saveRide(ride: Ride): Promise<Ride> {
-    const id = crypto.randomUUID();
     await this._connection.query(
       'INSERT INTO ride (ride_id, driver_id, passenger_id, status, fare, distance, from_lat, from_long, to_lat, to_long, date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
       [
-        id,
+        ride.getId(),
         ride.getDriverId(),
         ride.passengerId,
         ride.getStatus(),
@@ -27,7 +25,7 @@ export default class RideRepositoryPGP implements RideRepository {
       ]
     );
     const newRide = Ride.restoreRide(
-      id,
+      ride.getId(),
       ride.getDriverId(),
       ride.passengerId,
       ride.getStatus(),
@@ -69,7 +67,7 @@ export default class RideRepositoryPGP implements RideRepository {
         ride.toLat,
         ride.toLong,
         ride.getDate(),
-        ride.id
+        ride.getId()
       ]
     );
     return ride;
