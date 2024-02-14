@@ -87,10 +87,9 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
   it('deve lançar error se ao aceitar a corrida o status não estiver como requested', async () => {
     const { rideId, driverId } = rideData;
     const ride = await rideRepository.getById(rideId);
-    if (ride) {
-      ride.startRide();
-      await rideRepository.update(ride);
-    }
+    if (!ride) throw new Error('Ride not found');
+    ride.acceptRide(driverId);
+    await rideRepository.update(ride);
     const input = {
       rideId,
       driverId
