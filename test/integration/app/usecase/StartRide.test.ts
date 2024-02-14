@@ -29,8 +29,9 @@ describe('testes para caso de uso de iniciar corrida', () => {
 
   beforeEach(async () => {
     rideRepository = new RideRepositoryDatabase(database);
+    const fakePassengerId = '550e8400-e29b-41d4-a716-446655440000';
     const ride = await rideRepository.save(Ride.create(
-      '550e8400-e29b-41d4-a716-446655440000',
+      fakePassengerId,
       -23.56168,
       -46.62543,
       -23.56168,
@@ -48,7 +49,8 @@ describe('testes para caso de uso de iniciar corrida', () => {
     const { rideId } = rideData;
     const ride = await rideRepository.getById(rideId);
     if (!ride) throw new Error('Ride not found');
-    ride.acceptRide('550e8400-e29b-41d4-a716-446655440000');
+    const fakeDriverId = '550e8400-e29b-41d4-a716-446655440001';
+    ride.acceptRide(fakeDriverId);
     await rideRepository.update(ride);
     const input = rideData;
     const output = await useCase.execute(input);
@@ -59,9 +61,8 @@ describe('testes para caso de uso de iniciar corrida', () => {
   });
 
   it('deve lançar erro se a corrida não existir', async () => {
-    const input = {
-      rideId: '550e8400-e29b-41d4-a716-446655440000',
-    };
+    const invalidRideId = '550e8400-e29b-41d4-a716-446655440000';
+    const input = { rideId: invalidRideId };
     await expect(useCase.execute(input)).rejects.toThrow('Ride not found.');
   });
 
