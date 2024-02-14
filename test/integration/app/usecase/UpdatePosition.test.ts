@@ -30,9 +30,6 @@ describe('teste para caso de uso de atualizar posição', () => {
   });
 
   afterAll(async () => {
-    database.query('DELETE FROM ride');
-    database.query('DELETE FROM account');
-    database.query('DELETE FROM position');
     await database.disconnect();
   });
 
@@ -47,6 +44,7 @@ describe('teste para caso de uso de atualizar posição', () => {
       false,
       'ABC1234'
     ));
+    if (!driverAccount) throw new Error('Account not found');
     const passengerAccount = await accountRepository.save(Account.create(
       'Maria Silva',
       'maria@hotmail.com',
@@ -56,6 +54,7 @@ describe('teste para caso de uso de atualizar posição', () => {
       true,
       null
     ));
+    if (!passengerAccount) throw new Error('Account not found');
     rideRepository = new RideRepositoryDatabase(database);
     const ride = Ride.create(
       passengerAccount.id,
@@ -67,6 +66,7 @@ describe('teste para caso de uso de atualizar posição', () => {
     ride.acceptRide(driverAccount.id);
     ride.startRide();
     const rideSaved = await rideRepository.save(ride);
+    if (!rideSaved) throw new Error('Ride not found');
     positionRepository = new PositionRepositoryDatabase(database);
     useCase = new UpdatePosition(rideRepository, positionRepository);
     rideData = {

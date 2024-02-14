@@ -20,7 +20,6 @@ describe('testes para caso de uso de buscar conta', () => {
   });
 
   afterAll(async () => {
-    database.query('DELETE FROM account');
     await database.disconnect();
   });
 
@@ -35,9 +34,10 @@ describe('testes para caso de uso de buscar conta', () => {
       false,
       'ABC1234'
     ));
+    if (!driverAccount) throw new Error('Account not found');
     useCase = new GetAccount(accountRepository);
     accountData = {
-      accountId: driverAccount.id || ''
+      accountId: driverAccount.id
     };
   });
 

@@ -29,8 +29,6 @@ describe('testes para caos de uso de solicitar corrida', () => {
   });
 
   afterAll(async () => {
-    database.query('DELETE FROM ride');
-    database.query('DELETE FROM account');
     await database.disconnect();
   });
 
@@ -45,10 +43,11 @@ describe('testes para caos de uso de solicitar corrida', () => {
       true,
       null
     ));
+    if (!passengerAccount) throw new Error('Account not found');
     rideRepository = new RideRepositoryDatabase(database);
     useCase = new RequestRide(rideRepository, accountRepository);
     requestData = {
-      passengerId: passengerAccount.id || '',
+      passengerId: passengerAccount.id,
       fromLat: -23.56168,
       fromLong: -46.62543,
       toLat: -23.56168,

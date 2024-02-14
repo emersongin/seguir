@@ -27,8 +27,6 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
   });
 
   afterAll(async () => {
-    database.query('DELETE FROM ride');
-    database.query('DELETE FROM account');
     await database.disconnect();
   });
 
@@ -43,6 +41,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
       false,
       'ABC1234'
     ));
+    if (!driverAccount) throw new Error('Account not found');
     const passengerAccount = await accountRepository.save(Account.create(
       'Maria Silva',
       'maria@hotmail.com',
@@ -52,19 +51,21 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
       true,
       null
     ));
+    if (!passengerAccount) throw new Error('Account not found');
     rideRepository = new RideRepositoryDatabase(database);
     const rideRequested = await rideRepository.save(Ride.create(
-      passengerAccount.id || '',
+      passengerAccount.id,
       -23.56168,
       -46.62543,
       -23.56168,
       -46.62543
     ));
+    if (!rideRequested) throw new Error('Ride not found');
     useCase = new AcceptRide(rideRepository, accountRepository);
     rideData = {
-      rideId: rideRequested.id || '',
-      driverId: driverAccount.id || '',
-      passengerId: passengerAccount.id || ''
+      rideId: rideRequested.id,
+      driverId: driverAccount.id,
+      passengerId: passengerAccount.id
     };
   });
 

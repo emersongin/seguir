@@ -27,7 +27,6 @@ describe('testes para o caso de uso de se inscrever', () => {
   });
 
   afterAll(async () => {
-    database.query('DELETE FROM account');
     await database.disconnect();
   });
 
@@ -42,6 +41,7 @@ describe('testes para o caso de uso de se inscrever', () => {
       false,
       'ABC1234'
     ));
+    if (!driverAccount) throw new Error('Account not found');
     useCase = new Signup(accountRepository);
     const uuid = crypto.randomUUID();
     accountData = {

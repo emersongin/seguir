@@ -20,7 +20,6 @@ describe('teste para caso de uso de obter corrida', () => {
   });
 
   afterAll(async () => {
-    database.query('DELETE FROM ride');
     await database.disconnect();
   });
 
@@ -33,9 +32,10 @@ describe('teste para caso de uso de obter corrida', () => {
       -23.56168,
       -46.62543
     ));
+    if (!rideRequested) throw new Error('Ride not found');
     useCase = new GetRide(rideRepository);
     rideData = {
-      rideId: rideRequested.id || '',
+      rideId: rideRequested.id,
     };
   });
 

@@ -24,8 +24,6 @@ describe('testes para caso de uso de iniciar corrida', () => {
   });
 
   afterAll(async () => {
-    database.query('DELETE FROM ride');
-    database.query('DELETE FROM account');
     await database.disconnect();
   });
 
@@ -38,10 +36,11 @@ describe('testes para caso de uso de iniciar corrida', () => {
       -23.56168,
       -46.62543
     ));
+    if (!ride) throw new Error('Ride not found');
     accountRepository = new AccountRepositoryDatabase(database);
     useCase = new StartRide(rideRepository, accountRepository);
     rideData = {
-      rideId: ride.id || '',
+      rideId: ride.id,
     };
   });
 
