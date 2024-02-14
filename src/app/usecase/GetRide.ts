@@ -8,7 +8,7 @@ export default class GetRide {
   async execute(input: InputDto): Promise<OutputDto | Error> {
     const { rideId } = input;
     const rideFinded = await this.rideRepository.getById(rideId);
-    if (!rideFinded || !rideFinded.id || !rideFinded.passengerId) throw new Error("Ride not found.");
+    if (!rideFinded) throw new Error("Ride not found.");
     return {
       rideId: rideFinded.id,
       ridePassengerId: rideFinded.passengerId,

@@ -14,7 +14,6 @@ export default class AcceptRide {
     if (!driverAccount.isDriver) throw new Error('Account is not a driver\'s.');
     const rideToAccept = await this.rideRepository.getById(rideId);
     if (!rideToAccept) throw new Error('Ride not found');
-    if (rideToAccept.getStatus() !== 'requested') throw new Error('Invalid ride to accept.');
     const hasActiveRide = await this.rideRepository.getActiveByDriverId(driverId);
     if (hasActiveRide) throw new Error('Ride already accepted or in progress.');
     rideToAccept.acceptRide(driverId);

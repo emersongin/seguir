@@ -11,7 +11,6 @@ export default class StartRide {
     const { rideId } = input;
     const ride = await this.rideRepository.getById(rideId);
     if (!ride) throw new Error('Ride not found.');
-    if (ride.getStatus() !== 'accepted') throw new Error('Ride already started.');
     ride.startRide();
   }
 }

@@ -95,12 +95,19 @@ export default class Ride {
   }
   
   acceptRide(driverId: string): void {
+    if (this.status !== 'requested') throw new Error('Invalid ride to accept.');
     this.driverId = driverId;
     this.status = 'accepted';
   }
 
   startRide(): void {
+    if (this.status !== 'accepted') throw new Error('Ride already started.');
     this.status = 'in_progress';
+  }
+
+  finishRide(): void {
+    if (this.status !== 'in_progress') throw new Error('Ride is not in progress.');
+    this.status = 'finished';
   }
 
   getId(): string {
