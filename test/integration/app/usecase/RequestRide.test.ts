@@ -59,6 +59,10 @@ describe('testes para caos de uso de solicitar corrida', () => {
     const input = requestData;
     const output = await useCase.execute(input);
     expect(output).toHaveProperty('rideId');
+    if (!output) throw new Error('Ride not found');
+    const rideRequested = await rideRepository.getById(output.rideId);
+    if (!rideRequested) throw new Error('Ride not found');
+    expect(rideRequested.getStatus()).toBe('requested');
   });
 
   it('deve lançar um erro se conta não existir', async () => {

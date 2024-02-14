@@ -8,7 +8,7 @@ export default class RequestRide {
     private readonly accountRepository: AccountRepository
   ) {}
   
-  async execute(input: InputDto): Promise<OutputDto | Error> {
+  async execute(input: InputDto): Promise<OutputDto> {
     const { passengerId, fromLat, fromLong, toLat, toLong } = input;
     const account = await this.accountRepository.getById(passengerId);
     if (!account) throw new Error('Account not found.'); 
@@ -23,8 +23,6 @@ export default class RequestRide {
       toLong
     );
     const ride = await this.rideRepository.save(newRideRequested);
-    // fazer teste de erro
-    if (!ride.id) throw new Error('Ride not created.');
     return {
       rideId: ride.id
     };

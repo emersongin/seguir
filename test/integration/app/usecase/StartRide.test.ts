@@ -47,13 +47,15 @@ describe('testes para caso de uso de iniciar corrida', () => {
   it('deve iniciar corrida', async () => {
     const { rideId } = rideData;
     const ride = await rideRepository.getById(rideId);
-    if (ride) {
-      ride.acceptRide('550e8400-e29b-41d4-a716-446655440000');
-      await rideRepository.update(ride);
-    }
+    if (!ride) throw new Error('Ride not found');
+    ride.acceptRide('550e8400-e29b-41d4-a716-446655440000');
+    await rideRepository.update(ride);
     const input = rideData;
     const output = await useCase.execute(input);
     expect(output).toBeUndefined();
+    const rideStarted = await rideRepository.getById(rideId);
+    if (!rideStarted) throw new Error('Ride not found');
+    expect(rideStarted.getStatus()).toBe('in_progress');
   });
 
   it('deve lançar erro se a corrida não existir', async () => {

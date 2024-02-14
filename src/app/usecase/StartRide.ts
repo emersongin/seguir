@@ -12,6 +12,7 @@ export default class StartRide {
     const ride = await this.rideRepository.getById(rideId);
     if (!ride) throw new Error('Ride not found.');
     ride.startRide();
+    await this.rideRepository.update(ride);
   }
 }
 

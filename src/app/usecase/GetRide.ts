@@ -5,7 +5,7 @@ export default class GetRide {
     private readonly rideRepository: RideRepository
   ) {}
 
-  async execute(input: InputDto): Promise<OutputDto | Error> {
+  async execute(input: InputDto): Promise<OutputDto> {
     const { rideId } = input;
     const rideFinded = await this.rideRepository.getById(rideId);
     if (!rideFinded) throw new Error("Ride not found.");

@@ -145,5 +145,8 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
     };
     const output = await useCase.execute(input);
     expect(output).toBeUndefined();
+    const rideAccepted = await rideRepository.getById(rideId);
+    if (!rideAccepted) throw new Error('Ride not found');
+    expect(rideAccepted.getStatus()).toBe('accepted');
   });
 });

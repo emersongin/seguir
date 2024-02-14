@@ -3,10 +3,10 @@ import AccountRepository from '../../infra/repository/AccountRepository';
 export default class GetAccount {
 	constructor(private readonly accountRepository: AccountRepository) {}
 
-	async execute (input: InputDto): Promise<OutputDto | Error> {
+	async execute (input: InputDto): Promise<OutputDto> {
     const { accountId } = input;
     const account = await this.accountRepository.getById(accountId);
-    if (!account || !account.id) throw new Error('Account not found.');
+    if (!account) throw new Error('Account not found.');
     return {
       accountId: account.id,
       accountName: account.getName(),

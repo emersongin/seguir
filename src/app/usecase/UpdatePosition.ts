@@ -8,7 +8,7 @@ export default class UpdatePosition {
     readonly positionRepository: PositionRepository
   ) {}
   
-  async execute(input: InputDto): Promise<void | Error>{
+  async execute(input: InputDto): Promise<void> {
     const { rideId, latPosition, longPosition } = input;
     const ride = await this.rideRepository.getById(rideId);
     if (!ride) throw new Error("Ride not found");

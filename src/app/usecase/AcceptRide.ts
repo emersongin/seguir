@@ -7,7 +7,7 @@ export default class AcceptRide {
     private readonly accountRepository: AccountRepository
   ) {}
 
-  async execute(input: InputDto): Promise<void | Error> {
+  async execute(input: InputDto): Promise<void> {
     const { rideId, driverId } = input;
     const driverAccount = await this.accountRepository.getById(driverId);
     if (!driverAccount) throw new Error('Account not found.'); 
