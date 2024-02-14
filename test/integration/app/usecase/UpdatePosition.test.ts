@@ -80,8 +80,8 @@ describe('teste para caso de uso de atualizar posição', () => {
   it('deve atualizar a ultima posição da corrida', async () => {
     const input = {
       rideId: rideData.rideId,
-      latPosition: -23.56168,
-      longPosition: -46.62543,
+      latPosition: -21.56168,
+      longPosition: -42.62543,
     };
     const output = await useCase.execute(input);
     expect(output).toBeUndefined();
@@ -94,8 +94,8 @@ describe('teste para caso de uso de atualizar posição', () => {
   it('deve criar a ultima posição da corrida', async () => {
     const input = {
       rideId: rideData.rideId,
-      latPosition: -23.56168,
-      longPosition: -46.62543,
+      latPosition: -24.56168,
+      longPosition: -47.62543,
     };
     const output = await useCase.execute(input);
     const postions = await positionRepository.getAllByRideId(rideData.rideId);
@@ -118,5 +118,17 @@ describe('teste para caso de uso de atualizar posição', () => {
       longPosition: -46.62543
     };
     await expect(useCase.execute(input)).rejects.toThrow('Ride is not in progress.');
+  });
+
+  it('deve atualizar a distancia da corrida se as coordenadas forem diferentes', async () => {
+    const input = {
+      rideId: rideData.rideId,
+      latPosition: -24.56168,
+      longPosition: -47.62543,
+    };
+    const output = await useCase.execute(input);
+    const ride = await rideRepository.getById(rideData.rideId);
+    if (!ride) return;
+    expect(ride.getDistance()).toBeGreaterThan(0);
   });
 });
