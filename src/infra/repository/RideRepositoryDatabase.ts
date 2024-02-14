@@ -82,7 +82,7 @@ export default class RideRepositoryDatabase implements RideRepository {
     return ride;
   }
 
-  async getActiveByPassengerId(passengerId: string): Promise<Ride | undefined> {
+  async getActiveRideByPassengerId(passengerId: string): Promise<Ride | undefined> {
     const [rideData] = await this.database.query(
       'SELECT * FROM ride WHERE passenger_id = $1 AND (status = $2 OR status = $3)',
       [passengerId, 'accepted', 'in_progress']
@@ -125,7 +125,7 @@ export default class RideRepositoryDatabase implements RideRepository {
     );
   }
 
-  async getActiveByDriverId(driverId: string): Promise<Ride | undefined> {
+  async getActiveRideByDriverId(driverId: string): Promise<Ride | undefined> {
     const [rideData] = await this.database.query(
       'SELECT * FROM ride WHERE driver_id = $1 AND (status = $2 OR status = $3)',
       [driverId, 'accepted', 'in_progress']

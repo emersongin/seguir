@@ -13,7 +13,7 @@ export default class RequestRide {
     const account = await this.accountRepository.getById(passengerId);
     if (!account) throw new Error('Account not found.'); 
     if (!account.isPassenger) throw new Error('Account is not a passenger\'s.');
-    const activeRide = await this.rideRepository.getActiveByPassengerId(passengerId);
+    const activeRide = await this.rideRepository.getActiveRideByPassengerId(passengerId);
     if (activeRide) throw new Error('Passenger with active ride.');
     const newRideRequested = Ride.create(
       passengerId,

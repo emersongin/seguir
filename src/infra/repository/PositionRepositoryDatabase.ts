@@ -15,7 +15,7 @@ export default class PositionRepositoryDatabase implements PositionRepository {
     return position;
   }
 
-  async getAllByRideId(rideId: string): Promise<Position[]> {
+  async getAllPositionByRideId(rideId: string): Promise<Position[]> {
     const positionsData = await this.database.query('SELECT * FROM position WHERE ride_id = $1', [rideId]);
     return positionsData.map((positionData: positionData) => Position.restore(
       positionData.position_id,

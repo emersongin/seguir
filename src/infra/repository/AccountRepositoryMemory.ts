@@ -2,18 +2,7 @@ import Account from '../../domain/entity/Account';
 import AccountRepository from './AccountRepository';
 
 export default class AccountRepositoryMemory implements AccountRepository {
-  private accounts: AccountData[] = [
-    {
-      id: '046ba3b6-9425-4a42-8f24-e793462e936a',
-      name: 'Usuario com corrida ativa',
-      email: 'usuario_com_corrida_ativa@hotmail.com',
-      password: '12@345@6',
-      cpf: '649.731.080-06',
-      isDriver: false,
-      isPassenger: true,
-      carPlate: null
-    }
-  ];
+  private accounts: AccountData[] = [];
 
   async save(account: Account): Promise<Account> {
     this.accounts.push({

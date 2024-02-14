@@ -98,7 +98,7 @@ describe('teste para caso de uso de atualizar posição', () => {
       longPosition: -47.62543,
     };
     const output = await useCase.execute(input);
-    const postions = await positionRepository.getAllByRideId(rideData.rideId);
+    const postions = await positionRepository.getAllPositionByRideId(rideData.rideId);
     expect(postions).toHaveLength(1);
   });
 

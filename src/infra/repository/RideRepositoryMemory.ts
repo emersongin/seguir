@@ -68,7 +68,7 @@ export default class RideRepositoryMemory implements RideRepository {
     );
   }
 
-  async getActiveByPassengerId(passengerId: string): Promise<Ride | undefined> {
+  async getActiveRideByPassengerId(passengerId: string): Promise<Ride | undefined> {
     const rideData = this.rides.find(ride => ride.passengerId === passengerId && ride.status !== 'completed');
     if (!rideData) return undefined;
     return Ride.restore(
@@ -108,7 +108,7 @@ export default class RideRepositoryMemory implements RideRepository {
     );
   }
 
-  async getActiveByDriverId(driverId: string): Promise<Ride | undefined> {
+  async getActiveRideByDriverId(driverId: string): Promise<Ride | undefined> {
     const rideData = this.rides.find(
       ride => ride.driverId === driverId && 
       (ride.status === 'accepted' || ride.status === 'in_progress')
