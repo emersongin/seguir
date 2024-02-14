@@ -27,6 +27,7 @@ describe('testes para o caso de uso de se inscrever', () => {
   });
 
   afterAll(async () => {
+    database.query('DELETE FROM account');
     await database.disconnect();
   });
 

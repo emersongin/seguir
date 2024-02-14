@@ -24,6 +24,8 @@ describe('testes para caso de uso de iniciar corrida', () => {
   });
 
   afterAll(async () => {
+    database.query('DELETE FROM ride');
+    database.query('DELETE FROM account');
     await database.disconnect();
   });
 

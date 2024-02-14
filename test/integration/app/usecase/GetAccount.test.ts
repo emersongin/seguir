@@ -20,6 +20,7 @@ describe('testes para caso de uso de buscar conta', () => {
   });
 
   afterAll(async () => {
+    database.query('DELETE FROM account');
     await database.disconnect();
   });
 

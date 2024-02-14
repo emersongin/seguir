@@ -30,6 +30,9 @@ describe('teste para caso de uso de atualizar posição', () => {
   });
 
   afterAll(async () => {
+    database.query('DELETE FROM ride');
+    database.query('DELETE FROM account');
+    database.query('DELETE FROM position');
     await database.disconnect();
   });
 

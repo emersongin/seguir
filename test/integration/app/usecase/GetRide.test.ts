@@ -20,6 +20,7 @@ describe('teste para caso de uso de obter corrida', () => {
   });
 
   afterAll(async () => {
+    database.query('DELETE FROM ride');
     await database.disconnect();
   });
 

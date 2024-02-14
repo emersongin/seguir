@@ -18,7 +18,7 @@ export default class SQLDataBaseGatewayPGP implements SQLDataBaseGateway {
     });
   }
 
-  async query(sql: string, params: any[]): Promise<any> {
+  async query(sql: string, params: any[] = []): Promise<any> {
     return new Promise((resolve, reject) => {
       this.connection.query(sql, params).then((result: any) => {
         resolve(result);

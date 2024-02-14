@@ -23,6 +23,12 @@ describe('testes para caso de uso de finalização de corrida', () => {
     await database.connect();
   });
 
+  afterAll(async () => {
+    database.query('DELETE FROM ride');
+    database.query('DELETE FROM account');
+    await database.disconnect();
+  });
+
   beforeEach(async () => {
     accountRepository = new AccountRepositoryDatabase(database);
     const driverAccount = await accountRepository.save(Account.create(
