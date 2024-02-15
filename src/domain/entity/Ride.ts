@@ -1,6 +1,7 @@
 import Coord from '../valueobject/Coord';
 import DistanceCalculator from '../service/DistanceCalculator';
 import crypto from 'crypto';
+import Position from './Position';
 
 export default class Ride {
   private from: Coord;
@@ -12,7 +13,7 @@ export default class Ride {
     private driverId: string | null,
     readonly passengerId: string,
     private status: string,
-    readonly fare: number | null,
+    private fare: number,
     private distance: number,
     fromLat: number,
     fromLong: number,
@@ -36,7 +37,7 @@ export default class Ride {
   ): Ride {
     const driverId = null;
     const status = 'requested';
-    const fare = null;
+    const fare = 0;
     const distance = 0;
     return new Ride(
       crypto.randomUUID(),
@@ -60,7 +61,7 @@ export default class Ride {
     driverId: string | null,
     passengerId: string,
     status: string,
-    fare: number | null,
+    fare: number,
     distance: number,
     fromLat: number,
     fromLong: number,
@@ -93,6 +94,17 @@ export default class Ride {
 		this.distance += DistanceCalculator.calculate(this.lastPosition, newLastPosition);
 		this.lastPosition = newLastPosition;
   }
+
+  calculateDistance(positions: Position[]): number {
+    return positions.reduce((total, position, index) => {
+      if (index === 0) return total;
+      const lastPosition = positions[index - 1];
+      return total + DistanceCalculator.calculate(
+        new Coord(lastPosition.getLat(), lastPosition.getLong()),
+        new Coord(position.getLat(), position.getLong())
+      );
+    }, 0);
+  }
   
   acceptRide(driverId: string): void {
     if (this.status !== 'requested') throw new Error('Invalid ride to accept.');
@@ -105,9 +117,11 @@ export default class Ride {
     this.status = 'in_progress';
   }
 
-  finishRide(): void {
+  finishRide(distance: number): void {
     if (this.status !== 'in_progress') throw new Error('Ride is not in progress.');
-    this.status = 'finished';
+    this.distance = distance;
+    this.fare = this.distance * 2.1;
+    this.status = 'completed';
   }
 
   getId(): string {
@@ -152,5 +166,9 @@ export default class Ride {
 
   getDistance(): number {
     return this.distance;
+  }
+
+  getFare(): number {
+    return this.fare;
   }
 }
