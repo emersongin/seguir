@@ -16,7 +16,7 @@ export default class RideRepositoryDatabase implements RideRepository {
         ride.getDriverId(),
         ride.passengerId,
         ride.getStatus(),
-        ride.fare,
+        ride.getFare(),
         ride.getDistance(),
         ride.getFromLat(),
         ride.getFromLong(),
@@ -32,7 +32,7 @@ export default class RideRepositoryDatabase implements RideRepository {
       ride.getDriverId(),
       ride.passengerId,
       ride.getStatus(),
-      ride.fare,
+      ride.getFare(),
       ride.getDistance(),
       ride.getFromLat(),
       ride.getFromLong(),
@@ -67,7 +67,7 @@ export default class RideRepositoryDatabase implements RideRepository {
         ride.getDriverId(),
         ride.passengerId,
         ride.getStatus(),
-        ride.fare,
+        ride.getFare(),
         ride.getDistance(),
         ride.getFromLat(),
         ride.getFromLong(),
@@ -93,8 +93,8 @@ export default class RideRepositoryDatabase implements RideRepository {
       rideData.driver_id,
       rideData.passenger_id,
       rideData.status,
-      rideData.fare,
-      parseInt(rideData.distance),
+      parseFloat(rideData.fare),
+      parseFloat(rideData.distance),
       parseFloat(rideData.from_lat),
       parseFloat(rideData.from_long),
       parseFloat(rideData.to_lat),
@@ -113,8 +113,8 @@ export default class RideRepositoryDatabase implements RideRepository {
       rideData.driver_id,
       rideData.passenger_id,
       rideData.status,
-      rideData.fare,
-      parseInt(rideData.distance),
+      parseFloat(rideData.fare),
+      parseFloat(rideData.distance),
       parseFloat(rideData.from_lat),
       parseFloat(rideData.from_long),
       parseFloat(rideData.to_lat),
@@ -136,8 +136,8 @@ export default class RideRepositoryDatabase implements RideRepository {
       rideData.driver_id,
       rideData.passenger_id,
       rideData.status,
-      rideData.fare,
-      parseInt(rideData.distance),
+      parseFloat(rideData.fare),
+      parseFloat(rideData.distance),
       parseFloat(rideData.from_lat),
       parseFloat(rideData.from_long),
       parseFloat(rideData.to_lat),
@@ -154,8 +154,8 @@ type RideData = {
   driverId: string | null;
   passengerId: string;
   status: string;
-  fare: number | null;
-  distance: number | null;
+  fare: number;
+  distance: number;
   fromLat: number;
   fromLong: number;
   toLat: number;

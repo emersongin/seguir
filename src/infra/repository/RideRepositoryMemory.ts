@@ -10,7 +10,7 @@ export default class RideRepositoryMemory implements RideRepository {
       driverId: ride.getDriverId(),
       passengerId: ride.passengerId,
       status: ride.getStatus(),
-      fare: ride.fare,
+      fare: ride.getFare(),
       distance: ride.getDistance(),
       fromLat: ride.getFromLat(),
       fromLong: ride.getFromLong(),
@@ -25,7 +25,7 @@ export default class RideRepositoryMemory implements RideRepository {
       ride.getDriverId(),
       ride.passengerId,
       ride.getStatus(),
-      ride.fare,
+      ride.getFare(),
       ride.getDistance(),
       ride.getFromLat(),
       ride.getFromLong(),
@@ -44,7 +44,7 @@ export default class RideRepositoryMemory implements RideRepository {
     rideData.driverId = ride.getDriverId();
     rideData.passengerId = ride.passengerId;
     rideData.status = ride.getStatus();
-    rideData.fare = ride.fare;
+    rideData.fare = ride.getFare();
     rideData.distance = ride.getDistance();
     rideData.fromLat = ride.getFromLat();
     rideData.fromLong = ride.getFromLong();
@@ -137,7 +137,7 @@ type RideData = {
   driverId: string | null;
   passengerId: string;
   status: string;
-  fare: number | null;
+  fare: number;
   distance: number;
   fromLat: number;
   fromLong: number;
