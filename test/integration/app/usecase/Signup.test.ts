@@ -61,6 +61,11 @@ describe('testes para o caso de uso de se inscrever', () => {
     const input = accountData;
     const output = await useCase.execute(input);
     expect(output).toHaveProperty('accountId');
+    if (!output.accountId) throw new Error('Account id not found');
+    const account = await accountRepository.getById(output.accountId);
+    if (!account) throw new Error('Account not found');
+    expect(account.isDriver).toBe(true);
+    expect(account.getCarPlate()).toBe('ABC1234');
   });
 
   it('deve efetuar inscrição como passageiro', async () => {
@@ -69,6 +74,11 @@ describe('testes para o caso de uso de se inscrever', () => {
     const input = accountData;
     const output = await useCase.execute(input);
     expect(output).toHaveProperty('accountId');
+    if (!output.accountId) throw new Error('Account id not found');
+    const account = await accountRepository.getById(output.accountId);
+    if (!account) throw new Error('Account not found');
+    expect(account.isPassenger).toBe(true);
+    expect(account.getCarPlate()).toBe(null);
   });
 
   it('deve lançar error se email da conta já existir', async () => {
