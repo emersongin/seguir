@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import RideRepository from '../../../../src/infra/repository/RideRepository';
 import RideRepositoryMemory from '../../../../src/infra/repository/RideRepositoryMemory';
 import AcceptRide from '../../../../src/app/usecase/AcceptRide';
@@ -32,7 +33,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
     accountGateway = new AccountGatewayHttp();
     const driverAccount = await accountGateway.signup({
       name: 'João Silva',
-      email: 'joao@hotmail.com',
+      email: `joao_${crypto.randomUUID()}@hotmail.com`,
       password: '12@345@6',
       cpf: '649.731.080-06',
       isDriver: true,
@@ -42,7 +43,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
     if (!driverAccount) throw new Error('Account not found');
     const passengerAccount = await accountGateway.signup({
       name: 'Maria Silva',
-      email: 'maria@hotmail.com',
+      email: `maria_${crypto.randomUUID()}@hotmail.com`,
       password: '12@345@6',
       cpf: '649.731.080-06',
       isDriver: false,
@@ -76,75 +77,75 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
     await expect(useCase.execute(input)).rejects.toThrow('Account not found.');
   });
 
-  // it('deve lançar erro se a conta que esta aceitando a corrida não é motorista', async () => {
-  //   const { rideId, passengerId } = rideData;
-  //   const input = { 
-  //     rideId, 
-  //     driverId: passengerId 
-  //   };
-  //   await expect(useCase.execute(input)).rejects.toThrow('Account is not a driver\'s.');
-  // });
+  it('deve lançar erro se a conta que esta aceitando a corrida não é motorista', async () => {
+    const { rideId, passengerId } = rideData;
+    const input = { 
+      rideId, 
+      driverId: passengerId 
+    };
+    await expect(useCase.execute(input)).rejects.toThrow('Account is not a driver\'s.');
+  });
 
-  // it('deve lançar error se ao aceitar a corrida o status não estiver como requested', async () => {
-  //   const { rideId, driverId } = rideData;
-  //   const ride = await rideRepository.getById(rideId);
-  //   if (!ride) throw new Error('Ride not found');
-  //   ride.acceptRide(driverId);
-  //   await rideRepository.update(ride);
-  //   const input = {
-  //     rideId,
-  //     driverId
-  //   };
-  //   await expect(useCase.execute(input)).rejects.toThrow('Invalid ride to accept.');
-  // });
+  it('deve lançar error se ao aceitar a corrida o status não estiver como requested', async () => {
+    const { rideId, driverId } = rideData;
+    const ride = await rideRepository.getById(rideId);
+    if (!ride) throw new Error('Ride not found');
+    ride.acceptRide(driverId);
+    await rideRepository.update(ride);
+    const input = {
+      rideId,
+      driverId
+    };
+    await expect(useCase.execute(input)).rejects.toThrow('Invalid ride to accept.');
+  });
 
-  // it('deve lançar erro se houver corrida com status in_progresso', async () => {
-  //   const { rideId, driverId, passengerId } = rideData;
-  //   const rideRequested = await rideRepository.save(Ride.create(
-  //     passengerId,
-  //     -23.56168,
-  //     -46.62543,
-  //     -23.56168,
-  //     -46.62543
-  //   ));
-  //   rideRequested.acceptRide(driverId);
-  //   rideRequested.startRide();
-  //   await rideRepository.update(rideRequested);
-  //   const input = {
-  //     rideId,
-  //     driverId
-  //   };
-  //   await expect(useCase.execute(input)).rejects.toThrow('Ride already accepted or in progress.');
-  // });
+  it('deve lançar erro se houver corrida com status in_progresso', async () => {
+    const { rideId, driverId, passengerId } = rideData;
+    const rideRequested = await rideRepository.save(Ride.create(
+      passengerId,
+      -23.56168,
+      -46.62543,
+      -23.56168,
+      -46.62543
+    ));
+    rideRequested.acceptRide(driverId);
+    rideRequested.startRide();
+    await rideRepository.update(rideRequested);
+    const input = {
+      rideId,
+      driverId
+    };
+    await expect(useCase.execute(input)).rejects.toThrow('Ride already accepted or in progress.');
+  });
 
-  // it('deve lançar erro se houver corrida com status accepted', async () => {
-  //   const { rideId, driverId, passengerId } = rideData;
-  //   const rideRequested = await rideRepository.save(Ride.create(
-  //     passengerId,
-  //     -23.56168,
-  //     -46.62543,
-  //     -23.56168,
-  //     -46.62543
-  //   ));
-  //   rideRequested.acceptRide(driverId);
-  //   await rideRepository.update(rideRequested);
-  //   const input = {
-  //     rideId,
-  //     driverId
-  //   };
-  //   await expect(useCase.execute(input)).rejects.toThrow('Ride already accepted or in progress.');
-  // });
+  it('deve lançar erro se houver corrida com status accepted', async () => {
+    const { rideId, driverId, passengerId } = rideData;
+    const rideRequested = await rideRepository.save(Ride.create(
+      passengerId,
+      -23.56168,
+      -46.62543,
+      -23.56168,
+      -46.62543
+    ));
+    rideRequested.acceptRide(driverId);
+    await rideRepository.update(rideRequested);
+    const input = {
+      rideId,
+      driverId
+    };
+    await expect(useCase.execute(input)).rejects.toThrow('Ride already accepted or in progress.');
+  });
 
-  // it('deve aceitar corrida valida', async () => {
-  //   const { rideId, driverId } = rideData;
-  //   const input = {
-  //     rideId,
-  //     driverId
-  //   };
-  //   const output = await useCase.execute(input);
-  //   expect(output).toBeUndefined();
-  //   const rideAccepted = await rideRepository.getById(rideId);
-  //   if (!rideAccepted) throw new Error('Ride not found');
-  //   expect(rideAccepted.getStatus()).toBe('accepted');
-  // });
+  it('deve aceitar corrida valida', async () => {
+    const { rideId, driverId } = rideData;
+    const input = {
+      rideId,
+      driverId
+    };
+    const output = await useCase.execute(input);
+    expect(output).toBeUndefined();
+    const rideAccepted = await rideRepository.getById(rideId);
+    if (!rideAccepted) throw new Error('Ride not found');
+    expect(rideAccepted.getStatus()).toBe('accepted');
+  });
 });

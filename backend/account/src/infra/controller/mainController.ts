@@ -14,7 +14,7 @@ export default class MainController {
 		});
 
 		httpServer.get('/account/:accountId', async function (params: any) {
-			const output = await getAccountUseCase.execute(params);
+			const output = await getAccountUseCase.execute(params.accountId);
 			return output;
 		});
 	}
