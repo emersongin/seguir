@@ -1,18 +1,17 @@
+import crypto from 'crypto';
+import Ride from '../../../../src/domain/entity/Ride';
+import UpdatePosition from '../../../../src/app/usecase/UpdatePosition';
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
-import AcceptRide from '../../../../src/app/usecase/AcceptRide';
-import AccountRepositoryDatabase from '../../../../src/infra/repository/AccountRepositoryDatabase';
-import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
-import AccountRepository from '../../../../src/infra/repository/AccountRepository';
 import RideRepository from '../../../../src/infra/repository/RideRepository';
-import UpdatePosition from '../../../../src/app/usecase/UpdatePosition';
-import Account from '../../../../src/domain/entity/Account';
-import Ride from '../../../../src/domain/entity/Ride';
-import PositionRepositoryDatabase from '../../../../src/infra/repository/PositionRepositoryDatabase';
+import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
 import PositionRepository from '../../../../src/infra/repository/PositionRepository';
+import PositionRepositoryDatabase from '../../../../src/infra/repository/PositionRepositoryDatabase';
+import AccountGateway from '../../../../src/infra/gateway/AccountGateway';
+import AccountGatewayHttp from '../../../../src/infra/gateway/AccountGatewayHttp';
 
 describe('teste para caso de uso de atualizar posição', () => {
-  let accountRepository: AccountRepository;
+  let accountGateway: AccountGateway;
   let rideRepository: RideRepository;
   let positionRepository: PositionRepository;
   let useCase: UpdatePosition;
@@ -34,36 +33,36 @@ describe('teste para caso de uso de atualizar posição', () => {
   });
 
   beforeEach(async () => {
-    accountRepository = new AccountRepositoryDatabase(database);
-    const driverAccount = await accountRepository.save(Account.create(
-      'João Silva',
-      'joao@hotmail.com',
-      '12@345@6',
-      '649.731.080-06',
-      true,
-      false,
-      'ABC1234'
-    ));
+    accountGateway = new AccountGatewayHttp();
+    const driverAccount = await accountGateway.signup({
+      name: 'João Silva',
+      email: `joao_${crypto.randomUUID()}@hotmail.com`,
+      password: '12@345@6',
+      cpf: '649.731.080-06',
+      isDriver: true,
+      isPassenger: false,
+      carPlate: 'ABC1234'
+    });
     if (!driverAccount) throw new Error('Account not found');
-    const passengerAccount = await accountRepository.save(Account.create(
-      'Maria Silva',
-      'maria@hotmail.com',
-      '12@345@6',
-      '649.731.080-06',
-      false,
-      true,
-      null
-    ));
+    const passengerAccount = await accountGateway.signup({
+      name: 'Maria Silva',
+      email: `maria_${crypto.randomUUID()}@hotmail.com`,
+      password: '12@345@6',
+      cpf: '649.731.080-06',
+      isDriver: false,
+      isPassenger: true,
+      carPlate: null
+    });
     if (!passengerAccount) throw new Error('Account not found');
     rideRepository = new RideRepositoryDatabase(database);
     const ride = Ride.create(
-      passengerAccount.id,
+      passengerAccount.accountId,
       -23.56168,
       -46.62543,
       -23.56168,
       -46.62543
     );
-    ride.acceptRide(driverAccount.id);
+    ride.acceptRide(driverAccount.accountId);
     ride.startRide();
     const rideSaved = await rideRepository.save(ride);
     if (!rideSaved) throw new Error('Ride not found');
@@ -71,7 +70,7 @@ describe('teste para caso de uso de atualizar posição', () => {
     useCase = new UpdatePosition(rideRepository, positionRepository);
     rideData = {
       rideId: rideSaved.id,
-      passengerId: passengerAccount.id,
+      passengerId: passengerAccount.accountId,
       latPosition: rideSaved.getFromLat(),
       longPosition: rideSaved.getFromLong(),
     };
