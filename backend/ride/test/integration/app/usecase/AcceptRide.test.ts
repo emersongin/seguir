@@ -1,6 +1,5 @@
 import crypto from 'crypto';
 import RideRepository from '../../../../src/infra/repository/RideRepository';
-import RideRepositoryMemory from '../../../../src/infra/repository/RideRepositoryMemory';
 import AcceptRide from '../../../../src/app/usecase/AcceptRide';
 import Ride from '../../../../src/domain/entity/Ride';
 import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
