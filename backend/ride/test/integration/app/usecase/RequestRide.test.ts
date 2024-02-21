@@ -1,17 +1,15 @@
-import AccountRepository from '../../../../src/infra/repository/AccountRepository';
-import AccountRepositoryMemory from '../../../../src/infra/repository/AccountRepositoryMemory';
+import crypto from 'crypto';
 import RideRepository from '../../../../src/infra/repository/RideRepository';
 import RequestRide from '../../../../src/app/usecase/RequestRide';
-import RideRepositoryMemory from '../../../../src/infra/repository/RideRepositoryMemory';
-import Account from '../../../../src/domain/entity/Account';
 import Ride from '../../../../src/domain/entity/Ride';
 import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
-import AccountRepositoryDatabase from '../../../../src/infra/repository/AccountRepositoryDatabase';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
+import AccountGateway from '../../../../src/infra/gateway/AccountGateway';
+import AccountGatewayHttp from '../../../../src/infra/gateway/AccountGatewayHttp';
 
 describe('testes para caos de uso de solicitar corrida', () => {
-  let accountRepository: AccountRepository;
+  let accountGateway: AccountGateway;
   let rideRepository: RideRepository;
   let useCase: RequestRide;
   let requestData: {
@@ -33,21 +31,21 @@ describe('testes para caos de uso de solicitar corrida', () => {
   });
 
   beforeEach(async () => {
-    accountRepository = new AccountRepositoryDatabase(database);
-    const passengerAccount = await accountRepository.save(Account.create(
-      'Maria Silva',
-      'maria@hotmail.com',
-      '12@345@6',
-      '649.731.080-06',
-      false,
-      true,
-      null
-    ));
+    accountGateway = new AccountGatewayHttp();
+    const passengerAccount = await accountGateway.signup({
+      name: 'Maria Silva',
+      email: `maria_${crypto.randomUUID()}@hotmail.com`,
+      password: '12@345@6',
+      cpf: '649.731.080-06',
+      isDriver: false,
+      isPassenger: true,
+      carPlate: null
+    });
     if (!passengerAccount) throw new Error('Account not found');
     rideRepository = new RideRepositoryDatabase(database);
-    useCase = new RequestRide(rideRepository, accountRepository);
+    useCase = new RequestRide(rideRepository, accountGateway);
     requestData = {
-      passengerId: passengerAccount.id,
+      passengerId: passengerAccount.accountId,
       fromLat: -23.56168,
       fromLong: -46.62543,
       toLat: -23.56168,
@@ -72,16 +70,17 @@ describe('testes para caos de uso de solicitar corrida', () => {
   });
 
   it('deve lançar erro se conta utilizada não for passageiro', async () => {
-    const driverAccount = await accountRepository.save(Account.create(
-      'João Silva',
-      'joao@hotmail.com',
-      '12@345@6',
-      '649.731.080-06',
-      true,
-      false,
-      'ABC1234'
-    ));
-    requestData.passengerId = driverAccount.id || '';
+    const driverAccount = await accountGateway.signup({
+      name: 'João Silva',
+      email: `joao_${crypto.randomUUID()}@hotmail.com`,
+      password: '12@345@6',
+      cpf: '649.731.080-06',
+      isDriver: true,
+      isPassenger: false,
+      carPlate: 'ABC1234'
+    });
+    if (!driverAccount) throw new Error('Account not found');
+    requestData.passengerId = driverAccount.accountId;
     const input = requestData;
     await expect(useCase.execute(input)).rejects.toThrow('Account is not a passenger\'s.');
   });
