@@ -1,9 +1,8 @@
-import RideRepository from '../../../../src/infra/repository/RideRepository';
-import GetRide from '../../../../src/app/usecase/GetRide';
-import RideRepositoryMemory from '../../../../src/infra/repository/RideRepositoryMemory';
 import Ride from '../../../../src/domain/entity/Ride';
+import GetRide from '../../../../src/app/usecase/GetRide';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
+import RideRepository from '../../../../src/infra/repository/RideRepository';
 import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
 
 describe('teste para caso de uso de obter corrida', () => {

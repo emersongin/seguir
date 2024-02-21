@@ -1,17 +1,12 @@
-import RideRepository from '../../../../src/infra/repository/RideRepository';
-import AccountRepository from '../../../../src/infra/repository/AccountRepository';
-import RideRepositoryMemory from '../../../../src/infra/repository/RideRepositoryMemory';
-import AccountRepositoryMemory from '../../../../src/infra/repository/AccountRepositoryMemory';
-import StartRide from '../../../../src/app/usecase/StartRide';
 import Ride from '../../../../src/domain/entity/Ride';
+import StartRide from '../../../../src/app/usecase/StartRide';
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
+import RideRepository from '../../../../src/infra/repository/RideRepository';
 import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
-import AccountRepositoryDatabase from '../../../../src/infra/repository/AccountRepositoryDatabase';
 
 describe('testes para caso de uso de iniciar corrida', () => {
   let rideRepository: RideRepository;
-  let accountRepository: AccountRepository;
   let useCase: StartRide;
   let rideData: {
     rideId: string;
@@ -38,8 +33,7 @@ describe('testes para caso de uso de iniciar corrida', () => {
       -46.62543
     ));
     if (!ride) throw new Error('Ride not found');
-    accountRepository = new AccountRepositoryDatabase(database);
-    useCase = new StartRide(rideRepository, accountRepository);
+    useCase = new StartRide(rideRepository);
     rideData = {
       rideId: ride.id,
     };

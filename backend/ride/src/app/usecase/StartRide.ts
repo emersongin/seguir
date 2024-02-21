@@ -1,4 +1,5 @@
 import RideRepository from '../../infra/repository/RideRepository';
+import AccountGateway from '../../infra/gateway/AccountGateway';
 
 export default class StartRide {
   constructor(

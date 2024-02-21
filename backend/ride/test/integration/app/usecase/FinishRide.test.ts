@@ -1,13 +1,13 @@
 import crypto from 'crypto';
-import RideRepository from '../../../../src/infra/repository/RideRepository';
+import Ride from '../../../../src/domain/entity/Ride';
+import Position from '../../../../src/domain/entity/Position';
+import FinishRide from '../../../../src/app/usecase/FinishRide';
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
-import FinishRide from '../../../../src/app/usecase/FinishRide';
+import RideRepository from '../../../../src/infra/repository/RideRepository';
 import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
-import Ride from '../../../../src/domain/entity/Ride';
 import PositionRepository from '../../../../src/infra/repository/PositionRepository';
 import PositionRepositoryDatabase from '../../../../src/infra/repository/PositionRepositoryDatabase';
-import Position from '../../../../src/domain/entity/Position';
 import AccountGateway from '../../../../src/infra/gateway/AccountGateway';
 import AccountGatewayHttp from '../../../../src/infra/gateway/AccountGatewayHttp';
 
