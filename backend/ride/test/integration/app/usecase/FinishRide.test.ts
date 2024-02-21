@@ -1,18 +1,18 @@
-import AccountRepository from '../../../../src/infra/repository/AccountRepository';
+import crypto from 'crypto';
 import RideRepository from '../../../../src/infra/repository/RideRepository';
 import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
 import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
 import FinishRide from '../../../../src/app/usecase/FinishRide';
-import AccountRepositoryDatabase from '../../../../src/infra/repository/AccountRepositoryDatabase';
 import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
-import Account from '../../../../src/domain/entity/Account';
 import Ride from '../../../../src/domain/entity/Ride';
 import PositionRepository from '../../../../src/infra/repository/PositionRepository';
 import PositionRepositoryDatabase from '../../../../src/infra/repository/PositionRepositoryDatabase';
 import Position from '../../../../src/domain/entity/Position';
+import AccountGateway from '../../../../src/infra/gateway/AccountGateway';
+import AccountGatewayHttp from '../../../../src/infra/gateway/AccountGatewayHttp';
 
 describe('testes para caso de uso de finalização de corrida', () => {
-  let accountRepository: AccountRepository;
+  let accountGateway: AccountGateway;
   let rideRepository: RideRepository;
   let positionRepository: PositionRepository;
   let useCase: FinishRide;
@@ -32,30 +32,30 @@ describe('testes para caso de uso de finalização de corrida', () => {
   });
 
   beforeEach(async () => {
-    accountRepository = new AccountRepositoryDatabase(database);
-    const driverAccount = await accountRepository.save(Account.create(
-      'João Silva',
-      'joao@hotmail.com',
-      '12@345@6',
-      '649.731.080-06',
-      true,
-      false,
-      'ABC1234'
-    ));
+    accountGateway = new AccountGatewayHttp();
+    const driverAccount = await accountGateway.signup({
+      name: 'João Silva',
+      email: `joao_${crypto.randomUUID()}@hotmail.com`,
+      password: '12@345@6',
+      cpf: '649.731.080-06',
+      isDriver: true,
+      isPassenger: false,
+      carPlate: 'ABC1234'
+    });
     if (!driverAccount) throw new Error('Account not found');
-    const passengerAccount = await accountRepository.save(Account.create(
-      'Maria Silva',
-      'maria@hotmail.com',
-      '12@345@6',
-      '649.731.080-06',
-      false,
-      true,
-      null
-    ));
+    const passengerAccount = await accountGateway.signup({
+      name: 'Maria Silva',
+      email: `maria_${crypto.randomUUID()}@hotmail.com`,
+      password: '12@345@6',
+      cpf: '649.731.080-06',
+      isDriver: false,
+      isPassenger: true,
+      carPlate: null
+    });
     if (!passengerAccount) throw new Error('Account not found');
     rideRepository = new RideRepositoryDatabase(database);
     const rideRequested = await rideRepository.save(Ride.create(
-      passengerAccount.id,
+      passengerAccount.accountId,
       -23.56168,
       -46.62543,
       -23.56168,
@@ -66,7 +66,7 @@ describe('testes para caso de uso de finalização de corrida', () => {
     useCase = new FinishRide(rideRepository, positionRepository);
     rideData = {
       rideId: rideRequested.id,
-      driverId: driverAccount.id,
+      driverId: driverAccount.accountId,
     };
   });
 
