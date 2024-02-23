@@ -1,5 +1,5 @@
 export default interface PaymentGateway {
-  process(input: InputDto): Promise<string>;
+  process(input: InputDto): Promise<boolean>;
 }
 
 export type PaymentInputDto = {
