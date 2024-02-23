@@ -31,7 +31,8 @@ describe('testes para caso de uso de buscar conta', () => {
       '649.731.080-06',
       true,
       false,
-      'ABC1234'
+      'ABC1234',
+      null
     ));
     if (!driverAccount) throw new Error('Account not found');
     useCase = new GetAccount(accountRepository);
@@ -50,6 +51,7 @@ describe('testes para caso de uso de buscar conta', () => {
     expect(output).toHaveProperty('accountIsDriver');
     expect(output).toHaveProperty('accountIsPassenger');
     expect(output).toHaveProperty('accountCarPlate');
+    expect(output).toHaveProperty('accountCreditCardToken');
   });
 
   it('deve lançar erro se conta não existir', async () => {
