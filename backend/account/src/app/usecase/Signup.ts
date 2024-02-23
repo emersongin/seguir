@@ -7,7 +7,7 @@ export default class Signup {
 	) {}
 
 	async execute (input: InputDto): Promise<OutputDto> {
-		const { name, email, password, cpf, isDriver, isPassenger, carPlate } = input;
+		const { name, email, password, cpf, isDriver, isPassenger, carPlate, creditCardToken } = input;
 		const accountFinded = await this.accountRepository.getByEmail(email);
 		if (accountFinded) throw new Error('Account already exists.');
 		const newAccount = Account.create(
@@ -17,7 +17,8 @@ export default class Signup {
 			cpf, 
 			isDriver, 
 			isPassenger, 
-			carPlate
+			carPlate,
+			creditCardToken
 		);
 		const accountCreated = await this.accountRepository.save(newAccount);
 		return {
@@ -34,6 +35,7 @@ type InputDto = {
   isDriver: boolean;
   isPassenger: boolean;
   carPlate: string | null;
+	creditCardToken: string | null;
 };
 
 type OutputDto = {

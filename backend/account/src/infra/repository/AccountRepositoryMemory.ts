@@ -13,7 +13,8 @@ export default class AccountRepositoryMemory implements AccountRepository {
       cpf: account.getCpf(),
       isDriver: account.isDriver,
       isPassenger: account.isPassenger,
-      carPlate: account.getCarPlate()
+      carPlate: account.getCarPlate(),
+      creditCardToken: account.getCreditCardToken()
     });
     const newAccount = Account.restore(
       account.getId(),
@@ -24,6 +25,7 @@ export default class AccountRepositoryMemory implements AccountRepository {
       account.isDriver,
       account.isPassenger,
       account.getCarPlate(),
+      account.getCreditCardToken()
     );
     return newAccount;
   }
@@ -39,7 +41,8 @@ export default class AccountRepositoryMemory implements AccountRepository {
       accountData.cpf,
       accountData.isDriver,
       accountData.isPassenger,
-      accountData.carPlate
+      accountData.carPlate,
+      accountData.creditCardToken
     );
   }
 
@@ -54,7 +57,8 @@ export default class AccountRepositoryMemory implements AccountRepository {
       accountData.cpf,
       accountData.isDriver,
       accountData.isPassenger,
-      accountData.carPlate
+      accountData.carPlate,
+      accountData.creditCardToken
     );
   }
 }
@@ -68,4 +72,5 @@ type AccountData = {
   isDriver: boolean;
   isPassenger: boolean;
   carPlate: string | null;
+  creditCardToken: string | null;
 };

@@ -9,7 +9,7 @@ export default class AccountRepositoryDatabase implements AccountRepository {
 
   async save(account: Account): Promise<Account> {
     await this.database.query(
-      'INSERT INTO account (account_id, name, email, cpf, car_plate, is_passenger, is_driver) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+      'INSERT INTO account (account_id, name, email, cpf, car_plate, is_passenger, is_driver, credit_card_token) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
       [
         account.getId(), 
         account.getName(), 
@@ -17,7 +17,8 @@ export default class AccountRepositoryDatabase implements AccountRepository {
         account.getCpf(), 
         account.getCarPlate(), 
         !!account.isPassenger, 
-        !!account.isDriver
+        !!account.isDriver,
+        account.getCreditCardToken()
       ]
     );
     const newAccount = Account.restore(
@@ -29,6 +30,7 @@ export default class AccountRepositoryDatabase implements AccountRepository {
       account.isDriver,
       account.isPassenger,
       account.getCarPlate(),
+      account.getCreditCardToken()
     );
     return newAccount;
   }
@@ -44,7 +46,8 @@ export default class AccountRepositoryDatabase implements AccountRepository {
       accountData.cpf,
       accountData.is_driver,
       accountData.is_passenger,
-      accountData.car_plate
+      accountData.car_plate,
+      accountData.credit_card_token
     );
   }
 
@@ -59,7 +62,8 @@ export default class AccountRepositoryDatabase implements AccountRepository {
       accountData.cpf,
       accountData.is_driver,
       accountData.is_passenger,
-      accountData.car_plate
+      accountData.car_plate,
+      accountData.credit_card_token
     );
   }
 }
@@ -73,4 +77,5 @@ type AccountData = {
   isDriver: boolean;
   isPassenger: boolean;
   carPlate: string | null;
+  creditCardToken: string | null;
 };

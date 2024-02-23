@@ -10,6 +10,7 @@ export default class Account {
   private email: Email;
   private cpf: Cpf;
   private carPlate: CarPlate | null = null;
+  private creditCardToken: string | null = null;
   private password: Password;
 
   private constructor(
@@ -20,7 +21,8 @@ export default class Account {
     cpf: string,
     readonly isDriver: boolean,
     readonly isPassenger: boolean,
-    carPlate: string | null
+    carPlate: string | null,
+    getCreditCardToken: string | null
   ) {
     this.id = id;
     this.name = new Name(name);
@@ -28,6 +30,7 @@ export default class Account {
     this.password = new Password(password);
 		this.cpf = new Cpf(cpf);
     if (isDriver && carPlate) this.carPlate = new CarPlate(carPlate);
+    if (isPassenger && getCreditCardToken) this.creditCardToken = getCreditCardToken;
   }
 
   static create(
@@ -37,7 +40,8 @@ export default class Account {
     cpf: string,
     isDriver: boolean,
     isPassenger: boolean,
-    carPlate: string | null
+    carPlate: string | null,
+    getCreditCardToken: string | null
   ): Account {
     return new Account(
       crypto.randomUUID(), 
@@ -47,7 +51,8 @@ export default class Account {
       cpf, 
       isDriver, 
       isPassenger, 
-      carPlate
+      carPlate,
+      getCreditCardToken
     );
   }
 
@@ -59,7 +64,8 @@ export default class Account {
     cpf: string,
     isDriver: boolean,
     isPassenger: boolean,
-    carPlate: string | null
+    carPlate: string | null,
+    getCreditCardToken: string | null
   ): Account {
     return new Account(
       id, 
@@ -69,7 +75,8 @@ export default class Account {
       cpf, 
       isDriver, 
       isPassenger, 
-      carPlate
+      carPlate,
+      getCreditCardToken
     );
   }
 
@@ -95,5 +102,9 @@ export default class Account {
 
   getPassword(): string {
     return this.password.getValue();
+  }
+
+  getCreditCardToken(): string | null {
+    return this.creditCardToken;
   }
 }
