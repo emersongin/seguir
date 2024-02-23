@@ -17,6 +17,7 @@ describe('testes para o caso de uso de se inscrever', () => {
     isDriver: boolean;
     isPassenger: boolean;
     carPlate: string | null;
+    creditCardToken: string | null;
   };
   let database: SQLDataBaseGateway;
 
@@ -38,7 +39,8 @@ describe('testes para o caso de uso de se inscrever', () => {
       '649.731.080-06',
       true,
       false,
-      'ABC1234'
+      'ABC1234',
+      null
     ));
     if (!driverAccount) throw new Error('Account not found');
     useCase = new Signup(accountRepository);
@@ -49,8 +51,9 @@ describe('testes para o caso de uso de se inscrever', () => {
       password: 'senha_valida',
       cpf: '649.731.080-06',
       isDriver: false,
-      isPassenger: true,
-      carPlate: null
+      isPassenger: false,
+      carPlate: null,
+      creditCardToken: null
     };
   });
 
@@ -65,11 +68,13 @@ describe('testes para o caso de uso de se inscrever', () => {
     if (!account) throw new Error('Account not found');
     expect(account.isDriver).toBe(true);
     expect(account.getCarPlate()).toBe('ABC1234');
+    expect(account.getCreditCardToken()).toBe(null);
   });
 
   it('deve efetuar inscrição como passageiro', async () => {
     accountData.isPassenger = true;
     accountData.carPlate = null;
+    accountData.creditCardToken = '0123456789';
     const input = accountData;
     const output = await useCase.execute(input);
     expect(output).toHaveProperty('accountId');
@@ -78,6 +83,7 @@ describe('testes para o caso de uso de se inscrever', () => {
     if (!account) throw new Error('Account not found');
     expect(account.isPassenger).toBe(true);
     expect(account.getCarPlate()).toBe(null);
+    expect(account.getCreditCardToken()).toBe(accountData.creditCardToken);
   });
 
   it('deve lançar error se email da conta já existir', async () => {
