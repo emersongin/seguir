@@ -1,19 +1,19 @@
 import ExpressAdapter from './infra/http/ExpressAdapter';
 import MainController from './infra/controller/mainController';
-import Signup from './app/usecase/Signup';
-import GetAccount from './app/usecase/GetAccount';
 import SQLDataBaseGatewayPGP from './infra/gateway/SQLDataBaseGatewayPGP';
-import AccountRepositoryDatabase from './infra/repository/AccountRepositoryDatabase';
+import ProcessPayment from './app/usecase/ProcessPayment';
+import PaymentGatewayRede from './infra/gateway/PaymentGatewayRede';
+import TransactionRepositoryDatabase from './infra/repository/TransactionRepositoryDatabase';
 
 const server = new ExpressAdapter();
 const pgpDatabase = new SQLDataBaseGatewayPGP();
 pgpDatabase.connect();
-const accountRepository = new AccountRepositoryDatabase(pgpDatabase);
-const singup = new Signup(accountRepository);
-const getAccount = new GetAccount(accountRepository);
-const controller = new MainController(server, singup, getAccount);
+const paymentGatewayRede = new PaymentGatewayRede();
+const transactionRepository = new TransactionRepositoryDatabase(pgpDatabase);
+const processPayment = new ProcessPayment(paymentGatewayRede, transactionRepository);
+const controller = new MainController(server, processPayment);
 
-const port = 3000;
+const port = 3002;
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
