@@ -13,7 +13,8 @@ export default class GetAccount {
       accountCpf: account.getCpf(),
       accountIsDriver: account.isDriver,
       accountIsPassenger: account.isPassenger,
-      accountCarPlate: account.getCarPlate()
+      accountCarPlate: account.getCarPlate(),
+      accountCreditCardToken: account.getCreditCardToken()
     };
   }
 }
@@ -26,4 +27,5 @@ type OutputDto = {
   accountIsDriver: boolean;
   accountIsPassenger: boolean;
   accountCarPlate: string | null;
+  accountCreditCardToken: string | null;
 };
