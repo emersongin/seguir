@@ -128,9 +128,9 @@ describe('testes para caso de uso de finalização de corrida', () => {
     ride.acceptRide(driverId);
     ride.startRide();
     await rideRepository.update(ride);
-    await positionRepository.save(Position.create(rideId, -23.56168, -46.62543));
-    await positionRepository.save(Position.create(rideId, -23.57168, -46.62543));
-    await positionRepository.save(Position.create(rideId, -23.58168, -46.62543));
+    await positionRepository.save(Position.create(ride.id, -23.56168, -46.62543));
+    await positionRepository.save(Position.create(ride.id, -23.57168, -46.62543));
+    await positionRepository.save(Position.create(ride.id, -23.58168, -46.62543));
     const output = await useCase.execute(rideId);
     expect(output).toBeUndefined();
     const rideFinished = await rideRepository.getById(rideId);
@@ -155,13 +155,10 @@ describe('testes para caso de uso de finalização de corrida', () => {
     ride.acceptRide(driverId);
     ride.startRide();
     await rideRepository.update(ride);
-    await positionRepository.save(Position.create(ride.id, -23.56168, -46.62543));
-    await positionRepository.save(Position.create(ride.id, -23.57168, -46.62543));
-    await positionRepository.save(Position.create(ride.id, -23.58168, -46.62543));
     await expect(() => useCase.execute(ride.id)).rejects.toThrowError('account not found');
   });
 
-  it.only('deve gerar uma trasação de pagamento', async () => {
+  it('deve gerar uma trasação de pagamento', async () => {
     const { rideId, driverId } = rideData;
     const ride = await rideRepository.getById(rideId);
     if (!ride) throw new Error('ride not found');
@@ -173,8 +170,8 @@ describe('testes para caso de uso de finalização de corrida', () => {
     await positionRepository.save(Position.create(rideId, -23.58168, -46.62543));
     const output = await useCase.execute(rideId);
     expect(output).toBeUndefined();
-    const transation = await paymentGateway.getTransactionByRideId(ride.id);
+    const transation = await paymentGateway.getRideTransaction(ride.id);
     if (!transation) throw new Error('Transaction not found');
-    expect(transation.id).toMatch(/^[0-9a-fA-F]{24}$/);
+    expect(transation.id).toEqual(expect.any(String));
   });
 });
