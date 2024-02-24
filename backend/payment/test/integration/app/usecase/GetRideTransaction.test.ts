@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import Transaction from '../../../../src/domain/Trasaction';
-import GetTransactionByRide from '../../../../src/app/usecase/GetTransactionByRide';
+import GetRideTransaction from '../../../../src/app/usecase/GetRideTransaction';
 import SQLDataBaseGateway from '../../../../../account/src/infra/gateway/SQLDataBaseGateway';
 import SQLDataBaseGatewayPGP from '../../../../../account/src/infra/gateway/SQLDataBaseGatewayPGP';
 import TransactionRepository from '../../../../src/infra/repository/TransactionRepository';
@@ -9,7 +9,7 @@ import TransactionRepositoryDatabase from '../../../../src/infra/repository/Tran
 describe('testes para caso de uso de pegar uma trasação', () => {
   let database: SQLDataBaseGateway;
   let transactionRepository: TransactionRepository;
-  let usecase: GetTransactionByRide;
+  let usecase: GetRideTransaction;
   let transactionData: {
     rideId: string;
   }
@@ -30,7 +30,7 @@ describe('testes para caso de uso de pegar uma trasação', () => {
       rideId, 
       1000
     ));
-    usecase = new GetTransactionByRide(transactionRepository);
+    usecase = new GetRideTransaction(transactionRepository);
     transactionData = {
       rideId
     };
