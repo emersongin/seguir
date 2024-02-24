@@ -11,6 +11,7 @@ export type GetAccountOutputDto = {
   isDriver: boolean;
   isPassenger: boolean;
   carPlate: string | null;
+  creditCardToken: string | null;
 };
 
 export type SignupInputDto = {
@@ -21,6 +22,7 @@ export type SignupInputDto = {
   isDriver: boolean;
   isPassenger: boolean;
   carPlate: string | null;
+  creditCardToken: string | null;
 };
 
 export type SignupOutputDto = {

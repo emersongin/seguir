@@ -8,7 +8,13 @@ export default class TransactionRepositoryDatabase implements TransactionReposit
   async getTransactionByRideId(rideId: string): Promise<Transaction | undefined> {
     const [transaction] = await this.database.query('SELECT * FROM transaction WHERE ride_id = $1', [rideId]);
     if (!transaction) return;
-    return transaction;
+    return Transaction.restore(
+      transaction.transaction_id,
+      transaction.ride_id,  
+      transaction.amount,
+      transaction.date,
+      transaction.status
+    );
   }
 
   async save(transaction: Transaction): Promise<Transaction> {

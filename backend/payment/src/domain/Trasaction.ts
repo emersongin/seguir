@@ -25,6 +25,22 @@ export default class Transaction {
     );
   }
 
+  static restore(
+    id: string,
+    rideId: string,
+    amount: number,
+    date: Date,
+    status: string
+  ): Transaction {
+    return new Transaction(
+      id,
+      rideId,
+      amount,
+      date,
+      status
+    );
+  }
+
   paid(): void {
     if (this.status === 'paid') throw new Error('Transaction already paid');
     this.status = 'paid';

@@ -39,7 +39,8 @@ describe('testes para caos de uso de solicitar corrida', () => {
       cpf: '649.731.080-06',
       isDriver: false,
       isPassenger: true,
-      carPlate: null
+      carPlate: null,
+      creditCardToken: '0123456789'
     });
     if (!passengerAccount) throw new Error('Account not found');
     rideRepository = new RideRepositoryDatabase(database);
@@ -77,7 +78,8 @@ describe('testes para caos de uso de solicitar corrida', () => {
       cpf: '649.731.080-06',
       isDriver: true,
       isPassenger: false,
-      carPlate: 'ABC1234'
+      carPlate: 'ABC1234',
+      creditCardToken: null
     });
     if (!driverAccount) throw new Error('Account not found');
     requestData.passengerId = driverAccount.accountId;

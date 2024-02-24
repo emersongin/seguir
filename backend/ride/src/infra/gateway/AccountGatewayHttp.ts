@@ -21,7 +21,8 @@ export default class AccountGatewayHttp implements AccountGateway {
       cpf: account.accountCpf,
       isDriver: account.accountIsDriver,
       isPassenger: account.accountIsPassenger,
-      carPlate: account.accountCarPlate
+      carPlate: account.accountCarPlate,
+      creditCardToken: account.accountCreditCardToken
     };
   }
 
