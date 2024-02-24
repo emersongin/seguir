@@ -1,6 +1,6 @@
 export default interface PaymentGateway {
   processPayment(input: ProcessPaymentInputDto): Promise<void>;
-  getTransactionByRideId(rideId: string): Promise<GetTransactionOutputDto | undefined>;
+  getRideTransaction(rideId: string): Promise<GetRideTransactionOutputDto | undefined>;
 }
 
 export type ProcessPaymentInputDto = {
@@ -9,7 +9,7 @@ export type ProcessPaymentInputDto = {
   amount: number;
 };
 
-export type GetTransactionOutputDto = {
+export type GetRideTransactionOutputDto = {
   id: string;
   status: string;
 }
