@@ -5,7 +5,7 @@ import TransactionRepository from './TransactionRepository';
 export default class TransactionRepositoryDatabase implements TransactionRepository {
   constructor(private readonly database: SQLDataBaseGateway) {}
 
-  async getTransactionByRideId(rideId: string): Promise<Transaction | undefined> {
+  async getRideTransaction(rideId: string): Promise<Transaction | undefined> {
     const [transaction] = await this.database.query('SELECT * FROM transaction WHERE ride_id = $1', [rideId]);
     if (!transaction) return;
     return Transaction.restore(
