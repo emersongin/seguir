@@ -1,2 +1,6 @@
-UC9 - ProcessPayment
-teste para serviço de dominio
+refatorar: paymentGateway deve ter um nome melhor...?
+feat: criar queue
+feat: controller para queue
+feat: criar serviço de dominio tipo fabrica que calcula a tarifa
+test: serviço de dominio
+feat: UC9 - ProcessPayment
