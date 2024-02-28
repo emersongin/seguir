@@ -12,6 +12,7 @@ import AccountGateway from '../../../../src/infra/gateway/AccountGateway';
 import AccountGatewayHttp from '../../../../src/infra/gateway/AccountGatewayHttp';
 import PaymentGateway from '../../../../src/infra/gateway/PaymentGateway';
 import PaymentGatewayHttp from '../../../../src/infra/gateway/PaymentGatewayHttp';
+import AxiosAdapter from '../../../../src/infra/http/AxiosAdapter';
 
 describe('testes para caso de uso de finalização de corrida', () => {
   let accountGateway: AccountGateway;
@@ -35,8 +36,9 @@ describe('testes para caso de uso de finalização de corrida', () => {
   });
 
   beforeEach(async () => {
-    paymentGateway = new PaymentGatewayHttp();
-    accountGateway = new AccountGatewayHttp();
+    const axios = new AxiosAdapter();
+    paymentGateway = new PaymentGatewayHttp(axios);
+    accountGateway = new AccountGatewayHttp(axios);
     const driverAccount = await accountGateway.signup({
       name: 'João Silva',
       email: `joao_${crypto.randomUUID()}@hotmail.com`,

@@ -7,6 +7,7 @@ import DatabaseConnection from '../../../../src/infra/database/DatabaseConnectio
 import PgPromiseAdapter from '../../../../src/infra/database/PgPromiseAdapter';
 import AccountGateway from '../../../../src/infra/gateway/AccountGateway';
 import AccountGatewayHttp from '../../../../src/infra/gateway/AccountGatewayHttp';
+import AxiosAdapter from '../../../../src/infra/http/AxiosAdapter';
 
 describe('testes para caos de uso de solicitar corrida', () => {
   let accountGateway: AccountGateway;
@@ -31,7 +32,8 @@ describe('testes para caos de uso de solicitar corrida', () => {
   });
 
   beforeEach(async () => {
-    accountGateway = new AccountGatewayHttp();
+    const axios = new AxiosAdapter();
+    accountGateway = new AccountGatewayHttp(axios);
     const passengerAccount = await accountGateway.signup({
       name: 'Maria Silva',
       email: `maria_${crypto.randomUUID()}@hotmail.com`,

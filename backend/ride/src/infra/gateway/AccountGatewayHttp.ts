@@ -1,34 +1,30 @@
-import axios from 'axios';
+import HttpClient from '../http/httpClient';
 import AccountGateway, { 
   GetAccountOutputDto, 
   SignupInputDto, 
   SignupOutputDto 
 } from './AccountGateway';
 
-axios.defaults.validateStatus = function () {
-	return true;
-}
-
 export default class AccountGatewayHttp implements AccountGateway {
+  constructor (readonly httpClient: HttpClient) {}
+
   async getById(accountId: string): Promise<GetAccountOutputDto | undefined> {
-    const response = await axios.get(`http://localhost:3000/account/${accountId}`);
-    if (response.status === 422) return;
-    const account = response.data;
+    const response = await this.httpClient.get(`http://localhost:3000/account/${accountId}`);
+    if (!response) return;
     return {
-      id: account.accountId,
-      name: account.accountName,
-      email: account.accountEmail,
-      cpf: account.accountCpf,
-      isDriver: account.accountIsDriver,
-      isPassenger: account.accountIsPassenger,
-      carPlate: account.accountCarPlate,
-      creditCardToken: account.accountCreditCardToken
+      id: response.accountId,
+      name: response.accountName,
+      email: response.accountEmail,
+      cpf: response.accountCpf,
+      isDriver: response.accountIsDriver,
+      isPassenger: response.accountIsPassenger,
+      carPlate: response.accountCarPlate,
+      creditCardToken: response.accountCreditCardToken
     };
   }
 
   async signup(input: SignupInputDto): Promise<SignupOutputDto | undefined> {
-    const response = await axios.post('http://localhost:3000/signup', input);
-    if (response.status === 422) return;
-    return response.data;
+    const response = await this.httpClient.post('http://localhost:3000/signup', input);
+    return response;
   }
 }

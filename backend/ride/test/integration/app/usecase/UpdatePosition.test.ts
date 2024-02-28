@@ -9,6 +9,7 @@ import PositionRepository from '../../../../src/infra/repository/PositionReposit
 import PositionRepositoryDatabase from '../../../../src/infra/repository/PositionRepositoryDatabase';
 import AccountGateway from '../../../../src/infra/gateway/AccountGateway';
 import AccountGatewayHttp from '../../../../src/infra/gateway/AccountGatewayHttp';
+import AxiosAdapter from '../../../../src/infra/http/AxiosAdapter';
 
 describe('teste para caso de uso de atualizar posição', () => {
   let accountGateway: AccountGateway;
@@ -33,7 +34,8 @@ describe('teste para caso de uso de atualizar posição', () => {
   });
 
   beforeEach(async () => {
-    accountGateway = new AccountGatewayHttp();
+    const axios = new AxiosAdapter();
+    accountGateway = new AccountGatewayHttp(axios);
     const driverAccount = await accountGateway.signup({
       name: 'João Silva',
       email: `joao_${crypto.randomUUID()}@hotmail.com`,

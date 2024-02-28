@@ -7,6 +7,7 @@ import DatabaseConnection from '../../../../src/infra/database/DatabaseConnectio
 import PgPromiseAdapter from '../../../../src/infra/database/PgPromiseAdapter';
 import AccountGateway from '../../../../src/infra/gateway/AccountGateway';
 import AccountGatewayHttp from '../../../../src/infra/gateway/AccountGatewayHttp';
+import AxiosAdapter from '../../../../src/infra/http/AxiosAdapter';
 
 describe('testes para caso de uso de aceitar uma corrida', () => {
   let accountGateway: AccountGateway;
@@ -29,7 +30,8 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
   });
 
   beforeEach(async () => {
-    accountGateway = new AccountGatewayHttp();
+    const axios = new AxiosAdapter();
+    accountGateway = new AccountGatewayHttp(axios);
     const driverAccount = await accountGateway.signup({
       name: 'João Silva',
       email: `joao_${crypto.randomUUID()}@hotmail.com`,
