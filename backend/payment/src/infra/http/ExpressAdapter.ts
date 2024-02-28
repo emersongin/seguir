@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
-import HttpServerAdapter from './HttpServerAdapter';
+import HttpServer from './HttpServer';
 
-export default class ExpressAdapter implements HttpServerAdapter {
+export default class ExpressAdapter implements HttpServer {
 	app: Express;
 
 	constructor () {
