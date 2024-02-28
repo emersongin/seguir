@@ -3,8 +3,8 @@ import Ride from '../../../../src/domain/entity/Ride';
 import RequestRide from '../../../../src/app/usecase/RequestRide';
 import RideRepository from '../../../../src/infra/repository/RideRepository';
 import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
-import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
-import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
+import DatabaseConnection from '../../../../src/infra/database/DatabaseConnection';
+import PgPromiseAdapter from '../../../../src/infra/database/PgPromiseAdapter';
 import AccountGateway from '../../../../src/infra/gateway/AccountGateway';
 import AccountGatewayHttp from '../../../../src/infra/gateway/AccountGatewayHttp';
 
@@ -19,10 +19,10 @@ describe('testes para caos de uso de solicitar corrida', () => {
     toLat: number;
     toLong: number;
   };
-  let database: SQLDataBaseGateway;
+  let database: DatabaseConnection;
 
   beforeAll(async () => {
-    database = new SQLDataBaseGatewayPGP();
+    database = new PgPromiseAdapter();
     await database.connect();
   });
 

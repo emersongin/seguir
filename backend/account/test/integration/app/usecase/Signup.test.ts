@@ -1,8 +1,8 @@
 import AccountRepository from '../../../../src/infra/repository/AccountRepository';
 import Signup from '../../../../src/app/usecase/Signup';
 import Account from '../../../../src/domain/entity/Account';
-import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
-import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
+import DatabaseConnection from '../../../../src/infra/database/DatabaseConnection';
+import PgPromiseAdapter from '../../../../src/infra/database/PgPromiseAdapter';
 import AccountRepositoryDatabase from '../../../../src/infra/repository/AccountRepositoryDatabase';
 import crypto from 'crypto';
 
@@ -19,10 +19,10 @@ describe('testes para o caso de uso de se inscrever', () => {
     carPlate: string | null;
     creditCardToken: string | null;
   };
-  let database: SQLDataBaseGateway;
+  let database: DatabaseConnection;
 
   beforeAll(async () => {
-    database = new SQLDataBaseGatewayPGP();
+    database = new PgPromiseAdapter();
     await database.connect();
   });
 

@@ -1,13 +1,13 @@
 import crypto from 'crypto';
 import Transaction from '../../../../src/domain/Trasaction';
 import GetRideTransaction from '../../../../src/app/usecase/GetRideTransaction';
-import SQLDataBaseGateway from '../../../../../account/src/infra/gateway/SQLDataBaseGateway';
-import SQLDataBaseGatewayPGP from '../../../../../account/src/infra/gateway/SQLDataBaseGatewayPGP';
+import DatabaseConnection from '../../../../src/infra/database/DatabaseConnection';
+import PgPromiseAdapter from '../../../../src/infra/database/PgPromiseAdapter';
 import TransactionRepository from '../../../../src/infra/repository/TransactionRepository';
 import TransactionRepositoryDatabase from '../../../../src/infra/repository/TransactionRepositoryDatabase';
 
 describe('testes para caso de uso de pegar uma trasação', () => {
-  let database: SQLDataBaseGateway;
+  let database: DatabaseConnection;
   let transactionRepository: TransactionRepository;
   let usecase: GetRideTransaction;
   let transactionData: {
@@ -15,7 +15,7 @@ describe('testes para caso de uso de pegar uma trasação', () => {
   }
 
   beforeAll(async () => {
-    database = new SQLDataBaseGatewayPGP();
+    database = new PgPromiseAdapter();
     await database.connect();
   });
 

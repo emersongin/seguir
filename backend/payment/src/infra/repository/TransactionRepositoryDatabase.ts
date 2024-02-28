@@ -1,9 +1,9 @@
 import Transaction from '../../domain/Trasaction';
-import SQLDataBaseGateway from '../gateway/SQLDataBaseGateway';
+import DatabaseConnection from '../../infra/database/DatabaseConnection';
 import TransactionRepository from './TransactionRepository';
 
 export default class TransactionRepositoryDatabase implements TransactionRepository {
-  constructor(private readonly database: SQLDataBaseGateway) {}
+  constructor(private readonly database: DatabaseConnection) {}
 
   async getRideTransaction(rideId: string): Promise<Transaction | undefined> {
     const [transaction] = await this.database.query('SELECT * FROM transaction WHERE ride_id = $1', [rideId]);

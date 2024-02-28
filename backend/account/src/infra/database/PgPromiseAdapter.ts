@@ -1,7 +1,7 @@
 import pgp from 'pg-promise';
-import SQLDataBaseGateway from './SQLDataBaseGateway';
+import DatabaseConnection from './DatabaseConnection';
 
-export default class SQLDataBaseGatewayPGP implements SQLDataBaseGateway {
+export default class PgPromiseAdapter implements DatabaseConnection {
   private connection: any;
 
   async connect(): Promise<boolean> {

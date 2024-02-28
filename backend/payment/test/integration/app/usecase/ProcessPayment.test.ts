@@ -4,11 +4,11 @@ import PaymentGateway from '../../../../src/infra/gateway/PaymentGateway';
 import PaymentGatewayRede from '../../../../src/infra/gateway/PaymentGatewayRede';
 import TransactionRepository from '../../../../src/infra/repository/TransactionRepository';
 import TransactionRepositoryDatabase from '../../../../src/infra/repository/TransactionRepositoryDatabase';
-import SQLDataBaseGateway from '../../../../../account/src/infra/gateway/SQLDataBaseGateway';
-import SQLDataBaseGatewayPGP from '../../../../../account/src/infra/gateway/SQLDataBaseGatewayPGP';
+import DatabaseConnection from '../../../../src/infra/database/DatabaseConnection';
+import PgPromiseAdapter from '../../../../src/infra/database/PgPromiseAdapter';
 
 describe('testes para caso de uso de ProcessPayment', () => {
-  let database: SQLDataBaseGateway;
+  let database: DatabaseConnection;
   let usecase: ProcessPayment;
   let paymentGateway: PaymentGateway;
   let transactionRepository: TransactionRepository;
@@ -19,7 +19,7 @@ describe('testes para caso de uso de ProcessPayment', () => {
   };
 
   beforeAll(async () => {
-    database = new SQLDataBaseGatewayPGP();
+    database = new PgPromiseAdapter();
     await database.connect();
   });
 

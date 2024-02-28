@@ -1,5 +1,5 @@
 import ExpressAdapter from './infra/http/ExpressAdapter';
-import SQLDataBaseGatewayPGP from './infra/gateway/SQLDataBaseGatewayPGP';
+import PgPromiseAdapter from './infra/database/PgPromiseAdapter';
 import RideRepositoryDatabase from './infra/repository/RideRepositoryDatabase';
 import GetRide from './app/usecase/GetRide';
 import RequestRide from './app/usecase/RequestRide';
@@ -7,12 +7,12 @@ import AccountGatewayHttp from './infra/gateway/AccountGatewayHttp';
 import httpController from './infra/http/httpController';
 import Registry from './infra/di/Registry';
 
-const pgpDatabase = new SQLDataBaseGatewayPGP();
+const pgpDatabase = new PgPromiseAdapter();
 pgpDatabase.connect();
 const accountGateway = new AccountGatewayHttp();
 const rideRepository = new RideRepositoryDatabase(pgpDatabase);
 const requestRide = new RequestRide(rideRepository, accountGateway);
-const getAccount = new GetRide(rideRepository);
+const getRide = new GetRide(rideRepository);
 const registry = Registry.getInstance();
 registry.register('requestRide', requestRide);
 registry.register('getRide', getRide);

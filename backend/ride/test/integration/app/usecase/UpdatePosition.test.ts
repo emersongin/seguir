@@ -1,8 +1,8 @@
 import crypto from 'crypto';
 import Ride from '../../../../src/domain/entity/Ride';
 import UpdatePosition from '../../../../src/app/usecase/UpdatePosition';
-import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
-import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
+import DatabaseConnection from '../../../../src/infra/database/DatabaseConnection';
+import PgPromiseAdapter from '../../../../src/infra/database/PgPromiseAdapter';
 import RideRepository from '../../../../src/infra/repository/RideRepository';
 import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
 import PositionRepository from '../../../../src/infra/repository/PositionRepository';
@@ -21,10 +21,10 @@ describe('teste para caso de uso de atualizar posição', () => {
     latPosition: number; 
     longPosition: number; 
   };
-  let database: SQLDataBaseGateway;
+  let database: DatabaseConnection;
 
   beforeAll(async () => {
-    database = new SQLDataBaseGatewayPGP();
+    database = new PgPromiseAdapter();
     await database.connect();
   });
 

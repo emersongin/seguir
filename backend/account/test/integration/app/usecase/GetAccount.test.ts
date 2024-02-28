@@ -1,9 +1,9 @@
 import AccountRepository from '../../../../src/infra/repository/AccountRepository';
 import GetAccount from '../../../../src/app/usecase/GetAccount';
 import Account from '../../../../src/domain/entity/Account';
-import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
-import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
 import AccountRepositoryDatabase from '../../../../src/infra/repository/AccountRepositoryDatabase';
+import DatabaseConnection from '../../../../src/infra/database/DatabaseConnection';
+import PgPromiseAdapter from '../../../../src/infra/database/PgPromiseAdapter';
 
 describe('testes para caso de uso de buscar conta', () => {
   let accountRepository: AccountRepository;
@@ -11,10 +11,10 @@ describe('testes para caso de uso de buscar conta', () => {
   let accountData: {
     accountId: string
   };
-  let database: SQLDataBaseGateway;
+  let database: DatabaseConnection;
 
   beforeAll(async () => {
-    database = new SQLDataBaseGatewayPGP();
+    database = new PgPromiseAdapter();
     await database.connect();
   });
 

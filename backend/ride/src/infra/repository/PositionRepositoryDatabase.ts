@@ -1,10 +1,10 @@
 import PositionRepository from './PositionRepository';
-import SQLDataBaseGateway from '../gateway/SQLDataBaseGateway';
+import DatabaseConnection from '../database/DatabaseConnection';
 import Position from '../../domain/entity/Position';
 
 export default class PositionRepositoryDatabase implements PositionRepository {
   constructor(
-    readonly database: SQLDataBaseGateway
+    readonly database: DatabaseConnection
   ) {}
 
   async save(position: Position): Promise<Position> {

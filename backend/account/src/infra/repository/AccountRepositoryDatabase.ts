@@ -1,10 +1,10 @@
 import Account from '../../domain/entity/Account';
 import AccountRepository from './AccountRepository';
-import SQLDataBaseGateway from '../gateway/SQLDataBaseGateway';
+import DatabaseConnection from '../database/DatabaseConnection';
 
 export default class AccountRepositoryDatabase implements AccountRepository {
   constructor(
-    private database: SQLDataBaseGateway
+    private database: DatabaseConnection
   ) {}
 
   async save(account: Account): Promise<Account> {

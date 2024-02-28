@@ -1,5 +1,5 @@
 import ExpressAdapter from './infra/http/ExpressAdapter';
-import SQLDataBaseGatewayPGP from './infra/gateway/SQLDataBaseGatewayPGP';
+import PgPromiseAdapter from './infra/database/PgPromiseAdapter';
 import ProcessPayment from './app/usecase/ProcessPayment';
 import PaymentGatewayRede from './infra/gateway/PaymentGatewayRede';
 import TransactionRepositoryDatabase from './infra/repository/TransactionRepositoryDatabase';
@@ -7,7 +7,7 @@ import GetRideTransaction from './app/usecase/GetRideTransaction';
 import httpController from './infra/http/httpController';
 import Registry from './infra/di/Registry';
 
-const pgpDatabase = new SQLDataBaseGatewayPGP();
+const pgpDatabase = new PgPromiseAdapter();
 pgpDatabase.connect();
 const paymentGatewayRede = new PaymentGatewayRede();
 const transactionRepository = new TransactionRepositoryDatabase(pgpDatabase);

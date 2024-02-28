@@ -1,7 +1,7 @@
 import Ride from '../../../../src/domain/entity/Ride';
 import StartRide from '../../../../src/app/usecase/StartRide';
-import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
-import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
+import DatabaseConnection from '../../../../src/infra/database/DatabaseConnection';
+import PgPromiseAdapter from '../../../../src/infra/database/PgPromiseAdapter';
 import RideRepository from '../../../../src/infra/repository/RideRepository';
 import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
 
@@ -11,10 +11,10 @@ describe('testes para caso de uso de iniciar corrida', () => {
   let rideData: {
     rideId: string;
   };
-  let database: SQLDataBaseGateway;
+  let database: DatabaseConnection;
 
   beforeAll(async () => {
-    database = new SQLDataBaseGatewayPGP();
+    database = new PgPromiseAdapter();
     await database.connect();
   });
 

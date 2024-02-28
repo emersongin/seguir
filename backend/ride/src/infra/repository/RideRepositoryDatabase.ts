@@ -1,11 +1,11 @@
 import RideRepository from './RideRepository';
 import Ride from '../../domain/entity/Ride';
 import crypto from 'crypto';
-import SQLDataBaseGateway from '../gateway/SQLDataBaseGateway';
+import DatabaseConnection from '../database/DatabaseConnection';
 
 export default class RideRepositoryDatabase implements RideRepository {
   constructor(
-    private database: SQLDataBaseGateway
+    private database: DatabaseConnection
   ) {}
 
   async save(ride: Ride): Promise<Ride> {

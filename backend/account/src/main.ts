@@ -1,12 +1,12 @@
 import Signup from './app/usecase/Signup';
 import GetAccount from './app/usecase/GetAccount';
-import SQLDataBaseGatewayPGP from './infra/gateway/SQLDataBaseGatewayPGP';
+import PgPromiseAdapter from './infra/database/PgPromiseAdapter';
 import AccountRepositoryDatabase from './infra/repository/AccountRepositoryDatabase';
 import Registry from './infra/di/Registry';
 import httpController from './infra/http/httpController';
 import ExpressAdapter from './infra/http/ExpressAdapter';
 
-const pgpDatabase = new SQLDataBaseGatewayPGP();
+const pgpDatabase = new PgPromiseAdapter();
 pgpDatabase.connect();
 const accountRepository = new AccountRepositoryDatabase(pgpDatabase);
 const singup = new Signup(accountRepository);

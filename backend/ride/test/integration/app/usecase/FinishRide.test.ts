@@ -2,8 +2,8 @@ import crypto from 'crypto';
 import Ride from '../../../../src/domain/entity/Ride';
 import Position from '../../../../src/domain/entity/Position';
 import FinishRide from '../../../../src/app/usecase/FinishRide';
-import SQLDataBaseGateway from '../../../../src/infra/gateway/SQLDataBaseGateway';
-import SQLDataBaseGatewayPGP from '../../../../src/infra/gateway/SQLDataBaseGatewayPGP';
+import DatabaseConnection from '../../../../src/infra/database/DatabaseConnection';
+import PgPromiseAdapter from '../../../../src/infra/database/PgPromiseAdapter';
 import RideRepository from '../../../../src/infra/repository/RideRepository';
 import RideRepositoryDatabase from '../../../../src/infra/repository/RideRepositoryDatabase';
 import PositionRepository from '../../../../src/infra/repository/PositionRepository';
@@ -23,10 +23,10 @@ describe('testes para caso de uso de finalização de corrida', () => {
     rideId: string;
     driverId: string;
   };
-  let database: SQLDataBaseGateway;
+  let database: DatabaseConnection;
 
   beforeAll(async () => {
-    database = new SQLDataBaseGatewayPGP();
+    database = new PgPromiseAdapter();
     await database.connect();
   });
 
