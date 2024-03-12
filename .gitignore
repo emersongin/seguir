@@ -4,3 +4,4 @@ backend/ride/node_modules
 backend/ride/dist
 backend/payment/node_modules
 backend/payment/dist
+node_modules

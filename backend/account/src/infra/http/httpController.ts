@@ -14,6 +14,10 @@ export default class httpController {
 			return output;
 		});
 
+		httpServer.post('/signupAsync', async (params: any, body: any) => {
+			this.registry.inject('queue').publish('signup', body);
+		});
+
 		httpServer.get('/account/:accountId', async (params: any) => {
 			const output = await this.registry.inject('getAccount').execute(params.accountId);
 			return output;
