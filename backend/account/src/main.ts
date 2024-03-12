@@ -6,17 +6,24 @@ import Registry from './infra/di/Registry';
 import httpController from './infra/http/httpController';
 import ExpressAdapter from './infra/http/ExpressAdapter';
 
-const pgpDatabase = new PgPromiseAdapter();
-pgpDatabase.connect();
-const accountRepository = new AccountRepositoryDatabase(pgpDatabase);
-const singup = new Signup(accountRepository);
-const getAccount = new GetAccount(accountRepository);
-const registry = Registry.getInstance();
-registry.register('signup', singup);
-registry.register('getAccount', getAccount);
-const server = new ExpressAdapter();
-const controller = new httpController(server);
-const port = 3000;
-server.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+async function run() {
+  const queue = new RabbitMqAdapter();
+  await queue.connection();
+  const pgpDatabase = new PgPromiseAdapter();
+  await pgpDatabase.connect();
+  const accountRepository = new AccountRepositoryDatabase(pgpDatabase);
+  const singup = new Signup(accountRepository);
+  const getAccount = new GetAccount(accountRepository);
+  const registry = Registry.getInstance();
+  registry.register('signup', singup);
+  registry.register('getAccount', getAccount);
+  registry.register('queue', queue);
+  const server = new ExpressAdapter();
+  const controller = new httpController(server);
+  const port = 3000;
+  server.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
+
+run();
