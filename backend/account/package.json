@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "npx ts-node src/main.ts",
     "start": "tsc --watch",
-    "test": "cls && npx jest"
+    "test": "cls && npx jest",
+    "queue": "npx ts-node src/queue.ts"
   },
   "keywords": [],
   "author": "",
