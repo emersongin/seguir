@@ -2,6 +2,7 @@ import Coord from '../valueobject/Coord';
 import DistanceCalculator from '../service/DistanceCalculator';
 import crypto from 'crypto';
 import Position from './Position';
+import { FareCalculatorFactory } from '../service/FareCalculator';
 
 export default class Ride {
   private from: Coord;
@@ -120,7 +121,7 @@ export default class Ride {
   finishRide(distance: number): void {
     if (this.status !== 'in_progress') throw new Error('Ride is not in progress.');
     this.distance = distance;
-    this.fare = this.distance * 2.1;
+    this.fare = FareCalculatorFactory.create(this.date).calculate(this.distance);
     this.status = 'completed';
   }
 
