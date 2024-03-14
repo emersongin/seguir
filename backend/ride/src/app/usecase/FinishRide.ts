@@ -2,6 +2,7 @@ import RideRepository from '../../infra/repository/RideRepository';
 import PositionRepository from '../../infra/repository/PositionRepository';
 import AccountGateway from '../../infra/gateway/AccountGateway';
 import PaymentGateway from '../../infra/gateway/PaymentGateway';
+import RideCompletedEvent from '../../domain/events/RideCompletedEvent';
 
 export default class FinishRide {
   constructor(
@@ -19,10 +20,14 @@ export default class FinishRide {
     if (!account.creditCardToken) throw new Error('account has no credit card');
     const creditCardToken = account.creditCardToken;
     const positions = await this.positionRepository.getAllPositionByRideId(rideId);
-    const distanceTotal = positions.length > 0 ? ride.calculateDistance(positions) : 0;
-    ride.finishRide(distanceTotal);
+    ride.register(RideCompletedEvent.name, async (event: RideCompletedEvent) => {
+      await this.paymentGateway.processPayment({
+        rideId: event.rideId,
+        creditCardToken: event.creditCardToken,
+        amount: event.amount
+      });
+    });
+    ride.finishRide(positions, creditCardToken);
     await this.rideRepository.update(ride);
-    const amount = ride.getFare();
-    await this.paymentGateway.processPayment({ rideId, creditCardToken, amount });
   }
 }
