@@ -1,10 +1,12 @@
-import Coord from '../valueobject/Coord';
-import DistanceCalculator from '../service/DistanceCalculator';
 import crypto from 'crypto';
+import Coord from '../valueobject/Coord';
+import RideCompletedEvent from '../events/RideCompletedEvent';
+import Aggregate from './Aggregate';
 import Position from './Position';
+import DistanceCalculator from '../service/DistanceCalculator';
 import { FareCalculatorFactory } from '../service/FareCalculator';
 
-export default class Ride {
+export default class Ride extends Aggregate {
   private from: Coord;
 	private to: Coord;
 	private lastPosition: Coord;
@@ -24,6 +26,7 @@ export default class Ride {
     lastLong: number,
     readonly date: Date
   ) {
+    super();
     this.from = new Coord(fromLat, fromLong);
 		this.to = new Coord(toLat, toLong);
 		this.lastPosition = new Coord(lastLat, lastLong);
@@ -118,11 +121,12 @@ export default class Ride {
     this.status = 'in_progress';
   }
 
-  finishRide(distance: number): void {
+  finishRide(positions: Position[], creditCardToken: string): void {
     if (this.status !== 'in_progress') throw new Error('Ride is not in progress.');
-    this.distance = distance;
+    this.distance = this.calculateDistance(positions);
     this.fare = FareCalculatorFactory.create(this.date).calculate(this.distance);
     this.status = 'completed';
+    this.notify(new RideCompletedEvent(this.id, creditCardToken, this.fare));
   }
 
   getId(): string {
