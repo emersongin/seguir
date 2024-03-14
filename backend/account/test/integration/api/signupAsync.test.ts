@@ -11,7 +11,9 @@ describe('teste para enfileramento de nova de conta', () => {
   });
 
   afterAll(async () => {
-    await queue.close();
+    setTimeout(async () => {
+      await queue.close();
+    }, 1000);
   });
 
   it('deve enfilerar uma nova de conta', async () => {
