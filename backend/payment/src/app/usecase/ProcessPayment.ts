@@ -8,7 +8,7 @@ export default class ProcessPayment {
     private readonly transactionRepository: TransactionRepository
   ) {}
 
-  async execute(input: InputDto): Promise<void> {
+  async execute(input: ProcessPaymentInputDto): Promise<void> {
     const { rideId, creditCardToken, amount } = input;
     const transaction = Transaction.create(rideId, amount);
     await this.paymentGateway.process({ creditCardToken, amount });
@@ -17,7 +17,7 @@ export default class ProcessPayment {
   }
 }
 
-type InputDto = {
+export type ProcessPaymentInputDto = {
   rideId: string;
   creditCardToken: string;
   amount: number;

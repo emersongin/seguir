@@ -3,7 +3,7 @@ import PgPromiseAdapter from './infra/database/PgPromiseAdapter';
 import RideRepositoryDatabase from './infra/repository/RideRepositoryDatabase';
 import GetRide from './app/usecase/GetRide';
 import RequestRide from './app/usecase/RequestRide';
-import AccountGatewayHttp from './infra/gateway/AccountGatewayHttp';
+import AccountGatewayRest from './infra/gateway/AccountGatewayRest';
 import httpController from './infra/http/httpController';
 import Registry from './infra/di/Registry';
 import AcceptRide from './app/usecase/AcceptRide';
@@ -18,7 +18,7 @@ import RabbitMqAdapter from './infra/queue/RabbitMqAdapter';
 async function run() {
   const queue = new RabbitMqAdapter();
   const axios = new AxiosAdapter();
-  const accountGateway = new AccountGatewayHttp(axios);
+  const accountGateway = new AccountGatewayRest(axios);
   const paymentGateway = new PaymentGatewayQueue(queue);
   const pgpDatabase = new PgPromiseAdapter();
   pgpDatabase.connect();
