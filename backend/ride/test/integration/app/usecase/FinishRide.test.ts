@@ -11,7 +11,7 @@ import RideRepositoryDatabase from '../../../../src/infra/repository/RideReposit
 import PositionRepository from '../../../../src/infra/repository/PositionRepository';
 import PositionRepositoryDatabase from '../../../../src/infra/repository/PositionRepositoryDatabase';
 import AccountGateway from '../../../../src/infra/gateway/AccountGateway';
-import AccountGatewayHttp from '../../../../src/infra/gateway/AccountGatewayHttp';
+import AccountGatewayRest from '../../../../src/infra/gateway/AccountGatewayRest';
 import PaymentGateway from '../../../../src/infra/gateway/PaymentGateway';
 import PaymentGatewayQueue from '../../../../src/infra/gateway/PaymentGatewayQueue';
 import AxiosAdapter from '../../../../src/infra/http/AxiosAdapter';
@@ -46,7 +46,7 @@ describe('testes para caso de uso de finalização de corrida', () => {
   beforeEach(async () => {
     const axios = new AxiosAdapter();
     paymentGateway = new PaymentGatewayQueue(queue);
-    accountGateway = new AccountGatewayHttp(axios);
+    accountGateway = new AccountGatewayRest(axios);
     const driverAccount = await accountGateway.signup({
       name: 'João Silva',
       email: `joao_${crypto.randomUUID()}@hotmail.com`,

@@ -5,7 +5,7 @@ import AccountGateway, {
   SignupOutputDto 
 } from './AccountGateway';
 
-export default class AccountGatewayHttp implements AccountGateway {
+export default class AccountGatewayRest implements AccountGateway {
   constructor (readonly httpClient: HttpClient) {}
 
   async getById(accountId: string): Promise<GetAccountOutputDto | undefined> {

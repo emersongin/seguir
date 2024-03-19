@@ -6,7 +6,7 @@ import RideRepositoryDatabase from '../../../../src/infra/repository/RideReposit
 import DatabaseConnection from '../../../../src/infra/database/DatabaseConnection';
 import PgPromiseAdapter from '../../../../src/infra/database/PgPromiseAdapter';
 import AccountGateway from '../../../../src/infra/gateway/AccountGateway';
-import AccountGatewayHttp from '../../../../src/infra/gateway/AccountGatewayHttp';
+import AccountGatewayRest from '../../../../src/infra/gateway/AccountGatewayRest';
 import AxiosAdapter from '../../../../src/infra/http/AxiosAdapter';
 
 describe('testes para caso de uso de aceitar uma corrida', () => {
@@ -31,7 +31,7 @@ describe('testes para caso de uso de aceitar uma corrida', () => {
 
   beforeEach(async () => {
     const axios = new AxiosAdapter();
-    accountGateway = new AccountGatewayHttp(axios);
+    accountGateway = new AccountGatewayRest(axios);
     const driverAccount = await accountGateway.signup({
       name: 'João Silva',
       email: `joao_${crypto.randomUUID()}@hotmail.com`,

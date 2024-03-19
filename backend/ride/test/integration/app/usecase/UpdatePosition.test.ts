@@ -8,7 +8,7 @@ import RideRepositoryDatabase from '../../../../src/infra/repository/RideReposit
 import PositionRepository from '../../../../src/infra/repository/PositionRepository';
 import PositionRepositoryDatabase from '../../../../src/infra/repository/PositionRepositoryDatabase';
 import AccountGateway from '../../../../src/infra/gateway/AccountGateway';
-import AccountGatewayHttp from '../../../../src/infra/gateway/AccountGatewayHttp';
+import AccountGatewayRest from '../../../../src/infra/gateway/AccountGatewayRest';
 import AxiosAdapter from '../../../../src/infra/http/AxiosAdapter';
 
 describe('teste para caso de uso de atualizar posição', () => {
@@ -35,7 +35,7 @@ describe('teste para caso de uso de atualizar posição', () => {
 
   beforeEach(async () => {
     const axios = new AxiosAdapter();
-    accountGateway = new AccountGatewayHttp(axios);
+    accountGateway = new AccountGatewayRest(axios);
     const driverAccount = await accountGateway.signup({
       name: 'João Silva',
       email: `joao_${crypto.randomUUID()}@hotmail.com`,
