@@ -1,6 +1,3 @@
-refatorar: paymentGateway deve ter um nome melhor...?
-feat: criar queue
-feat: controller para queue
-feat: criar serviço de dominio tipo fabrica que calcula a tarifa
-test: serviço de dominio
-feat: UC9 - ProcessPayment
+feat: adicionar camada de query para buscas de dados
+feat: adiciar uma projection para busca de dados
+feat: atualizar uma projection com base em uma mutação, enviar para vila
