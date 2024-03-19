@@ -1,11 +1,14 @@
 import Queue from './Queue';
+import Signup, { SignupInputDto } from '../../app/usecase/Signup';
 
 export default class QueueController {
   constructor(
-    readonly queueService: Queue
+    readonly queue: Queue,
+    readonly signup: Signup,
   ) {
-    queueService.consume('signup', async (input: any) => {
-      console.log(input);
+    queue.consume('signup', async (message: any) => {
+      const input = message as SignupInputDto;
+      await signup.execute(input);
     });
   }
 }
