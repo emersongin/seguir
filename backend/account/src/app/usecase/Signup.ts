@@ -6,7 +6,7 @@ export default class Signup {
 		private readonly accountRepository: AccountRepository
 	) {}
 
-	async execute (input: InputDto): Promise<OutputDto> {
+	async execute (input: SignupInputDto): Promise<OutputDto> {
 		const { name, email, password, cpf, isDriver, isPassenger, carPlate, creditCardToken } = input;
 		const accountFinded = await this.accountRepository.getByEmail(email);
 		if (accountFinded) throw new Error('Account already exists.');
@@ -27,7 +27,7 @@ export default class Signup {
 	}
 }
 
-type InputDto = {
+export type SignupInputDto = {
   name: string;
   email: string;
 	password: string;
