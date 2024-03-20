@@ -19,7 +19,7 @@ export default class GetAccountQuery {
       FROM 
         account a 
       WHERE 
-        a.account_id = ?`, [accountId]);
+        a.account_id = $1`, [accountId]);
     if (!account) throw new Error('Account not found.');
     return {
       accountId: account.id,
