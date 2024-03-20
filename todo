@@ -1,3 +1,5 @@
 feat: adicionar camada de query para buscas de dados
 feat: adiciar uma projection para busca de dados
 feat: atualizar uma projection com base em uma mutação, enviar para vila
+feat: adicionar interface de usecase para implementar decoratores
+feat: implementar um decorator
